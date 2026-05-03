@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tracking · Pardin Djibril</title>
+<style>
+:root{--bg:#0a0a0a;--card:#141414;--text:#f0f0f0;--muted:#888;--pink:#ff2e93;--cyan:#00d4ff;--green:#00ff88}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--card);border-bottom:1px solid rgba(255,255,255,.08);padding:16px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+header .user{font-weight:600}
+header .status{font-size:.75rem;color:var(--muted)}
+main{max-width:800px;margin:0 auto;padding:24px}
+.card{background:var(--card);border-radius:12px;padding:24px;margin-bottom:16px;border:1px solid rgba(255,255,255,.06)}
+.card h3{font-size:1rem;margin-bottom:12px}
+label{display:block;font-size:.8rem;color:var(--muted);margin-bottom:4px}
+input, textarea{width:100%;padding:12px;background:#1a1a1a;border:1px solid rgba(255,255,255,.1);border-radius:8px;color:var(--text);font-size:.95rem;outline:none;margin-bottom:12px;resize:vertical;font-family:inherit}
+input:focus, textarea:focus{border-color:var(--cyan)}
+textarea{min-height:100px}
+.saved{color:var(--green);font-size:.75rem;text-align:right;margin-top:-8px;margin-bottom:8px;opacity:0;transition:opacity .3s}
+.saved.show{opacity:1}
+.dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:6px}
+.dot.green{background:var(--green)}
+.dot.yellow{background:#ffaa00}
+.meta{font-size:.7rem;color:var(--muted);text-align:center;margin-top:32px}
+</style>
+</head>
+<body>
+<header>
+ <span class="user" id="userName">...</span>
+ <span class="status" id="saveStatus"><span class="dot yellow"></span>En attente</span>
+</header>
+
+<main>
+ <div class="card">
+  <h3>📝 Notes personnelles</h3>
+  <textarea id="notes" placeholder="Tes pensées, réflexions, prises de conscience..."></textarea>
+  <div class="saved" id="notesSaved">✓ Sauvegardé</div>
+ </div>
+
+ <div class="card">
+  <h3>🎯 Objectifs</h3>
+  <textarea id="goals" placeholder="Ce que tu veux accomplir..."></textarea>
+  <div class="saved" id="goalsSaved">✓ Sauvegardé</div>
+ </div>
+
+ <div class="card">
+  <h3>💡 Insights</h3>
+  <textarea id="insights" placeholder="Ce que tu as compris aujourd'hui..."></textarea>
+  <div class="saved" id="insightsSaved">✓ Sauvegardé</div>
+ </div>
+
+ <div class="meta">Auto-sauvegarde toutes les 60 secondes · Données chiffrées · Pardin Djibril</div>
+</main>
+
+<script>
+const SB_URL = "https://nbnbsljqtolzzuqnkyae.supabase.co";
+const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ibmJzbGpxdG9senp1cW5reWFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ0NDY4NjYsImV4cCI6MjA2MDAyMjg2Nn0.IrN0QzGqPBuBxNkLPJQJtlBkfGPLPSdHGL1RD4RmV4";
+
+const FIELDS = ['notes', 'goals', 'insights'];
+const SAVE_DEBOUNCE = 2000; // 2 secondes après dernière frappe
+let saveTimers = {};
+let student = null;
+
+// Init
+const saved = localStorage.getItem('djibril_student');
+if (!saved) { window.location.href = './'; }
+student = JSON.parse(saved);
+document.getElementById('userName').textContent = student.prenom + ' ' + student.nom;
+
+// Restore from localStorage first (instant)
+FIELDS.forEach(f => {
+ const val = localStorage.getItem('djibril_' + f);
+ if (val) document.getElementById(f).value = val;
+});
+
+// Then check Supabase for latest
+(async () => {
+ try {
+  const res = await fetch(`${SB_URL}/rest/v1/students?email=eq.${encodeURIComponent(student.email)}&select=data`, {
+   headers: {'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`}
+  });
+  const data = await res.json();
+  if (data && data[0] && data[0].data) {
+   const cloud = data[0].data;
+   FIELDS.forEach(f => {
+    if (cloud[f] && (!localStorage.getItem('djibril_' + f) || new Date(cloud[f + '_ts']) > new Date(localStorage.getItem('djibril_' + f + '_ts') || 0))) {
+     document.getElementById(f).value = cloud[f];
+     localStorage.setItem('djibril_' + f, cloud[f]);
+     localStorage.setItem('djibril_' + f + '_ts', cloud[f + '_ts'] || '');
+    }
+   });
+  }
+ } catch(e) { console.log('Restore error:', e); }
+})();
+
+// Auto-save on input
+FIELDS.forEach(f => {
+ document.getElementById(f).addEventListener('input', () => {
+  const val = document.getElementById(f).value;
+  // Save to localStorage instantly
+  localStorage.setItem('djibril_' + f, val);
+  localStorage.setItem('djibril_' + f + '_ts', new Date().toISOString());
+  
+  // Debounce Supabase save
+  clearTimeout(saveTimers[f]);
+  const savedEl = document.getElementById(f + 'Saved');
+  savedEl.classList.remove('show');
+  document.getElementById('saveStatus').innerHTML = '<span class="dot yellow"></span>Sauvegarde...';
+  
+  saveTimers[f] = setTimeout(() => saveToSupabase(f, val, savedEl), SAVE_DEBOUNCE);
+ });
+});
+
+async function saveToSupabase(field, value, savedEl) {
+ try {
+  const allData = {};
+  FIELDS.forEach(f => {
+   allData[f] = document.getElementById(f).value;
+   allData[f + '_ts'] = localStorage.getItem('djibril_' + f + '_ts') || new Date().toISOString();
+  });
+  
+  await fetch(`${SB_URL}/rest/v1/students?email=eq.${encodeURIComponent(student.email)}`, {
+   method: 'PATCH',
+   headers: {'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal'},
+   body: JSON.stringify({data: allData, last_active: new Date().toISOString()})
+  });
+  
+  savedEl.classList.add('show');
+  document.getElementById('saveStatus').innerHTML = '<span class="dot green"></span>Sauvegardé';
+  setTimeout(() => savedEl.classList.remove('show'), 2000);
+ } catch(e) {
+  document.getElementById('saveStatus').innerHTML = '<span class="dot" style="background:red"></span>Erreur';
+  console.error('Save error:', e);
+ }
+}
+</script>
+</body>
+</html>

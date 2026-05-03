@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tracking · Pardin Djibril</title>
+<style>
+:root{--bg:#0a0a0a;--card:#141414;--text:#f0f0f0;--muted:#888;--pink:#ff2e93;--cyan:#00d4ff;--green:#00ff88}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center}
+.container{background:var(--card);border-radius:16px;padding:40px;max-width:420px;width:90%;border:1px solid rgba(255,255,255,.08)}
+h1{font-size:1.4rem;margin-bottom:8px}
+p{color:var(--muted);font-size:.85rem;margin-bottom:24px}
+input{width:100%;padding:14px;margin-bottom:12px;background:#1a1a1a;border:1px solid rgba(255,255,255,.1);border-radius:10px;color:var(--text);font-size:1rem;outline:none;transition:border .2s}
+input:focus{border-color:var(--cyan)}
+.btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--pink),var(--cyan));border:none;border-radius:10px;color:#0a0a0a;font-weight:700;font-size:1rem;cursor:pointer;transition:opacity .2s}
+.btn:hover{opacity:.9}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.error{color:#ff4444;font-size:.8rem;margin-top:8px;display:none}
+.success{color:var(--green);font-size:.8rem;margin-top:8px;display:none}
+.status{text-align:center;margin-top:16px;font-size:.75rem;color:var(--muted)}
+.dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:6px}
+.dot.green{background:var(--green)}
+.dot.yellow{background:#ffaa00}
+</style>
+</head>
+<body>
+<div class="container">
+ <h1>Connecte-toi avec ton email</h1>
+ <p>Suivi personnalisé · Progression · Contenu exclusif</p>
+ <input type="text" id="nom" placeholder="Nom" autocomplete="family-name">
+ <input type="text" id="prenom" placeholder="Prénom" autocomplete="given-name">
+ <input type="email" id="email" placeholder="ton.email@exemple.com" autocomplete="email">
+ <button class="btn" id="btnEnter" onclick="enter()">ENTRER</button>
+ <div class="error" id="error"></div>
+ <div class="success" id="success"></div>
+ <div class="status" id="status"></div>
+</div>
+
+<script>
+const SB_URL = "https://nbnbsljqtolzzuqnkyae.supabase.co";
+const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ibmJzbGpxdG9senp1cW5reWFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ0NDY4NjYsImV4cCI6MjA2MDAyMjg2Nn0.IrN0QzGqPBuBxNkLPJQJtlBkfGPLPSdHGL1RD4RmV4";
+
+const STATUS = document.getElementById('status');
+const ERROR = document.getElementById('error');
+const SUCCESS = document.getElementById('success');
+
+// Check if already logged in
+const saved = localStorage.getItem('djibril_student');
+if (saved) {
+ const s = JSON.parse(saved);
+ document.getElementById('nom').value = s.nom || '';
+ document.getElementById('prenom').value = s.prenom || '';
+ document.getElementById('email').value = s.email || '';
+ document.getElementById('btnEnter').textContent = 'CONTINUER';
+ STATUS.innerHTML = '<span class="dot green"></span>Session sauvegardée';
+}
+
+async function enter() {
+ const nom = document.getElementById('nom').value.trim();
+ const prenom = document.getElementById('prenom').value.trim();
+ const email = document.getElementById('email').value.trim();
+ 
+ ERROR.style.display = 'none';
+ SUCCESS.style.display = 'none';
+ 
+ if (!nom || !prenom || !email) {
+  ERROR.textContent = 'Remplis tous les champs';
+  ERROR.style.display = 'block';
+  return;
+ }
+ if (!email.includes('@')) {
+  ERROR.textContent = 'Email invalide';
+  ERROR.style.display = 'block';
+  return;
+ }
+
+ const btn = document.getElementById('btnEnter');
+ btn.disabled = true;
+ btn.textContent = 'Connexion...';
+ STATUS.innerHTML = '<span class="dot yellow"></span>Enregistrement...';
+
+ try {
+  // Upsert student
+  const res = await fetch(`${SB_URL}/rest/v1/students?email=eq.${encodeURIComponent(email)}&select=*`, {
+   headers: {'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`}
+  });
+  const existing = await res.json();
+  
+  if (existing && existing.length > 0) {
+   // Update existing
+   await fetch(`${SB_URL}/rest/v1/students?id=eq.${existing[0].id}`, {
+    method: 'PATCH',
+    headers: {'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal'},
+    body: JSON.stringify({nom, prenom, last_active: new Date().toISOString()})
+   });
+  } else {
+   // Create new
+   await fetch(`${SB_URL}/rest/v1/students`, {
+    method: 'POST',
+    headers: {'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal'},
+    body: JSON.stringify({nom, prenom, email})
+   });
+  }
+
+  // Save locally
+  localStorage.setItem('djibril_student', JSON.stringify({nom, prenom, email, ts: Date.now()}));
+  
+  SUCCESS.textContent = '✅ Connecté ! Redirection...';
+  SUCCESS.style.display = 'block';
+  STATUS.innerHTML = '<span class="dot green"></span>Connecté à Supabase';
+  
+  setTimeout(() => {
+   window.location.href = 'https://djibrilmindset.github.io/djibril-student-app/tracking.html';
+  }, 800);
+
+ } catch(e) {
+  ERROR.textContent = 'Erreur: ' + e.message;
+  ERROR.style.display = 'block';
+  STATUS.innerHTML = '<span class="dot" style="background:red"></span>Erreur connexion';
+ } finally {
+  btn.disabled = false;
+  btn.textContent = 'ENTRER';
+ }
+}
+</script>
+</body>
+</html>
