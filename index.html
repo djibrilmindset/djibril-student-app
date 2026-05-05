@@ -2,297 +2,118 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Tracking · Djibril</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tracking · Pardin Djibril</title>
 <style>
-:root{--bg:#06030f;--card:#110926;--text:#f0e9ff;--muted:#8a7cb8;--pink:#ff2e93;--cyan:#00e5ff;--green:#22ee88;--violet:#a855f7;--red:#ff3355;--amber:#ffb020;--surface:#1a0f3a;--line:rgba(196,184,232,.1);--r:14px}
+:root{--bg:#0a0a0a;--card:#141414;--text:#f0f0f0;--muted:#888;--pink:#ff2e93;--cyan:#00d4ff;--green:#00ff88}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',-apple-system,system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;background-image:radial-gradient(ellipse 70% 50% at 90% 10%,rgba(168,85,247,.15),transparent 60%),radial-gradient(ellipse 60% 40% at 10% 80%,rgba(255,46,147,.1),transparent 60%)}
-.login-wrap{width:100%;max-width:440px;padding:24px}
-.login-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:40px 32px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.4)}
-.login-card h1{font-size:1.6rem;font-weight:800;margin-bottom:6px;letter-spacing:-.5px}
-.login-card h1 em{font-style:italic;color:var(--pink)}
-.login-card .sub{color:var(--muted);font-size:.85rem;margin-bottom:28px}
-.tabs{display:flex;margin-bottom:24px;border-radius:var(--r);overflow:hidden;border:1px solid var(--line)}
-.tab{flex:1;padding:10px;border:none;background:transparent;color:var(--muted);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit}
-.tab.active{background:var(--violet);color:#fff}
-.tab:first-child{border-right:1px solid var(--line)}
-.field{margin-bottom:16px;text-align:left}
-.field label{display:block;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
-.field input{width:100%;padding:13px 16px;background:var(--surface);border:1px solid var(--line);border-radius:10px;color:var(--text);font-size:15px;outline:none;transition:border .2s;font-family:inherit}
-.field input:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(168,85,247,.15)}
-.btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--pink),var(--violet));border:none;border-radius:10px;color:#fff;font-weight:700;font-size:15px;cursor:pointer;transition:transform .15s,box-shadow .15s;margin-top:4px;font-family:inherit}
-.btn:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(255,46,147,.3)}
-.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
-.msg{padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:16px;display:none;text-align:center}
-.msg.error{background:rgba(255,51,85,.12);color:var(--red);display:block}
-.msg.success{background:rgba(34,238,136,.12);color:var(--green);display:block}
-.info{font-size:11px;color:var(--muted);margin-top:16px}
-
-/* Tracking page */
-.app{min-height:100vh}
-.app-header{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
-.app-brand{font-weight:700;font-size:16px;color:var(--violet)}
-.btn-logout{background:var(--surface);border:1px solid var(--line);color:var(--muted);padding:6px 14px;border-radius:20px;cursor:pointer;font-size:12px;font-family:inherit}
-.app-main{max-width:600px;margin:0 auto;padding:24px}
-.orb-wrap{display:flex;justify-content:center;margin:16px 0 24px}
-.orb{width:160px;height:160px;border-radius:50%;background:radial-gradient(circle at 40% 40%,rgba(168,85,247,.4),rgba(255,46,147,.2),transparent 70%);display:flex;align-items:center;justify-content:center;flex-direction:column;position:relative;animation:orb-pulse 4s ease-in-out infinite}
-@keyframes orb-pulse{0%,100%{box-shadow:0 0 40px rgba(168,85,247,.3)}50%{box-shadow:0 0 80px rgba(255,46,147,.4)}}
-.orb-pts{font-size:42px;font-weight:900;color:var(--text)}
-.orb-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
-.today-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px;margin-bottom:20px}
-.today-card h2{font-size:1.1rem;margin-bottom:20px;display:flex;align-items:center;gap:8px}
-.today-card h2 .dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
-@media(max-width:400px){.row{grid-template-columns:1fr}}
-.field input[type=number]{text-align:center;font-size:18px;font-weight:700}
-.live-toggle{display:flex;align-items:center;gap:12px;margin:12px 0 20px}
-.live-toggle span{font-weight:600;font-size:14px}
-.live-btn{padding:8px 18px;border-radius:20px;border:1px solid var(--line);background:var(--surface);color:var(--muted);cursor:pointer;font-weight:600;font-size:13px;transition:all .2s;font-family:inherit}
-.live-btn.on{background:var(--red);border-color:var(--red);color:#fff}
-.btn-save{width:100%;padding:14px;background:linear-gradient(135deg,var(--cyan),var(--violet));border:none;border-radius:10px;color:#fff;font-weight:700;font-size:15px;cursor:pointer;font-family:inherit}
-.btn-save:disabled{opacity:.4;cursor:not-allowed}
-.recap{margin-top:24px;border-top:1px solid var(--line);padding-top:16px}
-.recap h3{font-size:1rem;margin-bottom:12px}
-.recap-row{display:flex;justify-content:space-between;padding:6px 0;font-size:14px}
-.recap-total{font-size:28px;font-weight:900;text-align:right;margin-top:12px;background:linear-gradient(135deg,var(--cyan),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.history{margin-top:40px}
-.history h3{font-size:1rem;margin-bottom:12px}
-.history-table{width:100%;border-collapse:collapse;font-size:13px}
-.history-table th{text-align:left;padding:8px 10px;font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;border-bottom:1px solid var(--line)}
-.history-table td{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.03)}
+body{font-family:-apple-system,system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center}
+.container{background:var(--card);border-radius:16px;padding:40px;max-width:420px;width:90%;border:1px solid rgba(255,255,255,.08)}
+h1{font-size:1.4rem;margin-bottom:8px}
+p{color:var(--muted);font-size:.85rem;margin-bottom:24px}
+input{width:100%;padding:14px;margin-bottom:12px;background:#1a1a1a;border:1px solid rgba(255,255,255,.1);border-radius:10px;color:var(--text);font-size:1rem;outline:none;transition:border .2s}
+input:focus{border-color:var(--cyan)}
+.btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--pink),var(--cyan));border:none;border-radius:10px;color:#0a0a0a;font-weight:700;font-size:1rem;cursor:pointer;transition:opacity .2s}
+.btn:hover{opacity:.9}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.error{color:#ff4444;font-size:.8rem;margin-top:8px;display:none}
+.success{color:var(--green);font-size:.8rem;margin-top:8px;display:none}
+.status{text-align:center;margin-top:16px;font-size:.75rem;color:var(--muted)}
+.dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:6px}
+.dot.green{background:var(--green)}
+.dot.yellow{background:#ffaa00}
 </style>
 </head>
 <body>
-
-<!-- LOGIN -->
-<div id="loginView" class="login-wrap">
- <div class="login-card">
-  <h1>Tracking <em>Djibril</em></h1>
-  <p class="sub">Suivi effort quotidien · Calls, DM, Vidéos, Live, CA</p>
-  <div class="tabs">
-   <button class="tab active" id="tabLogin" onclick="switchTab('login')">Connexion</button>
-   <button class="tab" id="tabRegister" onclick="switchTab('register')">Inscription</button>
-  </div>
-  <div id="msgBox"></div>
-  <div id="formLogin">
-   <div class="field"><label>Email</label><input type="email" id="loginEmail" placeholder="ton@email.com" autofocus></div>
-   <button class="btn" id="btnLogin" onclick="doLogin()">Entrer →</button>
-  </div>
-  <div id="formRegister" style="display:none">
-   <div class="field"><label>Email</label><input type="email" id="regEmail" placeholder="ton@email.com"></div>
-   <div class="field"><label>Prénom</label><input type="text" id="regFirst" placeholder="Jean"></div>
-   <div class="field"><label>Nom</label><input type="text" id="regLast" placeholder="Dupont"></div>
-   <button class="btn" id="btnRegister" onclick="doRegister()">Créer mon compte →</button>
-  </div>
-  <p class="info">Pas de mot de passe · Connexion par email uniquement</p>
- </div>
-</div>
-
-<!-- TRACKING -->
-<div id="trackingView" style="display:none" class="app">
- <header class="app-header">
-  <span class="app-brand">Tracking · Djibril</span>
-  <span id="userChip" style="font-size:14px;color:var(--muted)"></span>
-  <button class="btn-logout" onclick="logout()">Déconnexion</button>
- </header>
- <main class="app-main">
-  <div id="trackMsg"></div>
-  <div class="orb-wrap"><div class="orb" id="orb"><div class="orb-pts" id="orbPts">0</div><div class="orb-label">points</div></div></div>
-  <h2 style="font-size:1.4rem;margin-bottom:4px">Ma <em style="color:var(--pink);font-style:italic">fiche</em></h2>
-  <p id="todayDate" style="color:var(--muted);font-size:13px;margin-bottom:20px"></p>
-  <div class="today-card">
-   <h2><span class="dot"></span>Aujourd'hui</h2>
-   <div class="row">
-    <div class="field"><label>Calls</label><input type="number" id="fieldCalls" min="0" value="0"></div>
-    <div class="field"><label>DM</label><input type="number" id="fieldDM" min="0" value="0"></div>
-   </div>
-   <div class="row">
-    <div class="field"><label>Vidéos</label><input type="number" id="fieldVideos" min="0" value="0"></div>
-    <div class="field"><label>CA (€)</label><input type="number" id="fieldCA" min="0" step="0.01" value="0"></div>
-   </div>
-   <div class="live-toggle">
-    <span>Live</span>
-    <button class="live-btn" id="btnLiveNo" onclick="setLive(false)">Non</button>
-    <button class="live-btn on" id="btnLiveYes" onclick="setLive(true)">Oui</button>
-   </div>
-   <button class="btn-save" id="btnSave" onclick="saveEntry()">Enregistrer ma fiche</button>
-  </div>
-  <div class="recap" id="recap"></div>
-  <div class="history"><h3>Historique récent</h3><div id="historyTable"></div></div>
- </main>
+<div class="container">
+ <h1>Connecte-toi avec ton email</h1>
+ <p>Suivi personnalisé · Progression · Contenu exclusif</p>
+ <input type="text" id="nom" placeholder="Nom" autocomplete="family-name">
+ <input type="text" id="prenom" placeholder="Prénom" autocomplete="given-name">
+ <input type="email" id="email" placeholder="ton.email@exemple.com" autocomplete="email">
+ <button class="btn" id="btnEnter" onclick="enter()">ENTRER</button>
+ <div class="error" id="error"></div>
+ <div class="success" id="success"></div>
+ <div class="status" id="status"></div>
 </div>
 
 <script>
 const API = 'https://nbnbsljqtolzzuqnkyae.supabase.co/functions/v1/tracking-app/api';
-let currentUser = null;
-let _live = false;
 
-// Init
-const saved = localStorage.getItem('dj_user');
+const STATUS = document.getElementById('status');
+const ERROR = document.getElementById('error');
+const SUCCESS = document.getElementById('success');
+
+// Check if already logged in
 const savedToken = localStorage.getItem('dj_token');
-if (saved && savedToken) { currentUser = JSON.parse(saved); showTracking(); }
-
-function msg(text, type) {
-  const el = document.getElementById('msgBox');
-  el.textContent = text; el.className = 'msg ' + type;
-  setTimeout(() => el.className = 'msg', 3000);
+const savedUser = localStorage.getItem('dj_user');
+if (savedToken && savedUser) {
+ const s = JSON.parse(savedUser);
+ document.getElementById('nom').value = s.full_name || '';
+ document.getElementById('prenom').value = s.first_name || '';
+ document.getElementById('email').value = s.email || '';
+ document.getElementById('btnEnter').textContent = 'CONTINUER';
+ STATUS.innerHTML = '<span class="dot green"></span>Session sauvegardée';
 }
 
-function trackMsg(text, type) {
-  const el = document.getElementById('trackMsg');
-  el.textContent = text; el.className = 'msg ' + type;
-  setTimeout(() => el.className = 'msg', 3000);
-}
+async function enter() {
+ const prenom = document.getElementById('prenom').value.trim();
+ const nom = document.getElementById('nom').value.trim();
+ const email = document.getElementById('email').value.trim();
 
-function switchTab(tab) {
-  document.getElementById('tabLogin').className = tab==='login'?'tab active':'tab';
-  document.getElementById('tabRegister').className = tab==='register'?'tab active':'tab';
-  document.getElementById('formLogin').style.display = tab==='login'?'block':'none';
-  document.getElementById('formRegister').style.display = tab==='register'?'block':'none';
-  document.getElementById('msgBox').className = 'msg';
-}
+ ERROR.style.display = 'none';
+ SUCCESS.style.display = 'none';
 
-async function api(method, path, body) {
-  const h = { 'Content-Type': 'application/json' };
-  if (savedToken && path !== '/auth' && path !== '/auth/login') h['Authorization'] = 'Bearer ' + savedToken;
-  const opts = { method, headers: h };
-  if (body) opts.body = JSON.stringify(body);
-  const res = await fetch(API + path, opts);
-  if (res.status === 401) { logout(); return null; }
+ // Login mode (email only) vs Register mode (all 3)
+ const isLogin = !prenom && !nom;
+ if (!isLogin && (!nom || !prenom)) {
+  ERROR.textContent = 'Pour te connecter, mets juste ton email. Pour t\'inscrire, remplis les 3 champs.';
+  ERROR.style.display = 'block';
+  return;
+ }
+ if (!email || !email.includes('@')) {
+  ERROR.textContent = 'Email invalide';
+  ERROR.style.display = 'block';
+  return;
+ }
+
+ const btn = document.getElementById('btnEnter');
+ btn.disabled = true;
+ btn.textContent = 'Connexion...';
+ STATUS.innerHTML = '<span class="dot yellow"></span>Authentification...';
+
+ try {
+  const path = isLogin ? '/auth/login' : '/auth';
+  const body = isLogin ? {email} : {email, firstName: prenom, lastName: nom};
+  const res = await fetch(API + path, {
+   method: 'POST',
+   headers: {'Content-Type': 'application/json'},
+   body: JSON.stringify(body)
+  });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.error || data.detail || 'Erreur');
-  return data;
-}
+  if (!res.ok) throw new Error(data.error || 'Erreur');
 
-async function doLogin() {
-  const email = document.getElementById('loginEmail').value.trim();
-  if (!email || !email.includes('@')) return msg('Email invalide', 'error');
-  const btn = document.getElementById('btnLogin');
-  btn.disabled = true; btn.textContent = 'Connexion...';
-  try {
-    const data = await api('POST', '/auth/login', { email });
-    localStorage.setItem('dj_token', data.token);
-    localStorage.setItem('dj_user', JSON.stringify(data.student));
-    currentUser = data.student;
-    showTracking();
-  } catch(e) { msg(e.message, 'error'); }
-  btn.disabled = false; btn.textContent = 'Entrer →';
-}
+  localStorage.setItem('dj_token', data.token);
+  localStorage.setItem('dj_user', JSON.stringify(data.student));
+  localStorage.setItem('djibril_student', JSON.stringify({nom, prenom, email, ts: Date.now()}));
 
-async function doRegister() {
-  const email = document.getElementById('regEmail').value.trim();
-  const first = document.getElementById('regFirst').value.trim();
-  const last = document.getElementById('regLast').value.trim();
-  if (!email || !first || !last) return msg('Tous les champs sont requis', 'error');
-  if (!email.includes('@')) return msg('Email invalide', 'error');
-  const btn = document.getElementById('btnRegister');
-  btn.disabled = true; btn.textContent = 'Création...';
-  try {
-    const data = await api('POST', '/auth', { email, firstName: first, lastName: last });
-    localStorage.setItem('dj_token', data.token);
-    localStorage.setItem('dj_user', JSON.stringify(data.student));
-    currentUser = data.student;
-    showTracking();
-  } catch(e) { msg(e.message, 'error'); }
-  btn.disabled = false; btn.textContent = 'Créer mon compte →';
-}
+  SUCCESS.textContent = '✅ Connecté ! Redirection...';
+  SUCCESS.style.display = 'block';
+  STATUS.innerHTML = '<span class="dot green"></span>Connecté';
 
-function logout() {
-  localStorage.removeItem('dj_token');
-  localStorage.removeItem('dj_user');
-  currentUser = null;
-  document.getElementById('trackingView').style.display = 'none';
-  document.getElementById('loginView').style.display = '';
-}
+  setTimeout(() => {
+   window.location.href = 'tracking.html';
+  }, 800);
 
-function showTracking() {
-  document.getElementById('loginView').style.display = 'none';
-  document.getElementById('trackingView').style.display = 'block';
-  document.getElementById('userChip').textContent = currentUser.first_name + ' ' + (currentUser.full_name||'');
-  const today = new Date();
-  document.getElementById('todayDate').textContent = today.toLocaleDateString('fr-FR', {weekday:'long', day:'numeric', month:'long'});
-  loadToday();
-  loadHistory();
+ } catch(e) {
+  ERROR.textContent = 'Erreur: ' + e.message;
+  ERROR.style.display = 'block';
+  STATUS.innerHTML = '<span class="dot" style="background:red"></span>Erreur connexion';
+ } finally {
+  btn.disabled = false;
+  btn.textContent = 'ENTRER';
+ }
 }
-
-async function loadToday() {
-  try {
-    const data = await api('GET', '/me/today');
-    if (data) {
-      document.getElementById('fieldCalls').value = data.calls || 0;
-      document.getElementById('fieldDM').value = data.dm || 0;
-      document.getElementById('fieldVideos').value = data.videos || 0;
-      document.getElementById('fieldCA').value = data.ca_eur || 0;
-      setLive(data.live || false);
-      updateRecap(data);
-    }
-  } catch(e) { console.log('Load today:', e); }
-}
-
-function setLive(val) {
-  _live = val;
-  document.getElementById('btnLiveYes').className = val ? 'live-btn on' : 'live-btn';
-  document.getElementById('btnLiveNo').className = val ? 'live-btn' : 'live-btn on';
-}
-
-async function saveEntry() {
-  const btn = document.getElementById('btnSave');
-  btn.disabled = true; btn.textContent = 'Enregistrement...';
-  const data = {
-    calls: parseInt(document.getElementById('fieldCalls').value) || 0,
-    dm: parseInt(document.getElementById('fieldDM').value) || 0,
-    videos: parseInt(document.getElementById('fieldVideos').value) || 0,
-    live: _live,
-    ca_eur: parseFloat(document.getElementById('fieldCA').value) || 0
-  };
-  try {
-    const today = new Date().toISOString().slice(0, 10);
-    const res = await api('PUT', '/me/entries/' + today, data);
-    trackMsg('✓ Fiche enregistrée !', 'success');
-    updateRecap(res);
-  } catch(e) { trackMsg(e.message, 'error'); }
-  btn.disabled = false; btn.textContent = 'Enregistrer ma fiche';
-}
-
-function updateRecap(data) {
-  const calls = data.calls || 0, dm = data.dm || 0, videos = data.videos || 0, live = data.live || false;
-  const pts = calls*2 + dm + videos*3 + (live ? 5 : 0), ca = data.ca_eur || 0;
-  document.getElementById('recap').innerHTML = `<h3>Récapitulatif</h3>
-   <div class="recap-row"><span>Calls</span><span>${calls} × 2 = ${calls*2} pts</span></div>
-   <div class="recap-row"><span>DM</span><span>${dm} × 1 = ${dm} pts</span></div>
-   <div class="recap-row"><span>Vidéos</span><span>${videos} × 3 = ${videos*3} pts</span></div>
-   <div class="recap-row"><span>Live</span><span>${live ? '+5 pts' : '—'}</span></div>
-   ${ca > 0 ? `<div class="recap-row"><span>CA</span><span>${ca.toFixed(2)} €</span></div>` : ''}
-   <div class="recap-total">${pts} pts</div>`;
-  document.getElementById('orbPts').textContent = pts;
-  const orb = document.getElementById('orb');
-  orb.style.width = orb.style.height = (pts >= 30 ? '220px' : pts >= 15 ? '190px' : '160px') + '';
-}
-
-async function loadHistory() {
-  try {
-    const history = await api('GET', '/me/history');
-    if (!history || !history.length) return;
-    let rows = '';
-    history.slice(0,14).forEach(e => {
-      const pts = (e.calls||0)*2 + (e.dm||0) + (e.videos||0)*3 + (e.live ? 5 : 0);
-      rows += `<tr><td>${e.entry_date}</td><td>${e.calls||0}</td><td>${e.dm||0}</td><td>${e.videos||0}</td><td>${e.live?'Oui':'—'}</td><td>${(e.ca_eur||0).toFixed(0)}€</td><td><strong>${pts}</strong></td></tr>`;
-    });
-    document.getElementById('historyTable').innerHTML = `<table class="history-table"><thead><tr><th>Date</th><th>Calls</th><th>DM</th><th>Vidéos</th><th>Live</th><th>CA</th><th>Pts</th></tr></thead><tbody>${rows}</tbody></table>`;
-  } catch(e) { console.log('History:', e); }
-}
-
-// Enter key
-document.addEventListener('keydown', e => {
-  if (e.key === 'Enter') {
-    if (document.getElementById('loginView').style.display !== 'none') {
-      if (document.getElementById('formRegister').style.display === 'none') doLogin();
-      else doRegister();
-    }
-  }
-});
 </script>
 </body>
 </html>
