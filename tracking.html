@@ -1,140 +1,365 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
 <title>Tracking · Pardin Djibril</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Playfair+Display:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0a0a;--card:#141414;--text:#f0f0f0;--muted:#888;--pink:#ff2e93;--cyan:#00d4ff;--green:#00ff88}
+:root{
+  --paper:#f3ecdf; --paper-2:#e9e0cf; --paper-3:#f8f4eb;
+  --ink:#1a1614; --ink-soft:#3a322c; --ink-mute:#6e645a;
+  --ember:#e85d2c; --ember-deep:#c73e1a; --ember-soft:rgba(232,93,44,.12);
+  --plum:#6b3a4f; --magenta:#d4145a; --indigo:#4a3c8c; --jade:#1d8a6f; --gold:#d4951a;
+  --crit:#c73e3a; --warn:#d4951a;
+  --serif:'Instrument Serif',Georgia,serif;
+  --display:'Playfair Display',Georgia,serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-header{background:var(--card);border-bottom:1px solid rgba(255,255,255,.08);padding:16px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
-header .user{font-weight:600}
-header .status{font-size:.75rem;color:var(--muted)}
-main{max-width:800px;margin:0 auto;padding:24px}
-.card{background:var(--card);border-radius:12px;padding:24px;margin-bottom:16px;border:1px solid rgba(255,255,255,.06)}
-.card h3{font-size:1rem;margin-bottom:12px}
-label{display:block;font-size:.8rem;color:var(--muted);margin-bottom:4px}
-input, textarea{width:100%;padding:12px;background:#1a1a1a;border:1px solid rgba(255,255,255,.1);border-radius:8px;color:var(--text);font-size:.95rem;outline:none;margin-bottom:12px;resize:vertical;font-family:inherit}
-input:focus, textarea:focus{border-color:var(--cyan)}
-textarea{min-height:100px}
-.saved{color:var(--green);font-size:.75rem;text-align:right;margin-top:-8px;margin-bottom:8px;opacity:0;transition:opacity .3s}
-.saved.show{opacity:1}
-.dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:6px}
-.dot.green{background:var(--green)}
-.dot.yellow{background:#ffaa00}
-.meta{font-size:.7rem;color:var(--muted);text-align:center;margin-top:32px}
+html,body{max-width:100vw;overflow-x:hidden}
+body{
+  font-family:var(--serif);background:var(--paper);color:var(--ink);
+  min-height:100vh;
+}
+
+/* COSMOS BACKGROUND */
+.cosmos{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.cosmos__cap{position:absolute;border-radius:999px;border:1.5px solid rgba(26,22,20,.5);mix-blend-mode:multiply;opacity:.4;filter:saturate(1.3)}
+.cosmos__cap::after{content:"";position:absolute;inset:12% 18%;border-radius:999px;background-image:radial-gradient(circle,rgba(255,255,255,.3) 1px,transparent 1.5px);background-size:5px 5px;mix-blend-mode:screen}
+.cosmos__cap.c1{background:#C73E3A;width:130px;height:260px;top:8%;left:6%;animation:f1 38s ease-in-out infinite}
+.cosmos__cap.c2{background:#4B3F72;width:90px;height:180px;top:18%;right:8%;animation:f2 44s ease-in-out infinite -6s}
+.cosmos__cap.c3{background:#C8A951;width:80px;height:160px;bottom:18%;left:12%;animation:f3 36s ease-in-out infinite -12s}
+.cosmos__cap.c4{background:#5E8B7E;width:130px;height:260px;bottom:8%;right:6%;animation:f1 42s ease-in-out infinite -3s}
+.cosmos__cap.c5{background:#722F37;width:60px;height:120px;top:48%;left:38%;animation:f2 30s ease-in-out infinite -14s}
+.cosmos__cap.c6{background:#1B6E8C;width:70px;height:140px;top:62%;left:72%;animation:f3 40s ease-in-out infinite -8s}
+@keyframes f1{0%,100%{transform:translate3d(0,0,0) rotate(-15deg)}50%{transform:translate3d(40px,-60px,0) rotate(8deg)}}
+@keyframes f2{0%,100%{transform:translate3d(0,0,0) rotate(25deg)}50%{transform:translate3d(-50px,70px,0) rotate(-18deg)}}
+@keyframes f3{0%,100%{transform:translate3d(0,0,0) rotate(38deg)}50%{transform:translate3d(60px,-40px,0) rotate(-22deg)}}
+.cosmos__stars{position:absolute;inset:0;font-family:var(--serif);font-style:italic;color:rgba(26,22,20,.12);letter-spacing:.4em;line-height:2.6;font-size:13px;padding:40px;white-space:pre-wrap;animation:tw 8s steps(8) infinite}
+@keyframes tw{0%,100%{opacity:1}50%{opacity:.4}}
+.cosmos__noise{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.085 0 0 0 0 0.08 0 0 0 0.45 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:280px 280px;opacity:.12;mix-blend-mode:multiply}
+.cosmos__veil{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(243,236,223,.35) 0%,rgba(243,236,223,.7) 100%)}
+
+/* SHELL */
+.shell{position:relative;z-index:2;max-width:680px;margin:0 auto;padding:0 24px 120px}
+
+/* TOPBAR */
+.topbar{display:flex;align-items:center;gap:14px;padding:18px 0;border-bottom:1.5px solid rgba(26,22,20,.15);margin-bottom:24px;flex-wrap:wrap}
+.topbar a{text-decoration:none;color:var(--ink)}
+.brand-mark{display:flex;align-items:center;gap:8px}
+.brand-mark .pill{width:28px;height:14px;border-radius:999px;background:linear-gradient(90deg,#C73E3A,#e85d2c,#C8A951);box-shadow:inset 0 -2px 3px rgba(0,0,0,.3)}
+.brand-mark .label{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+.topbar__user{margin-left:auto;display:flex;align-items:center;gap:8px;cursor:pointer;padding:6px 12px;border-radius:999px;background:var(--ember-soft);border:none;font-family:var(--serif)}
+.topbar__user .av{width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--paper);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:900;font-size:.8rem}
+.crumb{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--ink-mute);display:flex;gap:6px}
+.crumb a{color:var(--ink-mute)}
+.crumb .sep{color:rgba(26,22,20,.25)}
+
+/* HEADER */
+.page-head{margin-bottom:28px}
+.page-head h1{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(2rem,5vw,2.8rem);line-height:1.08;margin-bottom:6px}
+.page-head h1 .accent{font-family:var(--display);font-style:normal;font-weight:900;color:var(--magenta)}
+.page-head .lede{font-family:var(--serif);font-style:italic;color:var(--ink-soft);font-size:1rem}
+.page-head .lede .pop{font-family:var(--mono);font-style:normal;font-weight:600;font-size:.8em;letter-spacing:.1em;text-transform:uppercase;color:var(--ember)}
+
+/* BRAIN ORB */
+.brain-stage{position:relative;display:flex;align-items:center;justify-content:center;margin:0 0 8px}
+.brain-orb{position:relative;width:160px;height:160px;transition:width .6s,height .6s}
+.brain-orb__halo{position:absolute;inset:-20%;background:radial-gradient(circle at 50% 50%,rgba(199,62,58,.4) 0%,rgba(232,93,44,.25) 30%,rgba(74,60,140,.15) 55%,transparent 70%);filter:blur(30px);border-radius:50%;animation:brain-pulse 4s ease-in-out infinite;z-index:0}
+.brain-orb__capsule{position:absolute;inset:18%;z-index:2;background:linear-gradient(135deg,#C73E3A,#e85d2c,#C8A951);border-radius:999px;box-shadow:0 0 40px rgba(199,62,58,.35),0 0 80px rgba(74,60,140,.15);transition:width .6s,height .6s,margin .6s}
+.brain-orb__wires{position:absolute;inset:0;z-index:1;pointer-events:none;animation:brain-rotate 30s linear infinite}
+.brain-orb__wires::before{content:'';position:absolute;inset:5%;border:2px dashed rgba(232,93,44,.25);border-radius:50%}
+.brain-orb__wires::after{content:'';position:absolute;inset:15%;border:1.5px dotted rgba(212,149,26,.2);border-radius:50%}
+.brain-orb__pts{position:absolute;z-index:4;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--display);font-size:28px;font-weight:800;color:var(--ember);text-align:center;transition:font-size .6s}
+.brain-orb__pts small{display:block;font-size:9px;font-weight:500;color:var(--ink-mute);letter-spacing:1px;text-transform:uppercase}
+.brain-orb.strong{width:220px;height:220px}
+.brain-orb.strong .brain-orb__pts{font-size:40px;color:var(--indigo)}
+@keyframes brain-pulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
+@keyframes brain-rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+/* TODAY CARD */
+.card-today{background:rgba(255,252,245,.92);border:2px solid var(--ember);box-shadow:6px 6px 0 var(--ember-deep);padding:32px;margin-bottom:32px}
+.badge-pulse{display:inline-flex;align-items:center;gap:6px;background:var(--ember-soft);color:var(--ember);padding:4px 12px;border-radius:999px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;font-weight:600;margin-bottom:20px;text-transform:uppercase}
+.badge-pulse::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--ember);animation:pulse-dot 1.5s ease-in-out infinite}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.3}}
+.card-today h2{font-family:var(--display);font-weight:900;font-size:1.3rem;color:var(--ink);margin-bottom:24px}
+.card-today .date-display{font-family:var(--serif);font-style:italic;font-size:1.1rem;color:var(--ink-soft);margin-bottom:20px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--ink-soft)}
+.field input{font-family:var(--serif);font-style:italic;font-size:1.2rem;background:rgba(255,252,245,.6);border:none;border-bottom:1.5px solid var(--ink);padding:10px 4px;color:var(--ink);outline:none;text-align:center;transition:border-color .15s}
+.field input:focus{border-bottom-color:var(--ember-deep);background:rgba(255,252,245,.95)}
+
+.live-toggle{display:flex;align-items:center;gap:10px;margin:16px 0 24px}
+.live-toggle span{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--ink-soft)}
+.live-toggle button{padding:8px 20px;border-radius:999px;border:1.5px solid rgba(26,22,20,.2);background:rgba(255,252,245,.6);color:var(--ink-soft);cursor:pointer;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;transition:all .15s}
+.live-toggle button.is-on{background:var(--ember-deep);border-color:var(--ember-deep);color:var(--paper)}
+
+.btn{font-family:var(--mono);font-weight:600;font-size:11px;letter-spacing:.18em;text-transform:uppercase;background:var(--ink);color:var(--paper);border:1.5px solid var(--ink);padding:14px 24px;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ember-deep)}
+.btn:active{transform:translate(1px,1px);box-shadow:none}
+.btn:disabled{opacity:.5;pointer-events:none}
+.btn--ember{background:var(--ember-deep);border-color:var(--ember-deep)}
+.btn--full{width:100%;justify-content:center;text-align:center}
+.btn--sm{padding:10px 16px;font-size:10px}
+
+.msg{text-align:center;padding:14px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;margin-bottom:18px;animation:fieldIn .35s ease}
+.msg--ok{background:rgba(29,138,111,.12);border:1px solid var(--jade);color:var(--jade)}
+.msg--err{background:rgba(212,20,90,.1);border:1px solid var(--magenta);color:var(--magenta)}
+
+/* RECAP */
+.recap{margin-top:20px}
+.recap h3{font-family:var(--display);font-weight:900;font-size:1.1rem;color:var(--ink);margin-bottom:16px}
+.recap-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px dotted rgba(26,22,20,.15)}
+.recap-label{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--ink-mute);text-transform:uppercase}
+.recap-value{font-family:var(--display);font-weight:800;font-size:1.05rem;color:var(--ink)}
+.recap-points{margin-top:16px;text-align:right;font-family:var(--display);font-size:2.5rem;font-weight:800;color:var(--ember);line-height:1}
+
+/* HISTORY */
+.history-section{margin-top:48px}
+.history-section h3{font-family:var(--display);font-weight:900;font-size:1.1rem;color:var(--ink);margin-bottom:16px}
+.history-table{width:100%;border-collapse:collapse;font-size:12px}
+.history-table th{text-align:left;padding:8px 12px;font-size:10px;font-weight:600;color:var(--ink-mute);text-transform:uppercase;border-bottom:1.5px solid rgba(26,22,20,.2);background:rgba(255,252,245,.5);font-family:var(--mono);letter-spacing:.08em}
+.history-table td{padding:8px 12px;border-bottom:1px solid rgba(26,22,20,.1);font-family:var(--serif);font-style:italic}
+.history-table td:last-child{font-family:var(--display);font-weight:800;color:var(--ember);font-style:normal}
+
+@keyframes fieldIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+
+@media (max-width:500px){
+  .card-today{padding:24px 20px;box-shadow:4px 4px 0 var(--ember-deep)}
+  .field-row{grid-template-columns:1fr}
+  .brain-orb{width:130px;height:130px}
+  .brain-orb.strong{width:180px;height:180px}
+}
+@media (prefers-reduced-motion:reduce){
+  .cosmos__cap,.cosmos__stars,.brain-orb__halo,.brain-orb__wires{animation:none!important}
+}
 </style>
 </head>
 <body>
-<header>
- <span class="user" id="userName">...</span>
- <span class="status" id="saveStatus"><span class="dot yellow"></span>En attente</span>
-</header>
 
-<main>
- <div class="card">
-  <h3>📝 Notes personnelles</h3>
-  <textarea id="notes" placeholder="Tes pensées, réflexions, prises de conscience..."></textarea>
-  <div class="saved" id="notesSaved">✓ Sauvegardé</div>
- </div>
+<div class="cosmos" aria-hidden="true">
+  <div class="cosmos__stars">✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆
+✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆
+✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆</div>
+  <div class="cosmos__cap c1"></div><div class="cosmos__cap c2"></div><div class="cosmos__cap c3"></div>
+  <div class="cosmos__cap c4"></div><div class="cosmos__cap c5"></div><div class="cosmos__cap c6"></div>
+  <div class="cosmos__noise"></div><div class="cosmos__veil"></div>
+</div>
 
- <div class="card">
-  <h3>🎯 Objectifs</h3>
-  <textarea id="goals" placeholder="Ce que tu veux accomplir..."></textarea>
-  <div class="saved" id="goalsSaved">✓ Sauvegardé</div>
- </div>
-
- <div class="card">
-  <h3>💡 Insights</h3>
-  <textarea id="insights" placeholder="Ce que tu as compris aujourd'hui..."></textarea>
-  <div class="saved" id="insightsSaved">✓ Sauvegardé</div>
- </div>
-
- <div class="meta">Auto-sauvegarde toutes les 60 secondes · Données chiffrées · Pardin Djibril</div>
-</main>
+<div class="shell" id="shell"></div>
 
 <script>
-const SB_URL = "https://nbnbsljqtolzzuqnkyae.supabase.co";
-const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ibmJzbGpxdG9senp1cW5reWFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ0NDY4NjYsImV4cCI6MjA2MDAyMjg2Nn0.IrN0QzGqPBuBxNkLPJQJtlBkfGPLPSdHGL1RD4RmV4";
+(function(){
+  const API = 'https://nbnbsljqtolzzuqnkyae.supabase.co/functions/v1/tracking-app/api';
+  const TOKEN_KEY = 'dj_token';
+  const USER_KEY = 'dj_user';
 
-const FIELDS = ['notes', 'goals', 'insights'];
-const SAVE_DEBOUNCE = 2000; // 2 secondes après dernière frappe
-let saveTimers = {};
-let student = null;
+  // Check auth
+  const token = localStorage.getItem(TOKEN_KEY);
+  const userStr = localStorage.getItem(USER_KEY);
+  if(!token || !userStr){ window.location.href = 'login.html'; return; }
+  const user = JSON.parse(userStr);
+  const liveDefault = false;
 
-// Init
-const saved = localStorage.getItem('djibril_student');
-if (!saved) { window.location.href = './'; }
-student = JSON.parse(saved);
-document.getElementById('userName').textContent = student.prenom + ' ' + student.nom;
-
-// Restore from localStorage first (instant)
-FIELDS.forEach(f => {
- const val = localStorage.getItem('djibril_' + f);
- if (val) document.getElementById(f).value = val;
-});
-
-// Then check Supabase for latest
-(async () => {
- try {
-  const res = await fetch(`${SB_URL}/rest/v1/students?email=eq.${encodeURIComponent(student.email)}&select=data`, {
-   headers: {'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`}
-  });
-  const data = await res.json();
-  if (data && data[0] && data[0].data) {
-   const cloud = data[0].data;
-   FIELDS.forEach(f => {
-    if (cloud[f] && (!localStorage.getItem('djibril_' + f) || new Date(cloud[f + '_ts']) > new Date(localStorage.getItem('djibril_' + f + '_ts') || 0))) {
-     document.getElementById(f).value = cloud[f];
-     localStorage.setItem('djibril_' + f, cloud[f]);
-     localStorage.setItem('djibril_' + f + '_ts', cloud[f + '_ts'] || '');
-    }
-   });
+  // ── API helpers ─────────────────────────────────────────
+  function getTodayStr(){ return new Date().toISOString().slice(0,10); }
+  async function api(method, path, body){
+    const h = {'Content-Type':'application/json','Authorization':'Bearer '+token};
+    const opts = {method, headers:h};
+    if(body) opts.body = JSON.stringify(body);
+    const res = await fetch(API + path, opts);
+    if(res.status === 401){ localStorage.removeItem(TOKEN_KEY); localStorage.removeItem(USER_KEY); window.location.href='login.html'; return null; }
+    return res.json();
   }
- } catch(e) { console.log('Restore error:', e); }
+
+  // ── Render ──────────────────────────────────────────────
+  async function render(){
+    const shell = document.getElementById('shell');
+    const today = getTodayStr();
+    const todayFR = new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+
+    shell.innerHTML = `
+      <div class="topbar">
+        <a class="brand-mark" href="login.html">
+          <div class="pill"></div><div class="label">Djibril · Tracking</div>
+        </a>
+        <nav class="crumb"><a href="login.html">accueil</a><span class="sep">/</span><span>Ma fiche</span></nav>
+        <button class="topbar__user" id="btn-logout" title="Se déconnecter">
+          <div class="av">${(user.first_name||'?').slice(0,1).toUpperCase()}</div>
+          <span>${user.first_name||'Élève'}</span>
+        </button>
+      </div>
+
+      <header class="page-head">
+        <h1>Ma <span class="accent">fiche</span>.</h1>
+        <p class="lede">Remplis ta <span class="pop">journée</span>. Les points grimpent tout seuls.</p>
+      </header>
+
+      <div class="brain-stage" id="brain-stage"><div class="brain-orb" id="brain-orb">
+        <div class="brain-orb__halo"></div>
+        <div class="brain-orb__wires"></div>
+        <div class="brain-orb__capsule"></div>
+        <div class="brain-orb__pts"><span id="brain-pts">0</span><small>pts</small></div>
+      </div></div>
+
+      <div id="msg-area"></div>
+
+      <div class="card-today">
+        <div class="badge-pulse">à remplir</div>
+        <h2>${todayFR}</h2>
+        <div class="date-display">${today}</div>
+
+        <div class="field-row">
+          <div class="field"><label>Calls</label><input type="number" id="field-calls" min="0" value="0"></div>
+          <div class="field"><label>DM</label><input type="number" id="field-dm" min="0" value="0"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Vidéos</label><input type="number" id="field-videos" min="0" value="0"></div>
+          <div class="field"><label>CA (€)</label><input type="number" id="field-ca" min="0" step="0.01" value="0"></div>
+        </div>
+
+        <div class="live-toggle">
+          <span>Live</span>
+          <button id="btn-live-no" class="is-on">Non</button>
+          <button id="btn-live-yes">Oui</button>
+        </div>
+
+        <button class="btn btn--full btn--ember" id="btn-save">Enregistrer ma fiche</button>
+      </div>
+
+      <div class="recap" id="recap-area"></div>
+
+      <div class="history-section">
+        <h3>Historique récent</h3>
+        <div id="history-table"></div>
+      </div>
+    `;
+
+    bindEvents();
+    await loadToday();
+  }
+
+  // ── Events ───────────────────────────────────────────────
+  function bindEvents(){
+    document.getElementById('btn-logout').addEventListener('click', logout);
+    document.getElementById('btn-save').addEventListener('click', saveEntry);
+    document.getElementById('btn-live-yes').addEventListener('click',()=>toggleLive(true));
+    document.getElementById('btn-live-no').addEventListener('click',()=>toggleLive(false));
+  }
+
+  let _live = liveDefault;
+  function toggleLive(val){
+    _live = val;
+    document.getElementById('btn-live-yes').className = val ? 'is-on' : '';
+    document.getElementById('btn-live-no').className = val ? '' : 'is-on';
+  }
+
+  function logout(){
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(USER_KEY);
+    window.location.href = 'login.html';
+  }
+
+  // ── Load today ──────────────────────────────────────────
+  async function loadToday(){
+    const data = await api('GET', '/me/today');
+    if(!data) return;
+    document.getElementById('field-calls').value = data.calls || 0;
+    document.getElementById('field-dm').value = data.dm || 0;
+    document.getElementById('field-videos').value = data.videos || 0;
+    document.getElementById('field-ca').value = data.ca_eur || 0;
+    toggleLive(data.live || false);
+    updateRecap(data);
+    loadHistory();
+  }
+
+  // ── Save entry ──────────────────────────────────────────
+  async function saveEntry(){
+    const btn = document.getElementById('btn-save');
+    btn.disabled = true;
+    btn.textContent = 'Enregistrement...';
+    const calls = parseInt(document.getElementById('field-calls').value)||0;
+    const dm = parseInt(document.getElementById('field-dm').value)||0;
+    const videos = parseInt(document.getElementById('field-videos').value)||0;
+    const ca = parseFloat(document.getElementById('field-ca').value)||0;
+    const data = await api('PUT', '/me/entries/'+getTodayStr(), {calls, dm, videos, ca_eur: ca, live:_live});
+    btn.disabled = false;
+    btn.textContent = 'Enregistrer ma fiche';
+    if(data && !data.error){
+      showMsg('ok','Fiche enregistrée ✦');
+      updateRecap(data);
+      loadHistory();
+      // Flash brain orb
+      const orb = document.getElementById('brain-orb');
+      orb.classList.add('strong');
+      setTimeout(()=>orb.classList.remove('strong'),1200);
+    } else {
+      showMsg('err', (data&&data.error)||'Erreur réseau');
+    }
+  }
+
+  // ── Points + recap ──────────────────────────────────────
+  function calcPoints(calls,dm,videos,live){
+    return (calls||0)*2 + (dm||0) + (videos||0)*3 + (live?5:0);
+  }
+  function updateRecap(data){
+    const calls=data.calls||0,dm=data.dm||0,videos=data.videos||0,live=data.live||false,ca=data.ca_eur||0;
+    const pts = calcPoints(calls,dm,videos,live);
+    document.getElementById('recap-area').innerHTML = `
+      <h3>Récapitulatif du jour</h3>
+      <div class="recap-row"><span class="recap-label">Calls</span><span class="recap-value">${calls}</span></div>
+      <div class="recap-row"><span class="recap-label">DM</span><span class="recap-value">${dm}</span></div>
+      <div class="recap-row"><span class="recap-label">Vidéos</span><span class="recap-value">${videos}</span></div>
+      <div class="recap-row"><span class="recap-label">Live</span><span class="recap-value">${live?'Oui':'—'}</span></div>
+      <div class="recap-row"><span class="recap-label">CA</span><span class="recap-value">${ca.toFixed(2)}€</span></div>
+      <div class="recap-points">${pts} pts</div>
+    `;
+    updateBrainOrb(pts);
+  }
+
+  function updateBrainOrb(points){
+    const orb = document.getElementById('brain-orb');
+    const pts = document.getElementById('brain-pts');
+    if(!orb||!pts)return;
+    orb.className = points>=30?'brain-orb strong':(points>=12?'brain-orb':'brain-orb');
+    pts.textContent = points;
+  }
+
+  // ── History ─────────────────────────────────────────────
+  async function loadHistory(){
+    const history = await api('GET','/me/history');
+    if(!history || !history.length) return;
+    let rows = '';
+    history.slice(0,14).forEach(e=>{
+      const pts = calcPoints(e.calls,e.dm,e.videos,e.live);
+      rows += `<tr>
+        <td>${e.entry_date}</td>
+        <td>${e.calls||0}</td><td>${e.dm||0}</td><td>${e.videos||0}</td>
+        <td>${e.live?'Oui':'—'}</td>
+        <td>${(e.ca_eur||0).toFixed(2)}€</td>
+        <td>${pts}</td>
+      </tr>`;
+    });
+    document.getElementById('history-table').innerHTML = `<table class="history-table">
+      <thead><tr><th>Date</th><th>Calls</th><th>DM</th><th>Vidéos</th><th>Live</th><th>CA</th><th>Pts</th></tr></thead>
+      <tbody>${rows}</tbody></table>`;
+  }
+
+  // ── Messages ────────────────────────────────────────────
+  function showMsg(type,text){
+    const area = document.getElementById('msg-area');
+    area.innerHTML = `<div class="msg msg--${type}">${text}</div>`;
+    setTimeout(()=>{area.innerHTML='';},3500);
+  }
+
+  // ── Start ───────────────────────────────────────────────
+  render();
 })();
-
-// Auto-save on input
-FIELDS.forEach(f => {
- document.getElementById(f).addEventListener('input', () => {
-  const val = document.getElementById(f).value;
-  // Save to localStorage instantly
-  localStorage.setItem('djibril_' + f, val);
-  localStorage.setItem('djibril_' + f + '_ts', new Date().toISOString());
-  
-  // Debounce Supabase save
-  clearTimeout(saveTimers[f]);
-  const savedEl = document.getElementById(f + 'Saved');
-  savedEl.classList.remove('show');
-  document.getElementById('saveStatus').innerHTML = '<span class="dot yellow"></span>Sauvegarde...';
-  
-  saveTimers[f] = setTimeout(() => saveToSupabase(f, val, savedEl), SAVE_DEBOUNCE);
- });
-});
-
-async function saveToSupabase(field, value, savedEl) {
- try {
-  const allData = {};
-  FIELDS.forEach(f => {
-   allData[f] = document.getElementById(f).value;
-   allData[f + '_ts'] = localStorage.getItem('djibril_' + f + '_ts') || new Date().toISOString();
-  });
-  
-  await fetch(`${SB_URL}/rest/v1/students?email=eq.${encodeURIComponent(student.email)}`, {
-   method: 'PATCH',
-   headers: {'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal'},
-   body: JSON.stringify({data: allData, last_active: new Date().toISOString()})
-  });
-  
-  savedEl.classList.add('show');
-  document.getElementById('saveStatus').innerHTML = '<span class="dot green"></span>Sauvegardé';
-  setTimeout(() => savedEl.classList.remove('show'), 2000);
- } catch(e) {
-  document.getElementById('saveStatus').innerHTML = '<span class="dot" style="background:red"></span>Erreur';
-  console.error('Save error:', e);
- }
-}
 </script>
+
 </body>
 </html>

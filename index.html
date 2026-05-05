@@ -1,83 +1,370 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tracking · Pardin Djibril</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+<title>Tracking Djibril — Connexion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Playfair+Display:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#060608;--card:#0f0f13;--text:#eaeaea;--muted:#7a7a8a;--pink:#e8366e;--cyan:#37b5e6;--green:#2dd4a8;--border:rgba(255,255,255,.06)}
+:root{
+  --paper:#f3ecdf; --paper-2:#e9e0cf;
+  --ink:#1a1614; --ink-soft:#3a322c;
+  --ember:#e85d2c; --ember-deep:#c73e1a;
+  --plum:#6b3a4f; --magenta:#d4145a; --indigo:#4a3c8c; --jade:#1d8a6f; --gold:#d4951a;
+  --serif:'Instrument Serif',Georgia,serif;
+  --display:'Playfair Display',Georgia,serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center}
-.bg{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(232,54,110,.06),transparent 60%),radial-gradient(ellipse at 80% 100%,rgba(55,181,230,.04),transparent 60%);pointer-events:none}
-.container{background:var(--card);border-radius:20px;padding:48px 40px;max-width:440px;width:90%;border:1px solid var(--border);position:relative;z-index:1}
-h1{font-size:1.3rem;font-weight:600;margin-bottom:6px;letter-spacing:-.01em}
-p.sub{color:var(--muted);font-size:.82rem;margin-bottom:28px;line-height:1.5}
-.field{margin-bottom:12px}
-.field label{display:block;font-size:.72rem;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em}
-.field input{width:100%;padding:14px 16px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:.95rem;outline:none;transition:border .2s}
-.field input:focus{border-color:var(--cyan);background:rgba(255,255,255,.05)}
-.btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--pink),var(--cyan));border:none;border-radius:12px;color:#fff;font-weight:600;font-size:.95rem;cursor:pointer;transition:opacity .2s,transform .1s}
-.btn:hover{opacity:.92}
-.btn:active{transform:scale(.98)}
-.btn:disabled{opacity:.4;cursor:not-allowed}
-.sep{display:flex;align-items:center;gap:12px;margin:20px 0;color:var(--muted);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em}
-.sep::before,.sep::after{content:'';flex:1;height:1px;background:var(--border)}
-.quick{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.quick-btn{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:10px;padding:10px;color:var(--muted);font-size:.78rem;cursor:pointer;text-align:left;transition:all .15s;display:flex;align-items:center;gap:8px}
-.quick-btn:hover{background:rgba(255,255,255,.05);color:var(--text);border-color:rgba(255,255,255,.12)}
-.quick-btn .avatar{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--pink),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:#fff;flex-shrink:0}
-.status{text-align:center;margin-top:16px;font-size:.7rem;color:var(--muted)}
-.dot{display:inline-block;width:5px;height:5px;border-radius:50%;margin-right:5px;vertical-align:middle}
-.dot.green{background:var(--green)}
-.dot.yellow{background:#e8a836}
-.error{color:#e85050;font-size:.75rem;margin-top:8px;text-align:center;display:none}
-.success{color:var(--green);font-size:.75rem;margin-top:8px;text-align:center;display:none}
+html,body{max-width:100vw;overflow-x:hidden}
+body{
+  font-family:var(--serif);background:var(--paper);color:var(--ink);
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:24px;position:relative;
+}
+
+/* COSMOS BACKGROUND */
+.bg{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.cap{position:absolute;border-radius:999px;border:1.5px solid rgba(26,22,20,.5);mix-blend-mode:multiply;opacity:.55;filter:saturate(1.5)}
+.cap::after{content:"";position:absolute;inset:12% 18%;border-radius:999px;background-image:radial-gradient(circle,rgba(255,255,255,.3) 1px,transparent 1.5px);background-size:5px 5px;mix-blend-mode:screen}
+.cap.c1{background:#C73E3A;width:130px;height:260px;top:8%;left:6%;animation:f1 38s ease-in-out infinite}
+.cap.c2{background:#4B3F72;width:90px;height:180px;top:18%;right:8%;animation:f2 44s ease-in-out infinite -6s}
+.cap.c3{background:#C8A951;width:80px;height:160px;bottom:18%;left:12%;animation:f3 36s ease-in-out infinite -12s}
+.cap.c4{background:#5E8B7E;width:130px;height:260px;bottom:8%;right:6%;animation:f1 42s ease-in-out infinite -3s}
+.cap.c5{background:#722F37;width:60px;height:120px;top:48%;left:38%;animation:f2 30s ease-in-out infinite -14s}
+.cap.c6{background:#1B6E8C;width:70px;height:140px;top:62%;left:72%;animation:f3 40s ease-in-out infinite -8s}
+.cap.c7{background:#B95174;width:55px;height:110px;top:32%;left:58%;animation:f1 32s ease-in-out infinite -18s}
+@keyframes f1{0%,100%{transform:translate3d(0,0,0) rotate(-15deg)}50%{transform:translate3d(40px,-60px,0) rotate(8deg)}}
+@keyframes f2{0%,100%{transform:translate3d(0,0,0) rotate(25deg)}50%{transform:translate3d(-50px,70px,0) rotate(-18deg)}}
+@keyframes f3{0%,100%{transform:translate3d(0,0,0) rotate(38deg)}50%{transform:translate3d(60px,-40px,0) rotate(-22deg)}}
+
+.stars{position:absolute;inset:0;font-family:var(--serif);font-style:italic;color:rgba(26,22,20,.18);letter-spacing:.4em;line-height:2.6;font-size:13px;padding:40px;white-space:pre-wrap;animation:tw 8s steps(8) infinite;user-select:none}
+.stars.mid{color:rgba(232,93,44,.28);font-size:16px;letter-spacing:.6em;line-height:3.4;animation:tw 11s steps(6) infinite reverse;transform:translate(20px,30px)}
+@keyframes tw{0%,100%{opacity:1}25%{opacity:.4}50%{opacity:.8}75%{opacity:.3}}
+
+.shoot{position:absolute;font-family:var(--serif);font-style:italic;font-size:48px;letter-spacing:-.03em;color:transparent;-webkit-text-stroke:1px rgba(232,93,44,.85);white-space:nowrap;opacity:0;transform:translate3d(110vw,0,0) skewX(-8deg)}
+.shoot::after{content:"";position:absolute;top:50%;left:100%;margin-left:8px;width:160px;height:1.5px;background:linear-gradient(90deg,rgba(232,93,44,.7),transparent);transform:translateY(-50%)}
+.shoot.s1{top:18%;animation:fly 9s linear infinite}
+.shoot.s2{top:62%;animation:fly 11s linear infinite 4s;-webkit-text-stroke-color:rgba(74,60,140,.85)}
+.shoot.s3{top:82%;animation:fly 12s linear infinite 8s;-webkit-text-stroke-color:rgba(212,149,26,.85)}
+@keyframes fly{0%{transform:translate3d(110vw,0,0) skewX(-8deg);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translate3d(-50vw,0,0) skewX(-8deg);opacity:0}}
+
+.veil{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(243,236,223,.35) 0%,rgba(243,236,223,.7) 100%)}
+.noise{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.085 0 0 0 0 0.08 0 0 0 0.45 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:280px 280px;opacity:.18;mix-blend-mode:multiply}
+
+/* CARD */
+.card{
+  position:relative;z-index:2;width:100%;max-width:460px;
+  background:rgba(243,236,223,.88);backdrop-filter:blur(8px) saturate(1.1);
+  -webkit-backdrop-filter:blur(8px) saturate(1.1);
+  border:1.5px solid var(--ink);box-shadow:8px 8px 0 var(--ember-deep);
+  padding:38px 34px;animation:cardIn .6s cubic-bezier(.22,1,.36,1)
+}
+@keyframes cardIn{from{opacity:0;transform:translateY(20px) scale(.96)}to{opacity:1;transform:none}}
+
+.brand{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:20px}
+.brand .pill{width:34px;height:16px;border-radius:999px;background:linear-gradient(90deg,#C73E3A,#e85d2c,#C8A951);box-shadow:inset 0 -2px 3px rgba(0,0,0,.3),0 0 18px rgba(232,93,44,.4);animation:pillSpin 4s ease-in-out infinite}
+@keyframes pillSpin{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg) translateY(-2px)}}
+.brand .label{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:600}
+
+/* TABS */
+.tabs{display:flex;background:rgba(26,22,20,.06);border:1px solid rgba(26,22,20,.15);margin-bottom:24px;position:relative}
+.tab{flex:1;padding:11px 8px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;background:none;border:none;cursor:pointer;color:var(--ink-soft);transition:color .2s;position:relative;z-index:2}
+.tab.active{color:var(--paper)}
+.tab-slider{position:absolute;top:0;bottom:0;left:0;width:50%;background:var(--ink);transition:transform .3s cubic-bezier(.22,1,.36,1);z-index:1}
+.tabs[data-mode="signup"] .tab-slider{transform:translateX(100%)}
+
+h1{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(2rem,4.6vw,2.6rem);line-height:1.08;text-align:center;margin-bottom:6px;text-wrap:balance}
+h1 .accent{font-family:var(--display);font-style:normal;font-weight:900;color:var(--magenta)}
+h1 .accent2{font-family:var(--display);font-style:normal;font-weight:900;color:var(--indigo)}
+.sub{font-family:var(--serif);font-style:italic;text-align:center;color:var(--ink-soft);font-size:.95rem;margin-bottom:24px;text-wrap:pretty}
+.sub .pop{font-family:var(--mono);font-style:normal;font-weight:600;font-size:.78em;letter-spacing:.1em;text-transform:uppercase;color:var(--ember);border-bottom:1.5px solid var(--ember);padding:0 3px}
+
+form{display:flex;flex-direction:column;gap:14px}
+.field{display:flex;flex-direction:column;gap:4px;animation:fieldIn .35s ease both}
+.field.hidden{display:none}
+@keyframes fieldIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+label{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--ink-soft)}
+input{font-family:var(--serif);font-style:italic;font-size:1.1rem;background:rgba(255,252,245,.6);border:none;border-bottom:1.5px solid var(--ink);padding:8px 4px;color:var(--ink);outline:none;transition:border-color .15s,background .15s}
+input:focus{border-bottom-color:var(--ember-deep);background:rgba(255,252,245,.95)}
+input::placeholder{color:rgba(58,50,44,.4);font-style:italic}
+.error{font-family:var(--mono);font-size:10px;color:var(--magenta);letter-spacing:.05em;margin-top:6px;min-height:14px;animation:shake .3s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+
+.btn{font-family:var(--mono);font-weight:600;font-size:11px;letter-spacing:.18em;text-transform:uppercase;background:var(--ink);color:var(--paper);border:1.5px solid var(--ink);padding:14px 24px;cursor:pointer;transition:transform .15s,box-shadow .15s;margin-top:14px;position:relative}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ember-deep)}
+.btn:active{transform:translate(1px,1px);box-shadow:none}
+.btn::before{content:attr(data-ribbon);position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-family:var(--serif);font-style:italic;font-size:11px;text-transform:lowercase;letter-spacing:0;background:var(--paper);padding:0 8px;color:var(--ember-deep);font-weight:400}
+.btn:disabled{opacity:.5;pointer-events:none}
+
+.foot{margin-top:22px;display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:.78rem;color:var(--ink-soft);font-family:var(--serif);font-style:italic}
+.reset-btn{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;background:none;border:1px dashed rgba(26,22,20,.4);color:var(--ink-soft);padding:6px 10px;cursor:pointer;transition:.15s}
+.reset-btn:hover{border-color:var(--magenta);color:var(--magenta)}
+
+/* Server error */
+.server-err{background:rgba(212,20,90,.1);border-left:3px solid var(--magenta);padding:10px 12px;margin-bottom:14px;font-family:var(--mono);font-size:10px;color:var(--magenta);animation:fieldIn .4s ease}
+
+/* Loading spinner */
+.loading{display:none;text-align:center;padding:12px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--ink-soft)}
+.loading.is-on{display:block}
+.loading .dot{animation:dotBounce 1.4s infinite ease-in-out;display:inline-block}
+.loading .dot:nth-child(1){animation-delay:0s}
+.loading .dot:nth-child(2){animation-delay:.2s}
+.loading .dot:nth-child(3){animation-delay:.4s}
+@keyframes dotBounce{0%,80%,100%{transform:scale(0)}40%{transform:scale(1)}}
+
+@media (max-width:480px){
+  .card{padding:28px 22px;box-shadow:5px 5px 0 var(--ember-deep)}
+  h1{font-size:1.7rem}
+  .cap.c2,.cap.c5,.cap.c6,.cap.c7{display:none}
+  .shoot{font-size:32px}
+}
+@media (prefers-reduced-motion:reduce){
+  .cap,.stars,.shoot,.brand .pill,.card,.field{animation:none!important}
+}
 </style>
 </head>
 <body>
-<div class="bg"></div>
-<div class="container">
- <h1>Connecte-toi avec ton email</h1>
- <p class="sub">Suivi personnalisé · Progression · Contenu exclusif</p>
 
- <div class="field"><label>Nom</label><input type="text" id="nom" placeholder="Ton nom" autocomplete="family-name"></div>
- <div class="field"><label>Prénom</label><input type="text" id="prenom" placeholder="Ton prénom" autocomplete="given-name"></div>
- <div class="field"><label>Email</label><input type="email" id="email" placeholder="ton.email@exemple.com" autocomplete="email"></div>
- 
- <button class="btn" id="btnEnter" onclick="enter()">ENTRER</button>
- 
- <div class="error" id="error"></div>
- <div class="success" id="success"></div>
- <div class="status" id="status"></div>
+<!-- Cosmos -->
+<div class="bg" aria-hidden="true">
+  <div class="stars">✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆
+✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆
+✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆
+✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆
+✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆</div>
+  <div class="stars mid">✦   ✧   ⋆   ✦   ✧   ⋆   ✦   ✧   ⋆   ✦   ✧   ⋆
+✦   ✧   ⋆   ✦   ✧   ⋆   ✦   ✧   ⋆   ✦   ✧   ⋆
+✦   ✧   ⋆   ✦   ✧   ⋆   ✦   ✧   ⋆   ✦   ✧   ⋆</div>
+  <div class="cap c1"></div><div class="cap c2"></div><div class="cap c3"></div>
+  <div class="cap c4"></div><div class="cap c5"></div><div class="cap c6"></div><div class="cap c7"></div>
+  <div class="shoot s1">forge ton mental</div>
+  <div class="shoot s2">discipline</div>
+  <div class="shoot s3">90 jours</div>
+  <div class="noise"></div>
+  <div class="veil"></div>
 </div>
 
+<!-- Card -->
+<main class="card" role="main">
+  <div class="brand">
+    <div class="pill"></div>
+    <div class="label">Djibril · Tracking</div>
+  </div>
+
+  <!-- Tab switcher -->
+  <div class="tabs" id="tabs" data-mode="login" role="tablist">
+    <div class="tab-slider"></div>
+    <button type="button" class="tab active" data-tab="login" role="tab">Connexion</button>
+    <button type="button" class="tab" data-tab="signup" role="tab">Inscription</button>
+  </div>
+
+  <h1 id="title">Re-bonjour.</h1>
+  <p class="sub" id="subtitle">Ton <span class="pop">email</span> suffit.</p>
+
+  <div id="serverErr" class="server-err" hidden></div>
+  <div class="loading" id="loading"><span class="dot">●</span> <span class="dot">●</span> <span class="dot">●</span></div>
+
+  <form id="authForm" novalidate>
+    <!-- Champs Nom/Prénom : visibles uniquement en signup -->
+    <div class="field signup-only hidden" id="fieldNom">
+      <label for="nom">Nom</label>
+      <input id="nom" name="nom" type="text" autocomplete="family-name" maxlength="40" placeholder="Ton nom de famille" />
+    </div>
+    <div class="field signup-only hidden" id="fieldPrenom">
+      <label for="prenom">Prénom</label>
+      <input id="prenom" name="prenom" type="text" autocomplete="given-name" maxlength="40" placeholder="Ton prénom" />
+    </div>
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" autocomplete="email" required maxlength="80" placeholder="ton@email.com" />
+    </div>
+    <div class="error" id="err"></div>
+
+    <button type="submit" class="btn" id="submitBtn" data-ribbon="—  connexion  —">accéder</button>
+  </form>
+
+  <div class="foot">
+    <span id="footStatus">Pas de compte ? Bascule sur Inscription.</span>
+    <button type="button" class="reset-btn" id="resetBtn" title="Effacer toutes les données et repartir de zéro">↺ reset</button>
+  </div>
+</main>
+
 <script>
-const SB_URL="https://nbnbsljqtolzzuqnkyae.supabase.co";
-const SB_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ibmJzbGpxdG9senp1cW5reWFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ0NDY4NjYsImV4cCI6MjA2MDAyMjg2Nn0.IrN0QzGqPBuBxNkLPJQJtlBkfGPLPSdHGL1RD4RmV4";
+(function(){
+  // ── Edge Function API ─────────────────────────────────────
+  const API = 'https://nbnbsljqtolzzuqnkyae.supabase.co/functions/v1/tracking-app/api';
+  const USERS_KEY = 'djibril_users_v1';
+  const ACTIVE_KEY = 'djibril_active_user';
+  const TOKEN_KEY = 'dj_token';
+  const USER_KEY = 'dj_user';
 
-const saved=localStorage.getItem('djibril_student');
-if(saved){const s=JSON.parse(saved);document.getElementById('nom').value=s.nom||'';document.getElementById('prenom').value=s.prenom||'';document.getElementById('email').value=s.email||'';document.getElementById('btnEnter').textContent='CONTINUER';document.getElementById('status').innerHTML='<span class="dot green"></span>Session sauvegardée'}
+  // DOM
+  const tabs = document.getElementById('tabs');
+  const tabBtns = tabs.querySelectorAll('.tab');
+  const form = document.getElementById('authForm');
+  const fieldNom = document.getElementById('fieldNom');
+  const fieldPrenom = document.getElementById('fieldPrenom');
+  const nom = document.getElementById('nom');
+  const prenom = document.getElementById('prenom');
+  const email = document.getElementById('email');
+  const err = document.getElementById('err');
+  const serverErr = document.getElementById('serverErr');
+  const title = document.getElementById('title');
+  const subtitle = document.getElementById('subtitle');
+  const submitBtn = document.getElementById('submitBtn');
+  const footStatus = document.getElementById('footStatus');
+  const resetBtn = document.getElementById('resetBtn');
+  const loading = document.getElementById('loading');
 
-async function enter(){
- const n=document.getElementById('nom').value.trim(),p=document.getElementById('prenom').value.trim(),e=document.getElementById('email').value.trim();
- document.getElementById('error').style.display='none';
- document.getElementById('success').style.display='none';
- if(!n||!p||!e){document.getElementById('error').textContent='Remplis tous les champs';document.getElementById('error').style.display='block';return}
- if(!e.includes('@')){document.getElementById('error').textContent='Email invalide';document.getElementById('error').style.display='block';return}
- const btn=document.getElementById('btnEnter');btn.disabled=true;btn.textContent='Connexion...';
- document.getElementById('status').innerHTML='<span class="dot yellow"></span>Enregistrement...';
- try{
-  const r=await fetch(`${SB_URL}/rest/v1/students?email=eq.${encodeURIComponent(e)}&select=*`,{headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`}});
-  const ex=await r.json();
-  if(ex&&ex.length>0){await fetch(`${SB_URL}/rest/v1/students?id=eq.${ex[0].id}`,{method:'PATCH',headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({nom:n,prenom:p,last_active:new Date().toISOString()})})}
-  else{await fetch(`${SB_URL}/rest/v1/students`,{method:'POST',headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({nom:n,prenom:p,email:e})})}
-  localStorage.setItem('djibril_student',JSON.stringify({nom:n,prenom:p,email:e,ts:Date.now()}));
-  document.getElementById('success').textContent='✅ Connecté ! Redirection...';document.getElementById('success').style.display='block';
-  document.getElementById('status').innerHTML='<span class="dot green"></span>Connecté';
-  setTimeout(()=>{window.location.href='tracking.html'},600);
- }catch(err){document.getElementById('error').textContent='Erreur: '+err.message;document.getElementById('error').style.display='block'}
- finally{btn.disabled=false;btn.textContent='ENTRER'}
-}
+  // ── Helpers ──────────────────────────────────────────────
+  function loadUsers(){
+    try{ return JSON.parse(localStorage.getItem(USERS_KEY) || '[]'); }
+    catch(e){ return []; }
+  }
+  function saveUsers(arr){ localStorage.setItem(USERS_KEY, JSON.stringify(arr)); }
+  function findUser(em){
+    const e = String(em).trim().toLowerCase();
+    return loadUsers().find(u => u.email === e) || null;
+  }
+  function escapeHtml(s){return String(s).replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));}
+  function isValidEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);}
+
+  // ── API calls ────────────────────────────────────────────
+  async function apiAuth(email, firstName, lastName){
+    const isLogin = !firstName && !lastName;
+    const path = isLogin ? '/auth/login' : '/auth';
+    const body = isLogin ? {email} : {email, firstName, lastName};
+    const res = await fetch(API + path, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Erreur serveur');
+    return data; // {token, student}
+  }
+
+  // ── Tab switching ────────────────────────────────────────
+  let mode = 'login';
+  function setMode(m){
+    mode = m;
+    tabs.dataset.mode = m;
+    tabBtns.forEach(b => b.classList.toggle('active', b.dataset.tab === m));
+    err.textContent = ''; serverErr.hidden = true;
+    if(m === 'signup'){
+      fieldNom.classList.remove('hidden');
+      fieldPrenom.classList.remove('hidden');
+      title.innerHTML = 'Forge ton <span class="accent">mental</span>.';
+      subtitle.innerHTML = 'Création en <span class="pop">30 secondes</span>.';
+      submitBtn.textContent = 'créer mon compte';
+      submitBtn.dataset.ribbon = '—  inscription  —';
+      footStatus.textContent = 'Déjà un compte ? Bascule sur Connexion.';
+    } else {
+      fieldNom.classList.add('hidden');
+      fieldPrenom.classList.add('hidden');
+      submitBtn.textContent = 'accéder';
+      submitBtn.dataset.ribbon = '—  connexion  —';
+      footStatus.textContent = 'Pas de compte ? Bascule sur Inscription.';
+      tryRecognize();
+    }
+  }
+  tabBtns.forEach(b => b.addEventListener('click', () => setMode(b.dataset.tab)));
+
+  // ── Reconnaissance locale ────────────────────────────────
+  function tryRecognize(){
+    if(mode !== 'login') return;
+    const u = findUser(email.value);
+    if(u){
+      title.innerHTML = `Re-bonjour, <span class="accent">${escapeHtml(u.prenom)}</span>.`;
+      subtitle.innerHTML = 'Continue ce qu\'on a commencé.';
+    } else {
+      title.innerHTML = 'Re-bonjour.';
+      subtitle.innerHTML = 'Ton <span class="pop">email</span> suffit.';
+    }
+  }
+  email.addEventListener('input', () => { err.textContent = ''; serverErr.hidden = true; tryRecognize(); });
+
+  // ── Submit ───────────────────────────────────────────────
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    err.textContent = ''; serverErr.hidden = true;
+    const m = email.value.trim().toLowerCase();
+    if(!isValidEmail(m)){ err.textContent = 'Email invalide.'; return; }
+
+    submitBtn.disabled = true;
+    loading.classList.add('is-on');
+
+    try {
+      if(mode === 'login'){
+        const data = await apiAuth(m, '', '');
+        // Store locally + redirect
+        localStorage.setItem(TOKEN_KEY, data.token);
+        localStorage.setItem(USER_KEY, JSON.stringify(data.student));
+        localStorage.setItem(ACTIVE_KEY, m);
+        // Update local users list
+        const users = loadUsers();
+        const existing = users.find(u => u.email === m);
+        if(!existing){
+          users.push({nom: data.student.full_name, prenom: data.student.first_name, email: m, created_at: new Date().toISOString(), last_login: new Date().toISOString()});
+        } else {
+          existing.last_login = new Date().toISOString();
+        }
+        saveUsers(users);
+        go();
+      } else {
+        // signup
+        const n = nom.value.trim();
+        const p = prenom.value.trim();
+        if(!n || !p){ err.textContent = 'Nom et prénom requis.'; submitBtn.disabled = false; loading.classList.remove('is-on'); return; }
+        const data = await apiAuth(m, p, n);
+        localStorage.setItem(TOKEN_KEY, data.token);
+        localStorage.setItem(USER_KEY, JSON.stringify(data.student));
+        localStorage.setItem(ACTIVE_KEY, m);
+        const users = loadUsers();
+        if(!users.find(u => u.email === m)){
+          users.push({nom: n, prenom: p, email: m, created_at: new Date().toISOString(), last_login: new Date().toISOString()});
+        }
+        saveUsers(users);
+        go();
+      }
+    } catch(ex) {
+      serverErr.textContent = ex.message;
+      serverErr.hidden = false;
+      submitBtn.disabled = false;
+      loading.classList.remove('is-on');
+    }
+  });
+
+  function go(){
+    submitBtn.style.transform = 'translate(2px,2px)';
+    submitBtn.style.boxShadow = 'none';
+    setTimeout(() => { window.location.href = 'tracking.html'; }, 200);
+  }
+
+  // ── Reset ────────────────────────────────────────────────
+  resetBtn.addEventListener('click', function(){
+    if(!confirm('Effacer TOUS les comptes, tokens et données locales et repartir de zéro ?')) return;
+    Object.keys(localStorage).forEach(k => {
+      if(k.startsWith('djibril_') || k.startsWith('dj_') || k.startsWith('tracking_') || k.startsWith('fiche_')){
+        localStorage.removeItem(k);
+      }
+    });
+    location.reload();
+  });
+
+  // ── Init ─────────────────────────────────────────────────
+  const users = loadUsers();
+  setMode(users.length ? 'login' : 'signup');
+  const active = localStorage.getItem(ACTIVE_KEY);
+  if(active && findUser(active)){
+    email.value = active;
+    tryRecognize();
+  }
+})();
 </script>
+
 </body>
 </html>
