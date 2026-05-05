@@ -55,19 +55,17 @@ textarea{min-height:100px}
 </main>
 
 <script>
-const SB_URL = "https://nbnbsljqtolzzuqnkyae.supabase.co";
-const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ibmJzbGpxdG9senp1cW5reWFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ0NDY4NjYsImV4cCI6MjA2MDAyMjg2Nn0.IrN0QzGqPBuBxNkLPJQJtlBkfGPLPSdHGL1RD4RmV4";
+const API = 'https://nbnbsljqtolzzuqnkyae.supabase.co/functions/v1/tracking-app/api';
+const TOKEN = localStorage.getItem('dj_token');
+const USER = JSON.parse(localStorage.getItem('dj_user') || 'null');
+
+if (!TOKEN || !USER) { window.location.href = './'; }
 
 const FIELDS = ['notes', 'goals', 'insights'];
-const SAVE_DEBOUNCE = 2000; // 2 secondes après dernière frappe
+const SAVE_DEBOUNCE = 2000;
 let saveTimers = {};
-let student = null;
 
-// Init
-const saved = localStorage.getItem('djibril_student');
-if (!saved) { window.location.href = './'; }
-student = JSON.parse(saved);
-document.getElementById('userName').textContent = student.prenom + ' ' + student.nom;
+document.getElementById('userName').textContent = USER.first_name + ' ' + (USER.full_name||'');
 
 // Restore from localStorage first (instant)
 FIELDS.forEach(f => {
@@ -75,20 +73,19 @@ FIELDS.forEach(f => {
  if (val) document.getElementById(f).value = val;
 });
 
-// Then check Supabase for latest
+// Then load from Edge Function
 (async () => {
  try {
-  const res = await fetch(`${SB_URL}/rest/v1/students?email=eq.${encodeURIComponent(student.email)}&select=data`, {
-   headers: {'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`}
+  const res = await fetch(API + '/me/today', {
+   headers: {'Authorization': 'Bearer ' + TOKEN}
   });
+  if (!res.ok) { if (res.status===401) window.location.href='./'; return; }
   const data = await res.json();
-  if (data && data[0] && data[0].data) {
-   const cloud = data[0].data;
+  if (data && data.notes) {
    FIELDS.forEach(f => {
-    if (cloud[f] && (!localStorage.getItem('djibril_' + f) || new Date(cloud[f + '_ts']) > new Date(localStorage.getItem('djibril_' + f + '_ts') || 0))) {
-     document.getElementById(f).value = cloud[f];
-     localStorage.setItem('djibril_' + f, cloud[f]);
-     localStorage.setItem('djibril_' + f + '_ts', cloud[f + '_ts'] || '');
+    if (data[f]) {
+     document.getElementById(f).value = data[f];
+     localStorage.setItem('djibril_' + f, data[f]);
     }
    });
   }
@@ -99,33 +96,32 @@ FIELDS.forEach(f => {
 FIELDS.forEach(f => {
  document.getElementById(f).addEventListener('input', () => {
   const val = document.getElementById(f).value;
-  // Save to localStorage instantly
   localStorage.setItem('djibril_' + f, val);
-  localStorage.setItem('djibril_' + f + '_ts', new Date().toISOString());
   
-  // Debounce Supabase save
   clearTimeout(saveTimers[f]);
   const savedEl = document.getElementById(f + 'Saved');
   savedEl.classList.remove('show');
   document.getElementById('saveStatus').innerHTML = '<span class="dot yellow"></span>Sauvegarde...';
   
-  saveTimers[f] = setTimeout(() => saveToSupabase(f, val, savedEl), SAVE_DEBOUNCE);
+  saveTimers[f] = setTimeout(() => saveToEdge(f, val, savedEl), SAVE_DEBOUNCE);
  });
 });
 
-async function saveToSupabase(field, value, savedEl) {
+async function saveToEdge(field, value, savedEl) {
  try {
   const allData = {};
   FIELDS.forEach(f => {
    allData[f] = document.getElementById(f).value;
-   allData[f + '_ts'] = localStorage.getItem('djibril_' + f + '_ts') || new Date().toISOString();
   });
   
-  await fetch(`${SB_URL}/rest/v1/students?email=eq.${encodeURIComponent(student.email)}`, {
-   method: 'PATCH',
-   headers: {'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal'},
-   body: JSON.stringify({data: allData, last_active: new Date().toISOString()})
+  const today = new Date().toISOString().slice(0,10);
+  const res = await fetch(API + '/me/entries/' + today, {
+   method: 'PUT',
+   headers: {'Authorization': 'Bearer ' + TOKEN, 'Content-Type': 'application/json'},
+   body: JSON.stringify({...allData, dm:0, calls:0, videos:0, live:false, ca_eur:0})
   });
+  
+  if (res.status === 401) { window.location.href = './'; return; }
   
   savedEl.classList.add('show');
   document.getElementById('saveStatus').innerHTML = '<span class="dot green"></span>Sauvegardé';
