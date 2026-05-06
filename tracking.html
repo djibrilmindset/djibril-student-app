@@ -161,7 +161,7 @@ body{
   // Check auth
   const token = localStorage.getItem(TOKEN_KEY);
   const userStr = localStorage.getItem(USER_KEY);
-  if(!token || !userStr){ window.location.href = 'login.html'; return; }
+  if(!token || !userStr){ window.location.href = 'index.html'; return; }
   const user = JSON.parse(userStr);
   const liveDefault = false;
 
@@ -172,7 +172,7 @@ body{
     const opts = {method, headers:h};
     if(body) opts.body = JSON.stringify(body);
     const res = await fetch(API + path, opts);
-    if(res.status === 401){ localStorage.removeItem(TOKEN_KEY); localStorage.removeItem(USER_KEY); window.location.href='login.html'; return null; }
+    if(res.status === 401){ localStorage.removeItem(TOKEN_KEY); localStorage.removeItem(USER_KEY); window.location.href='index.html'; return null; }
     return res.json();
   }
 
@@ -184,10 +184,10 @@ body{
 
     shell.innerHTML = `
       <div class="topbar">
-        <a class="brand-mark" href="login.html">
+        <a class="brand-mark" href="index.html">
           <div class="pill"></div><div class="label">Djibril · Tracking</div>
         </a>
-        <nav class="crumb"><a href="login.html">accueil</a><span class="sep">/</span><span>Ma fiche</span></nav>
+        <nav class="crumb"><a href="index.html">accueil</a><span class="sep">/</span><span>Ma fiche</span></nav>
         <button class="topbar__user" id="btn-logout" title="Se déconnecter">
           <div class="av">${(user.first_name||'?').slice(0,1).toUpperCase()}</div>
           <span>${user.first_name||'Élève'}</span>
@@ -261,7 +261,7 @@ body{
   function logout(){
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
-    window.location.href = 'login.html';
+    window.location.href = 'index.html';
   }
 
   // ── Load today ──────────────────────────────────────────
