@@ -153,15 +153,22 @@ body{
 <div class="shell" id="shell"></div>
 
 <script>
-(function(){
+(async function(){
   const API = 'https://nbnbsljqtolzzuqnkyae.supabase.co/functions/v1/tracking-app/api';
   const TOKEN_KEY = 'dj_token';
   const USER_KEY = 'dj_user';
 
-  // Check auth
-  const token = localStorage.getItem(TOKEN_KEY);
-  const userStr = localStorage.getItem(USER_KEY);
+  // Check auth — sessionStorage (effacé à la fermeture de l'onglet)
+  const token = sessionStorage.getItem(TOKEN_KEY);
+  const userStr = sessionStorage.getItem(USER_KEY);
   if(!token || !userStr){ window.location.href = 'index.html'; return; }
+  
+  // Vérifier que le token est encore valide avant d'afficher quoi que ce soit
+  try {
+    const check = await fetch(API + '/me/today', { headers: {'Authorization':'Bearer '+token} });
+    if(!check.ok){ sessionStorage.clear(); window.location.href = 'index.html'; return; }
+  } catch(e){ /* réseau HS — on laisse passer pour ne pas bloquer */ }
+  
   const user = JSON.parse(userStr);
   const liveDefault = false;
 
@@ -172,7 +179,7 @@ body{
     const opts = {method, headers:h};
     if(body) opts.body = JSON.stringify(body);
     const res = await fetch(API + path, opts);
-    if(res.status === 401){ localStorage.removeItem(TOKEN_KEY); localStorage.removeItem(USER_KEY); window.location.href='index.html'; return null; }
+    if(res.status === 401){ sessionStorage.clear(); window.location.href='index.html'; return null; }
     return res.json();
   }
 
@@ -259,8 +266,7 @@ body{
   }
 
   function logout(){
-    localStorage.removeItem(TOKEN_KEY);
-    localStorage.removeItem(USER_KEY);
+    sessionStorage.clear();
     window.location.href = 'index.html';
   }
 

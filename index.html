@@ -301,9 +301,9 @@ input::placeholder{color:rgba(58,50,44,.4);font-style:italic}
       if(mode === 'login'){
         const data = await apiAuth(m, '', '');
         // Store locally + redirect
-        localStorage.setItem(TOKEN_KEY, data.token);
-        localStorage.setItem(USER_KEY, JSON.stringify(data.student));
-        localStorage.setItem(ACTIVE_KEY, m);
+        sessionStorage.setItem(TOKEN_KEY, data.token);
+        sessionStorage.setItem(USER_KEY, JSON.stringify(data.student));
+        sessionStorage.setItem(ACTIVE_KEY, m);
         // Update local users list
         const users = loadUsers();
         const existing = users.find(u => u.email === m);
@@ -320,9 +320,9 @@ input::placeholder{color:rgba(58,50,44,.4);font-style:italic}
         const p = prenom.value.trim();
         if(!n || !p){ err.textContent = 'Nom et prénom requis.'; submitBtn.disabled = false; loading.classList.remove('is-on'); return; }
         const data = await apiAuth(m, p, n);
-        localStorage.setItem(TOKEN_KEY, data.token);
-        localStorage.setItem(USER_KEY, JSON.stringify(data.student));
-        localStorage.setItem(ACTIVE_KEY, m);
+        sessionStorage.setItem(TOKEN_KEY, data.token);
+        sessionStorage.setItem(USER_KEY, JSON.stringify(data.student));
+        sessionStorage.setItem(ACTIVE_KEY, m);
         const users = loadUsers();
         if(!users.find(u => u.email === m)){
           users.push({nom: n, prenom: p, email: m, created_at: new Date().toISOString(), last_login: new Date().toISOString()});
@@ -347,6 +347,13 @@ input::placeholder{color:rgba(58,50,44,.4);font-style:italic}
   // ── Reset ────────────────────────────────────────────────
   resetBtn.addEventListener('click', function(){
     if(!confirm('Effacer TOUS les comptes, tokens et données locales et repartir de zéro ?')) return;
+    // Clear sessionStorage (tokens/active user)
+    Object.keys(sessionStorage).forEach(k => {
+      if(k.startsWith('djibril_') || k.startsWith('dj_') || k.startsWith('tracking_') || k.startsWith('fiche_')){
+        sessionStorage.removeItem(k);
+      }
+    });
+    // Clear localStorage (saved users list)
     Object.keys(localStorage).forEach(k => {
       if(k.startsWith('djibril_') || k.startsWith('dj_') || k.startsWith('tracking_') || k.startsWith('fiche_')){
         localStorage.removeItem(k);
@@ -358,7 +365,7 @@ input::placeholder{color:rgba(58,50,44,.4);font-style:italic}
   // ── Init ─────────────────────────────────────────────────
   const users = loadUsers();
   setMode(users.length ? 'login' : 'signup');
-  const active = localStorage.getItem(ACTIVE_KEY);
+  const active = sessionStorage.getItem(ACTIVE_KEY);
   if(active && findUser(active)){
     email.value = active;
     tryRecognize();
