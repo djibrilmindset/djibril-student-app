@@ -100,8 +100,6 @@ input::placeholder{color:rgba(58,50,44,.4);font-style:italic}
 .btn:disabled{opacity:.5;pointer-events:none}
 
 .foot{margin-top:22px;display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:.78rem;color:var(--ink-soft);font-family:var(--serif);font-style:italic}
-.reset-btn{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;background:none;border:1px dashed rgba(26,22,20,.4);color:var(--ink-soft);padding:6px 10px;cursor:pointer;transition:.15s}
-.reset-btn:hover{border-color:var(--magenta);color:var(--magenta)}
 
 /* Server error */
 .server-err{background:rgba(212,20,90,.1);border-left:3px solid var(--magenta);padding:10px 12px;margin-bottom:14px;font-family:var(--mono);font-size:10px;color:var(--magenta);animation:fieldIn .4s ease}
@@ -188,7 +186,6 @@ input::placeholder{color:rgba(58,50,44,.4);font-style:italic}
 
   <div class="foot">
     <span id="footStatus">Pas de compte ? Bascule sur Inscription.</span>
-    <button type="button" class="reset-btn" id="resetBtn" title="Effacer toutes les données et repartir de zéro">↺ reset</button>
   </div>
 </main>
 
@@ -216,7 +213,6 @@ input::placeholder{color:rgba(58,50,44,.4);font-style:italic}
   const subtitle = document.getElementById('subtitle');
   const submitBtn = document.getElementById('submitBtn');
   const footStatus = document.getElementById('footStatus');
-  const resetBtn = document.getElementById('resetBtn');
   const loading = document.getElementById('loading');
 
   // ── Helpers ──────────────────────────────────────────────
@@ -343,24 +339,6 @@ input::placeholder{color:rgba(58,50,44,.4);font-style:italic}
     submitBtn.style.boxShadow = 'none';
     setTimeout(() => { window.location.href = 'tracking.html'; }, 200);
   }
-
-  // ── Reset ────────────────────────────────────────────────
-  resetBtn.addEventListener('click', function(){
-    if(!confirm('Effacer TOUS les comptes, tokens et données locales et repartir de zéro ?')) return;
-    // Clear sessionStorage (tokens/active user)
-    Object.keys(sessionStorage).forEach(k => {
-      if(k.startsWith('djibril_') || k.startsWith('dj_') || k.startsWith('tracking_') || k.startsWith('fiche_')){
-        sessionStorage.removeItem(k);
-      }
-    });
-    // Clear localStorage (saved users list)
-    Object.keys(localStorage).forEach(k => {
-      if(k.startsWith('djibril_') || k.startsWith('dj_') || k.startsWith('tracking_') || k.startsWith('fiche_')){
-        localStorage.removeItem(k);
-      }
-    });
-    location.reload();
-  });
 
   // ── Init ─────────────────────────────────────────────────
   const users = loadUsers();
