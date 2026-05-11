@@ -151,19 +151,28 @@ body{
 .live-toggle button{padding:8px 20px;border-radius:999px;border:1.5px solid rgba(26,22,20,.2);background:rgba(255,252,245,.6);color:var(--ink-soft);cursor:pointer;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;transition:all .15s}
 .live-toggle button.is-on{background:var(--ember-deep);border-color:var(--ember-deep);color:var(--paper)}
 
-/* WELLBEING QUESTIONS */
-.wellbeing{margin-bottom:24px;padding:20px;background:rgba(243,236,223,.5);border:1.5px dashed rgba(26,22,20,.18);border-radius:4px}
-.wellbeing h3{font-family:var(--display);font-weight:900;font-size:1rem;color:var(--ink);margin-bottom:6px}
-.wellbeing p.sub{font-family:var(--serif);font-style:italic;color:var(--ink-mute);font-size:.85rem;margin-bottom:18px}
-.wb-q{margin-bottom:14px;animation:fieldIn .35s ease}
+/* WELLBEING QUESTIONS — sophistiqué niche 3.0 */
+.wellbeing{margin-bottom:28px;padding:26px 22px 22px;background:linear-gradient(155deg,rgba(74,60,140,.05) 0%,rgba(232,93,44,.04) 60%,rgba(107,58,79,.05) 100%);border:1.5px solid rgba(74,60,140,.18);border-radius:4px;box-shadow:inset 3px 3px 0 rgba(74,60,140,.06),0 1px 0 rgba(26,22,20,.05)}
+.wellbeing h3{font-family:var(--display);font-weight:900;font-size:1.18rem;color:var(--indigo);margin-bottom:6px;letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
+.wellbeing h3::before{content:"✦";color:var(--ember);font-family:var(--serif);font-style:italic;font-weight:400;font-size:1.3em;line-height:.8}
+.wellbeing p.sub{font-family:var(--serif);font-style:italic;color:var(--plum);font-size:.92rem;margin-bottom:22px;letter-spacing:.01em;line-height:1.4}
+.wb-q{margin-bottom:18px;padding:12px 14px 14px 18px;background:rgba(255,252,245,.7);border-left:3px solid var(--ember);border-radius:0 4px 4px 0;animation:fieldIn .35s ease;box-shadow:1px 1px 0 rgba(232,93,44,.08)}
 .wb-q:last-child{margin-bottom:0}
-.wb-q .wb-label{font-family:var(--serif);font-style:italic;font-size:1.02rem;color:var(--ink);margin-bottom:8px;line-height:1.4}
-.wb-toggles{display:flex;gap:8px}
-.wb-toggles button{flex:1;padding:12px 16px;border-radius:999px;border:1.5px solid rgba(26,22,20,.2);background:rgba(255,252,245,.7);color:var(--ink);cursor:pointer;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;transition:all .18s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden}
-.wb-toggles button:hover{transform:translateY(-1px);border-color:var(--ink);box-shadow:0 2px 6px rgba(26,22,20,.12)}
+.wb-q .wb-label{font-family:var(--display);font-weight:700;font-size:1.08rem;color:var(--ink);margin-bottom:12px;line-height:1.35;letter-spacing:-.005em}
+.wb-toggles{display:flex;gap:10px}
+.wb-toggles button{flex:1;padding:13px 16px;border-radius:999px;border:1.5px solid rgba(26,22,20,.22);background:rgba(255,252,245,.85);color:var(--ink);cursor:pointer;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;transition:all .18s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden}
+.wb-toggles button:hover{transform:translateY(-1px);border-color:var(--ink);box-shadow:0 2px 6px rgba(26,22,20,.15)}
 .wb-toggles button.is-on{background:var(--ink);color:var(--paper);border-color:var(--ink);transform:translateY(-1px);box-shadow:3px 3px 0 var(--ember-deep)}
 .wb-toggles button.is-on.positive{background:var(--jade);border-color:var(--jade);box-shadow:3px 3px 0 rgba(29,138,111,.5)}
 .wb-toggles button.is-on.negative{background:var(--crit);border-color:var(--crit);box-shadow:3px 3px 0 rgba(199,62,58,.5)}
+
+/* LOCK BADGES */
+.lock-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin-left:10px}
+.lock-badge--first{background:rgba(29,138,111,.15);color:var(--jade);border:1px solid var(--jade)}
+.lock-badge--mod{background:rgba(212,149,26,.15);color:var(--gold);border:1px solid var(--gold)}
+.lock-badge--locked{background:rgba(26,22,20,.85);color:var(--paper);border:1px solid var(--ink)}
+.lock-warn{margin-top:14px;padding:10px 14px;background:rgba(212,149,26,.1);border-left:3px solid var(--gold);font-family:var(--serif);font-style:italic;color:var(--ink-soft);font-size:.92rem;line-height:1.4;border-radius:0 4px 4px 0}
+.btn:disabled.is-locked{background:rgba(26,22,20,.4);border-color:rgba(26,22,20,.4);color:var(--paper);cursor:not-allowed}
 
 /* FREE NOTE */
 .note-group{margin-bottom:24px}
@@ -361,7 +370,10 @@ body{
       <div id="msg-area"></div>
 
       <div class="card-today">
-        <div class="badge-pulse">à remplir</div>
+        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:8px">
+          <div class="badge-pulse" id="state-badge">à remplir</div>
+          <span id="lock-badge"></span>
+        </div>
         <h2>${todayFR}</h2>
         <div class="date-display">${today}</div>
 
@@ -451,6 +463,7 @@ body{
           <div class="note-count" id="note-count">0/280</div>
         </div>
 
+        <div id="lock-warn-area"></div>
         <button class="btn btn--full btn--ember" id="btn-save">Enregistrer ma fiche</button>
       </div>
 
@@ -575,6 +588,52 @@ body{
     window.location.href = 'index.html';
   }
 
+  // ── Apply save_count UI state ───────────────────────────
+  function applyLockState(saveCount){
+    const stateBadge = document.getElementById('state-badge');
+    const lockBadge = document.getElementById('lock-badge');
+    const warnArea = document.getElementById('lock-warn-area');
+    const saveBtn = document.getElementById('btn-save');
+    const noteEl = document.getElementById('field-note');
+
+    if(saveCount === 0){
+      // Empty fiche
+      stateBadge.textContent = 'à remplir';
+      lockBadge.innerHTML = '';
+      warnArea.innerHTML = '';
+      saveBtn.textContent = 'Enregistrer ma fiche';
+      saveBtn.disabled = false;
+      saveBtn.classList.remove('is-locked');
+    } else if(saveCount === 1){
+      // First save done, 1 modif remaining
+      stateBadge.textContent = 'enregistrée';
+      stateBadge.style.background = 'rgba(29,138,111,.15)';
+      stateBadge.style.color = 'var(--jade)';
+      lockBadge.innerHTML = '<span class="lock-badge lock-badge--mod">⚡ 1 modif restante</span>';
+      warnArea.innerHTML = '<div class="lock-warn">Tu as déjà enregistré ta fiche aujourd\'hui. Tu peux la modifier <strong>une seule fois</strong> — après ça elle est verrouillée pour la journée.</div>';
+      saveBtn.textContent = 'Modifier (dernière chance)';
+      saveBtn.disabled = false;
+      saveBtn.classList.remove('is-locked');
+    } else {
+      // Locked (saveCount >= 2)
+      stateBadge.textContent = 'verrouillée';
+      stateBadge.style.background = 'rgba(26,22,20,.85)';
+      stateBadge.style.color = 'var(--paper)';
+      lockBadge.innerHTML = '<span class="lock-badge lock-badge--locked">🔒 Verrouillée</span>';
+      warnArea.innerHTML = '<div class="lock-warn" style="background:rgba(26,22,20,.06);border-left-color:var(--ink)">Cette fiche est <strong>verrouillée</strong> pour aujourd\'hui (modifiée 2× max). Reviens demain pour une nouvelle fiche.</div>';
+      saveBtn.textContent = '🔒 Fiche verrouillée';
+      saveBtn.disabled = true;
+      saveBtn.classList.add('is-locked');
+      // Disable all inputs visually
+      document.querySelectorAll('#field-hours, #field-fulfillment, #field-calls, #field-ca, #field-note, .wb-btn, .tick, .input-suggest button, #btn-live-yes, #btn-live-no').forEach(el => {
+        el.disabled = true;
+        el.style.pointerEvents = 'none';
+        el.style.opacity = '0.55';
+      });
+      noteEl.readOnly = true;
+    }
+  }
+
   // ── Load today ──────────────────────────────────────────
   async function loadToday(){
     const data = await api('GET', '/me/today');
@@ -586,6 +645,7 @@ body{
     document.getElementById('field-note').value = data.free_note || '';
     document.getElementById('note-count').textContent = (data.free_note||'').length + '/280';
     _wb = (data.wellbeing_answers && typeof data.wellbeing_answers==='object') ? data.wellbeing_answers : {};
+    applyLockState(data.save_count || 0);
     // Apply stored wb to buttons
     Object.keys(_wb).forEach(slug=>{
       const v = _wb[slug];
@@ -625,17 +685,31 @@ body{
     };
     const data = await api('PUT', '/me/entries/'+getTodayStr(), payload);
     btn.disabled = false;
-    btn.textContent = 'Enregistrer ma fiche';
     if(data && !data.error){
-      showMsg('ok','Fiche enregistrée ✦');
+      const sc = data.save_count || 0;
+      if(sc === 1){
+        showMsg('ok','Fiche enregistrée ✦ — tu peux encore la modifier 1 fois');
+      } else if(sc === 2){
+        showMsg('ok','Modification enregistrée ✦ — fiche maintenant verrouillée pour aujourd\'hui');
+      } else {
+        showMsg('ok','Fiche enregistrée ✦');
+      }
       updateRecap(data);
       loadHistory();
+      applyLockState(sc);
       const orb = document.getElementById('brain-orb');
       orb.classList.add('strong');
       setTimeout(()=>orb.classList.remove('strong'),1200);
       if(navigator.vibrate) navigator.vibrate([20,40,20]);
     } else {
-      showMsg('err', (data&&data.error)||'Erreur réseau');
+      btn.textContent = 'Enregistrer ma fiche';
+      const errMsg = (data&&data.error) || 'Erreur réseau';
+      if(data && data.locked){
+        showMsg('err','🔒 ' + errMsg);
+        applyLockState(2);
+      } else {
+        showMsg('err', errMsg);
+      }
     }
   }
 
