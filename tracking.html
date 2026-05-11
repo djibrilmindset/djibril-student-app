@@ -4,6 +4,21 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
 <title>Tracking · Pardin Djibril</title>
+<meta name="theme-color" content="#e85d2c">
+
+<!-- Open Graph / Social Preview -->
+<meta property="og:title" content="Djibril · Ma fiche du jour">
+<meta property="og:description" content="Remplis ta fiche quotidienne. Reset Ultra — coaching banlieue 5-10k€/80j.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://djibrilmindset.github.io/djibril-student-app/tracking.html">
+<meta property="og:image" content="https://djibrilmindset.github.io/djibril-student-app/og-preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Djibril · Ma fiche du jour">
+<meta name="twitter:description" content="Remplis ta fiche quotidienne. Reset Ultra.">
+<meta name="twitter:image" content="https://djibrilmindset.github.io/djibril-student-app/og-preview.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Playfair+Display:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -22,7 +37,7 @@
 html,body{max-width:100vw;overflow-x:hidden}
 body{
   font-family:var(--serif);background:var(--paper);color:var(--ink);
-  min-height:100vh;
+  min-height:100vh;-webkit-tap-highlight-color:transparent;
 }
 
 /* COSMOS BACKGROUND */
@@ -87,16 +102,74 @@ body{
 @keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.3}}
 .card-today h2{font-family:var(--display);font-weight:900;font-size:1.3rem;color:var(--ink);margin-bottom:24px}
 .card-today .date-display{font-family:var(--serif);font-style:italic;font-size:1.1rem;color:var(--ink-soft);margin-bottom:20px}
-.field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
-.field{display:flex;flex-direction:column;gap:4px}
-.field label{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--ink-soft)}
-.field input{font-family:var(--serif);font-style:italic;font-size:1.2rem;background:rgba(255,252,245,.6);border:none;border-bottom:1.5px solid var(--ink);padding:10px 4px;color:var(--ink);outline:none;text-align:center;transition:border-color .15s}
-.field input:focus{border-bottom-color:var(--ember-deep);background:rgba(255,252,245,.95)}
 
-.live-toggle{display:flex;align-items:center;gap:10px;margin:16px 0 24px}
+/* SLIDER GROUPS (heures + épanouissement) */
+.slider-group{margin-bottom:28px;padding-bottom:24px;border-bottom:1px dotted rgba(26,22,20,.15)}
+.slider-group:last-of-type{border-bottom:none}
+.slider-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:12px}
+.slider-label{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--ink-soft)}
+.slider-value{font-family:var(--mono);font-weight:600;font-size:1.6rem;color:var(--ember);letter-spacing:-.02em;line-height:1;display:flex;align-items:baseline;gap:4px}
+.slider-value .unit{font-size:.7rem;color:var(--ink-mute);font-weight:500;letter-spacing:.1em}
+.slider-value .emoji{font-size:1.4rem;margin-right:6px;line-height:1}
+
+/* Custom range slider */
+.range-wrap{position:relative;padding:8px 0}
+.range{-webkit-appearance:none;appearance:none;width:100%;height:8px;background:linear-gradient(to right,var(--ember-deep) 0%,var(--ember) var(--val,0%),rgba(26,22,20,.15) var(--val,0%),rgba(26,22,20,.15) 100%);border-radius:999px;outline:none;cursor:pointer;transition:height .15s}
+.range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:28px;height:28px;background:var(--ink);border:3px solid var(--paper);border-radius:50%;cursor:grab;box-shadow:0 2px 8px rgba(0,0,0,.3),0 0 0 0 var(--ember-soft);transition:box-shadow .2s,transform .15s}
+.range::-webkit-slider-thumb:hover{box-shadow:0 2px 8px rgba(0,0,0,.3),0 0 0 8px var(--ember-soft);transform:scale(1.08)}
+.range::-webkit-slider-thumb:active{cursor:grabbing;background:var(--ember-deep);transform:scale(.95)}
+.range::-moz-range-thumb{width:28px;height:28px;background:var(--ink);border:3px solid var(--paper);border-radius:50%;cursor:grab;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.range:focus::-webkit-slider-thumb{outline:2px solid var(--ember);outline-offset:2px}
+
+/* Suggestions ticks under slider */
+.range-ticks{display:flex;justify-content:space-between;margin-top:8px;padding:0 4px}
+.range-ticks .tick{position:relative;font-family:var(--mono);font-size:9px;color:var(--ink-mute);letter-spacing:.05em;cursor:pointer;padding:4px 6px;border:1px solid transparent;border-radius:6px;transition:all .15s;background:transparent;font-weight:500}
+.range-ticks .tick:hover{border-color:var(--ember);color:var(--ember);background:var(--ember-soft)}
+.range-ticks .tick.is-active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.range-ticks .tick--hint{font-style:italic;color:rgba(110,100,90,.7)}
+
+/* Hours emoji helper */
+.hours-mood{font-family:var(--serif);font-style:italic;font-size:.9rem;color:var(--ink-mute);margin-top:6px;min-height:1.2em;transition:color .25s}
+
+/* Compact field row (calls / ca / live) */
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--ink-soft)}
+.field input{font-family:var(--mono);font-weight:600;font-size:1.4rem;background:rgba(255,252,245,.6);border:none;border-bottom:1.5px solid var(--ink);padding:10px 4px;color:var(--ink);outline:none;text-align:center;transition:border-color .15s,background .15s}
+.field input:focus{border-bottom-color:var(--ember-deep);background:rgba(255,252,245,.95)}
+.field .input-suggest{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.field .input-suggest button{background:transparent;border:1px solid rgba(26,22,20,.15);font-family:var(--mono);font-size:9px;letter-spacing:.05em;padding:4px 8px;border-radius:6px;cursor:pointer;color:var(--ink-mute);transition:all .15s;font-weight:500}
+.field .input-suggest button:hover{border-color:var(--ember);color:var(--ember);background:var(--ember-soft)}
+.field .input-suggest button.is-active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+/* Live toggle */
+.live-toggle{display:flex;align-items:center;gap:10px;margin:0 0 24px}
 .live-toggle span{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--ink-soft)}
 .live-toggle button{padding:8px 20px;border-radius:999px;border:1.5px solid rgba(26,22,20,.2);background:rgba(255,252,245,.6);color:var(--ink-soft);cursor:pointer;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;transition:all .15s}
 .live-toggle button.is-on{background:var(--ember-deep);border-color:var(--ember-deep);color:var(--paper)}
+
+/* WELLBEING QUESTIONS */
+.wellbeing{margin-bottom:24px;padding:20px;background:rgba(243,236,223,.5);border:1.5px dashed rgba(26,22,20,.18);border-radius:4px}
+.wellbeing h3{font-family:var(--display);font-weight:900;font-size:1rem;color:var(--ink);margin-bottom:6px}
+.wellbeing p.sub{font-family:var(--serif);font-style:italic;color:var(--ink-mute);font-size:.85rem;margin-bottom:18px}
+.wb-q{margin-bottom:14px;animation:fieldIn .35s ease}
+.wb-q:last-child{margin-bottom:0}
+.wb-q .wb-label{font-family:var(--serif);font-style:italic;font-size:1.02rem;color:var(--ink);margin-bottom:8px;line-height:1.4}
+.wb-toggles{display:flex;gap:8px}
+.wb-toggles button{flex:1;padding:12px 16px;border-radius:999px;border:1.5px solid rgba(26,22,20,.2);background:rgba(255,252,245,.7);color:var(--ink);cursor:pointer;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;transition:all .18s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden}
+.wb-toggles button:hover{transform:translateY(-1px);border-color:var(--ink);box-shadow:0 2px 6px rgba(26,22,20,.12)}
+.wb-toggles button.is-on{background:var(--ink);color:var(--paper);border-color:var(--ink);transform:translateY(-1px);box-shadow:3px 3px 0 var(--ember-deep)}
+.wb-toggles button.is-on.positive{background:var(--jade);border-color:var(--jade);box-shadow:3px 3px 0 rgba(29,138,111,.5)}
+.wb-toggles button.is-on.negative{background:var(--crit);border-color:var(--crit);box-shadow:3px 3px 0 rgba(199,62,58,.5)}
+
+/* FREE NOTE */
+.note-group{margin-bottom:24px}
+.note-group label{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--ink-soft);display:block;margin-bottom:8px}
+.note-textarea{width:100%;min-height:80px;padding:12px;font-family:var(--serif);font-style:italic;font-size:.98rem;line-height:1.5;background:rgba(255,252,245,.85);border:1.5px solid rgba(26,22,20,.18);border-radius:4px;color:var(--ink);outline:none;resize:vertical;transition:border-color .15s,background .15s}
+.note-textarea:focus{border-color:var(--ember);background:rgba(255,252,245,1)}
+.note-count{display:flex;justify-content:flex-end;font-family:var(--mono);font-size:9px;color:var(--ink-mute);letter-spacing:.05em;margin-top:4px}
+.note-count.is-near{color:var(--warn)}
+.note-count.is-full{color:var(--crit);font-weight:700}
 
 .btn{font-family:var(--mono);font-weight:600;font-size:11px;letter-spacing:.18em;text-transform:uppercase;background:var(--ink);color:var(--paper);border:1.5px solid var(--ink);padding:14px 24px;cursor:pointer;transition:transform .15s,box-shadow .15s}
 .btn:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ember-deep)}
@@ -123,8 +196,8 @@ body{
 .history-section h3{font-family:var(--display);font-weight:900;font-size:1.1rem;color:var(--ink);margin-bottom:16px}
 .history-table{width:100%;border-collapse:collapse;font-size:12px}
 .history-table th{text-align:left;padding:8px 12px;font-size:10px;font-weight:600;color:var(--ink-mute);text-transform:uppercase;border-bottom:1.5px solid rgba(26,22,20,.2);background:rgba(255,252,245,.5);font-family:var(--mono);letter-spacing:.08em}
-.history-table td{padding:8px 12px;border-bottom:1px solid rgba(26,22,20,.1);font-family:var(--serif);font-style:italic}
-.history-table td:last-child{font-family:var(--display);font-weight:800;color:var(--ember);font-style:normal}
+.history-table td{padding:8px 12px;border-bottom:1px solid rgba(26,22,20,.1);font-family:var(--mono);font-size:11px;font-weight:500}
+.history-table td:last-child{font-family:var(--display);font-weight:800;color:var(--ember);font-size:13px}
 
 @keyframes fieldIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 
@@ -133,6 +206,9 @@ body{
   .field-row{grid-template-columns:1fr}
   .brain-orb{width:130px;height:130px}
   .brain-orb.strong{width:180px;height:180px}
+  .slider-value{font-size:1.4rem}
+  .range::-webkit-slider-thumb{width:32px;height:32px}
+  .wb-toggles button{padding:14px 12px;font-size:10px}
 }
 @media (prefers-reduced-motion:reduce){
   .cosmos__cap,.cosmos__stars,.brain-orb__halo,.brain-orb__wires{animation:none!important}
@@ -158,6 +234,36 @@ body{
   const TOKEN_KEY = 'dj_token';
   const USER_KEY = 'dj_user';
 
+  // Wellbeing question pool (15 questions, slug + label + positive answer)
+  const WB_POOL = [
+    {slug:"solitude",label:"Tu as ressenti de la solitude aujourd'hui ?",positive:"no"},
+    {slug:"doute",label:"Tu as douté de toi aujourd'hui ?",positive:"no"},
+    {slug:"fierte",label:"Tu as ressenti de la fierté aujourd'hui ?",positive:"yes"},
+    {slug:"sommeil",label:"Tu as bien dormi cette nuit ?",positive:"yes"},
+    {slug:"energie",label:"Tu as eu de l'énergie aujourd'hui ?",positive:"yes"},
+    {slug:"aligne_objectif",label:"Tu t'es senti aligné avec ton objectif ?",positive:"yes"},
+    {slug:"gratitude",label:"Tu as ressenti de la gratitude aujourd'hui ?",positive:"yes"},
+    {slug:"presence",label:"Tu as été pleinement présent aujourd'hui ?",positive:"yes"},
+    {slug:"peurs",label:"Tu as eu des peurs aujourd'hui ?",positive:"no"},
+    {slug:"autonomie",label:"Tu as eu de l'autonomie aujourd'hui ?",positive:"yes"},
+    {slug:"motivation",label:"Tu as eu de la motivation aujourd'hui ?",positive:"yes"},
+    {slug:"support_social",label:"Tu as eu du soutien social aujourd'hui ?",positive:"yes"},
+    {slug:"alimentation",label:"Tu as mangé équilibré aujourd'hui ?",positive:"yes"},
+    {slug:"exercice",label:"Tu as fait de l'exercice aujourd'hui ?",positive:"yes"},
+    {slug:"focus",label:"Tu as été concentré aujourd'hui ?",positive:"yes"}
+  ];
+
+  // Pick 5 questions stable for the day (seed = today YYYY-MM-DD + student id)
+  function pickDailyQuestions(seed){
+    const arr=[...WB_POOL];
+    // Deterministic shuffle via mulberry32 seeded
+    let h=2166136261;
+    for(let i=0;i<seed.length;i++){h^=seed.charCodeAt(i);h=Math.imul(h,16777619)>>>0}
+    const rand=()=>{h+=0x6D2B79F5;let t=h;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296};
+    for(let i=arr.length-1;i>0;i--){const j=Math.floor(rand()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}
+    return arr.slice(0,5);
+  }
+
   // Check auth
   const token = localStorage.getItem(TOKEN_KEY);
   const userStr = localStorage.getItem(USER_KEY);
@@ -176,11 +282,46 @@ body{
     return res.json();
   }
 
+  // ── Daily Qs (5 stable per student per day) ─────────────
+  const dailyQs = pickDailyQuestions(getTodayStr() + (user.id || user.email || ''));
+
+  // ── Hours mood label (1 per range) ──────────────────────
+  function hoursMood(h){
+    if(h<=0) return '— pas de travail';
+    if(h<2) return 'mise en route douce';
+    if(h<4) return 'matinée tranquille';
+    if(h<6) return 'session correcte';
+    if(h<8) return 'belle journée pleine';
+    if(h<10) return 'gros bloc, beau focus';
+    if(h<12) return 'marathon — respire bien';
+    return 'extrême — fais une pause demain';
+  }
+
+  // ── Fulfillment emoji (0-10) ───────────────────────────
+  function fulfillmentEmoji(f){
+    if(f<=1) return '😞';
+    if(f<=3) return '😕';
+    if(f<=5) return '😐';
+    if(f<=7) return '🙂';
+    if(f<=9) return '😊';
+    return '✨';
+  }
+
   // ── Render ──────────────────────────────────────────────
   async function render(){
     const shell = document.getElementById('shell');
     const today = getTodayStr();
     const todayFR = new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+
+    const wbQuestionsHTML = dailyQs.map((q,i)=>`
+      <div class="wb-q" data-slug="${q.slug}">
+        <div class="wb-label">${q.label}</div>
+        <div class="wb-toggles">
+          <button type="button" class="wb-btn" data-q="${q.slug}" data-v="yes" data-positive="${q.positive==='yes'?'positive':'negative'}">Oui</button>
+          <button type="button" class="wb-btn" data-q="${q.slug}" data-v="no" data-positive="${q.positive==='no'?'positive':'negative'}">Non</button>
+        </div>
+      </div>
+    `).join('');
 
     shell.innerHTML = `
       <div class="topbar">
@@ -213,19 +354,91 @@ body{
         <h2>${todayFR}</h2>
         <div class="date-display">${today}</div>
 
-        <div class="field-row">
-          <div class="field"><label>Calls</label><input type="number" id="field-calls" min="0" value="0"></div>
-          <div class="field"><label>DM</label><input type="number" id="field-dm" min="0" value="0"></div>
-        </div>
-        <div class="field-row">
-          <div class="field"><label>Vidéos</label><input type="number" id="field-videos" min="0" value="0"></div>
-          <div class="field"><label>CA (€)</label><input type="number" id="field-ca" min="0" step="0.01" value="0"></div>
+        <!-- HEURES TRAVAILLÉES -->
+        <div class="slider-group">
+          <div class="slider-head">
+            <span class="slider-label">Heures travaillées</span>
+            <span class="slider-value"><span id="hours-display">0</span><span class="unit">h</span></span>
+          </div>
+          <div class="range-wrap">
+            <input type="range" class="range" id="field-hours" min="0" max="12" step="0.5" value="0" aria-label="Heures travaillées">
+          </div>
+          <div class="range-ticks">
+            <button type="button" class="tick" data-target="field-hours" data-v="0">0h</button>
+            <button type="button" class="tick" data-target="field-hours" data-v="2">2h</button>
+            <button type="button" class="tick" data-target="field-hours" data-v="4">4h</button>
+            <button type="button" class="tick" data-target="field-hours" data-v="6">6h</button>
+            <button type="button" class="tick" data-target="field-hours" data-v="8">8h</button>
+            <button type="button" class="tick" data-target="field-hours" data-v="10">10h</button>
+            <button type="button" class="tick" data-target="field-hours" data-v="12">12h</button>
+          </div>
+          <div class="hours-mood" id="hours-mood">— pas encore</div>
         </div>
 
+        <!-- ÉPANOUISSEMENT -->
+        <div class="slider-group">
+          <div class="slider-head">
+            <span class="slider-label">Épanouissement</span>
+            <span class="slider-value"><span class="emoji" id="ful-emoji">😐</span><span id="ful-display">0</span><span class="unit">/10</span></span>
+          </div>
+          <div class="range-wrap">
+            <input type="range" class="range" id="field-fulfillment" min="0" max="10" step="1" value="0" aria-label="Épanouissement">
+          </div>
+          <div class="range-ticks">
+            <button type="button" class="tick" data-target="field-fulfillment" data-v="0">0</button>
+            <button type="button" class="tick" data-target="field-fulfillment" data-v="2">2</button>
+            <button type="button" class="tick" data-target="field-fulfillment" data-v="4">4</button>
+            <button type="button" class="tick" data-target="field-fulfillment" data-v="6">6</button>
+            <button type="button" class="tick" data-target="field-fulfillment" data-v="8">8</button>
+            <button type="button" class="tick" data-target="field-fulfillment" data-v="10">10</button>
+          </div>
+        </div>
+
+        <!-- QUESTIONS BIEN-ÊTRE -->
+        <div class="wellbeing">
+          <h3>Bien-être du jour</h3>
+          <p class="sub">5 questions tirées du pool. Réponds vite, c'est juste pour toi.</p>
+          ${wbQuestionsHTML}
+        </div>
+
+        <!-- COMPACT: Calls + CA -->
+        <div class="field-row">
+          <div class="field">
+            <label>Calls passés</label>
+            <input type="number" id="field-calls" min="0" value="0" inputmode="numeric">
+            <div class="input-suggest" data-target="field-calls">
+              <button type="button" data-v="0">0</button>
+              <button type="button" data-v="3">3</button>
+              <button type="button" data-v="5">5</button>
+              <button type="button" data-v="10">10</button>
+              <button type="button" data-v="15">15</button>
+            </div>
+          </div>
+          <div class="field">
+            <label>CA (€)</label>
+            <input type="number" id="field-ca" min="0" step="0.01" value="0" inputmode="decimal">
+            <div class="input-suggest" data-target="field-ca">
+              <button type="button" data-v="0">0</button>
+              <button type="button" data-v="297">297</button>
+              <button type="button" data-v="497">497</button>
+              <button type="button" data-v="997">997</button>
+              <button type="button" data-v="1997">1997</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- LIVE -->
         <div class="live-toggle">
-          <span>Live</span>
+          <span>Live diffusion</span>
           <button id="btn-live-no" class="is-on">Non</button>
           <button id="btn-live-yes">Oui</button>
+        </div>
+
+        <!-- FREE NOTE -->
+        <div class="note-group">
+          <label for="field-note">Note libre (optionnel · 280 max)</label>
+          <textarea class="note-textarea" id="field-note" maxlength="280" placeholder="Une pensée, un déclic, une frustration..."></textarea>
+          <div class="note-count" id="note-count">0/280</div>
         </div>
 
         <button class="btn btn--full btn--ember" id="btn-save">Enregistrer ma fiche</button>
@@ -243,12 +456,99 @@ body{
     await loadToday();
   }
 
+  // ── State for wellbeing answers ─────────────────────────
+  let _wb = {}; // { slug: 'yes' | 'no' }
+
   // ── Events ───────────────────────────────────────────────
   function bindEvents(){
     document.getElementById('btn-logout').addEventListener('click', logout);
     document.getElementById('btn-save').addEventListener('click', saveEntry);
     document.getElementById('btn-live-yes').addEventListener('click',()=>toggleLive(true));
     document.getElementById('btn-live-no').addEventListener('click',()=>toggleLive(false));
+
+    // Sliders live update
+    const hoursEl = document.getElementById('field-hours');
+    const fulEl = document.getElementById('field-fulfillment');
+    hoursEl.addEventListener('input', updateHoursUI);
+    fulEl.addEventListener('input', updateFulUI);
+
+    // Tick buttons (slider suggestions)
+    document.querySelectorAll('.range-ticks .tick').forEach(t=>{
+      t.addEventListener('click',()=>{
+        const target = document.getElementById(t.dataset.target);
+        target.value = t.dataset.v;
+        target.dispatchEvent(new Event('input'));
+        // haptic
+        if(navigator.vibrate) navigator.vibrate(8);
+      });
+    });
+
+    // Number input suggestions
+    document.querySelectorAll('.input-suggest').forEach(group=>{
+      const target = document.getElementById(group.dataset.target);
+      group.querySelectorAll('button').forEach(btn=>{
+        btn.addEventListener('click',()=>{
+          target.value = btn.dataset.v;
+          target.dispatchEvent(new Event('input'));
+          updateSuggestActive(group, btn.dataset.v);
+          updateBrainPreview();
+          if(navigator.vibrate) navigator.vibrate(8);
+        });
+      });
+      target.addEventListener('input',()=>{updateSuggestActive(group, target.value); updateBrainPreview();});
+    });
+
+    // Wellbeing toggles
+    document.querySelectorAll('.wb-btn').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const q = btn.dataset.q;
+        const v = btn.dataset.v;
+        _wb[q] = v;
+        document.querySelectorAll(`.wb-btn[data-q="${q}"]`).forEach(b=>b.classList.remove('is-on','positive','negative'));
+        btn.classList.add('is-on', btn.dataset.positive);
+        if(navigator.vibrate) navigator.vibrate(10);
+        updateBrainPreview();
+      });
+    });
+
+    // Note textarea
+    const noteEl = document.getElementById('field-note');
+    const countEl = document.getElementById('note-count');
+    noteEl.addEventListener('input',()=>{
+      const len = noteEl.value.length;
+      countEl.textContent = `${len}/280`;
+      countEl.className = 'note-count' + (len>250?' is-near':'') + (len>=280?' is-full':'');
+    });
+  }
+
+  function updateSuggestActive(group, val){
+    group.querySelectorAll('button').forEach(b=>{
+      b.classList.toggle('is-active', String(b.dataset.v)===String(val));
+    });
+  }
+
+  function updateHoursUI(){
+    const v = parseFloat(document.getElementById('field-hours').value)||0;
+    const pct = (v/12)*100;
+    document.getElementById('field-hours').style.setProperty('--val', pct+'%');
+    document.getElementById('hours-display').textContent = v;
+    document.getElementById('hours-mood').textContent = hoursMood(v);
+    // ticks active
+    document.querySelectorAll('.range-ticks .tick[data-target="field-hours"]').forEach(t=>{
+      t.classList.toggle('is-active', parseFloat(t.dataset.v)===v);
+    });
+    updateBrainPreview();
+  }
+  function updateFulUI(){
+    const v = parseInt(document.getElementById('field-fulfillment').value)||0;
+    const pct = (v/10)*100;
+    document.getElementById('field-fulfillment').style.setProperty('--val', pct+'%');
+    document.getElementById('ful-display').textContent = v;
+    document.getElementById('ful-emoji').textContent = fulfillmentEmoji(v);
+    document.querySelectorAll('.range-ticks .tick[data-target="field-fulfillment"]').forEach(t=>{
+      t.classList.toggle('is-active', parseInt(t.dataset.v)===v);
+    });
+    updateBrainPreview();
   }
 
   let _live = liveDefault;
@@ -256,6 +556,8 @@ body{
     _live = val;
     document.getElementById('btn-live-yes').className = val ? 'is-on' : '';
     document.getElementById('btn-live-no').className = val ? '' : 'is-on';
+    if(navigator.vibrate) navigator.vibrate(8);
+    updateBrainPreview();
   }
 
   function logout(){
@@ -269,10 +571,29 @@ body{
     const data = await api('GET', '/me/today');
     if(!data) return;
     document.getElementById('field-calls').value = data.calls || 0;
-    document.getElementById('field-dm').value = data.dm || 0;
-    document.getElementById('field-videos').value = data.videos || 0;
     document.getElementById('field-ca').value = data.ca_eur || 0;
+    document.getElementById('field-hours').value = data.hours_worked || 0;
+    document.getElementById('field-fulfillment').value = data.fulfillment || 0;
+    document.getElementById('field-note').value = data.free_note || '';
+    document.getElementById('note-count').textContent = (data.free_note||'').length + '/280';
+    _wb = (data.wellbeing_answers && typeof data.wellbeing_answers==='object') ? data.wellbeing_answers : {};
+    // Apply stored wb to buttons
+    Object.keys(_wb).forEach(slug=>{
+      const v = _wb[slug];
+      const btn = document.querySelector(`.wb-btn[data-q="${slug}"][data-v="${v}"]`);
+      if(btn){
+        document.querySelectorAll(`.wb-btn[data-q="${slug}"]`).forEach(b=>b.classList.remove('is-on','positive','negative'));
+        btn.classList.add('is-on', btn.dataset.positive);
+      }
+    });
     toggleLive(data.live || false);
+    updateHoursUI();
+    updateFulUI();
+    // Trigger suggest active
+    document.querySelectorAll('.input-suggest').forEach(g=>{
+      const target = document.getElementById(g.dataset.target);
+      updateSuggestActive(g, target.value);
+    });
     updateRecap(data);
     loadHistory();
   }
@@ -283,37 +604,80 @@ body{
     btn.disabled = true;
     btn.textContent = 'Enregistrement...';
     const calls = parseInt(document.getElementById('field-calls').value)||0;
-    const dm = parseInt(document.getElementById('field-dm').value)||0;
-    const videos = parseInt(document.getElementById('field-videos').value)||0;
     const ca = parseFloat(document.getElementById('field-ca').value)||0;
-    const data = await api('PUT', '/me/entries/'+getTodayStr(), {calls, dm, videos, ca_eur: ca, live:_live});
+    const hours_worked = parseFloat(document.getElementById('field-hours').value)||0;
+    const fulfillment = parseInt(document.getElementById('field-fulfillment').value)||0;
+    const free_note = document.getElementById('field-note').value.slice(0,280);
+    const payload = {
+      calls, ca_eur: ca, live:_live,
+      hours_worked, fulfillment,
+      wellbeing_answers: _wb,
+      free_note: free_note || null
+    };
+    const data = await api('PUT', '/me/entries/'+getTodayStr(), payload);
     btn.disabled = false;
     btn.textContent = 'Enregistrer ma fiche';
     if(data && !data.error){
       showMsg('ok','Fiche enregistrée ✦');
       updateRecap(data);
       loadHistory();
-      // Flash brain orb
       const orb = document.getElementById('brain-orb');
       orb.classList.add('strong');
       setTimeout(()=>orb.classList.remove('strong'),1200);
+      if(navigator.vibrate) navigator.vibrate([20,40,20]);
     } else {
       showMsg('err', (data&&data.error)||'Erreur réseau');
     }
   }
 
   // ── Points + recap ──────────────────────────────────────
-  function calcPoints(calls,dm,videos,live){
-    return (calls||0)*2 + (dm||0) + (videos||0)*3 + (live?5:0);
+  function calcPoints(data){
+    const calls = data.calls||0;
+    const live = data.live||false;
+    const hrs = parseFloat(data.hours_worked||0);
+    const ful = parseInt(data.fulfillment||0);
+    const wb = (data.wellbeing_answers && typeof data.wellbeing_answers==='object') ? data.wellbeing_answers : {};
+    // Count positive wb answers using static pool definitions
+    let wbPositive = 0;
+    Object.keys(wb).forEach(slug=>{
+      const def = WB_POOL.find(q=>q.slug===slug);
+      if(def && wb[slug] === def.positive) wbPositive++;
+    });
+    return Math.round(hrs*2 + ful*1 + calls*2 + wbPositive*1 + (live?5:0));
+  }
+  function previewData(){
+    return {
+      calls: parseInt(document.getElementById('field-calls').value)||0,
+      live: _live,
+      hours_worked: parseFloat(document.getElementById('field-hours').value)||0,
+      fulfillment: parseInt(document.getElementById('field-fulfillment').value)||0,
+      wellbeing_answers: _wb
+    };
+  }
+  function updateBrainPreview(){
+    const pts = calcPoints(previewData());
+    updateBrainOrb(pts);
   }
   function updateRecap(data){
-    const calls=data.calls||0,dm=data.dm||0,videos=data.videos||0,live=data.live||false,ca=data.ca_eur||0;
-    const pts = calcPoints(calls,dm,videos,live);
+    const calls=data.calls||0;
+    const live=data.live||false;
+    const ca=data.ca_eur||0;
+    const hrs=parseFloat(data.hours_worked||0);
+    const ful=parseInt(data.fulfillment||0);
+    const wb=(data.wellbeing_answers && typeof data.wellbeing_answers==='object') ? data.wellbeing_answers : {};
+    const wbCount = Object.keys(wb).length;
+    let wbPositive = 0;
+    Object.keys(wb).forEach(slug=>{
+      const def = WB_POOL.find(q=>q.slug===slug);
+      if(def && wb[slug] === def.positive) wbPositive++;
+    });
+    const pts = calcPoints(data);
     document.getElementById('recap-area').innerHTML = `
       <h3>Récapitulatif du jour</h3>
+      <div class="recap-row"><span class="recap-label">Heures</span><span class="recap-value">${hrs}h</span></div>
+      <div class="recap-row"><span class="recap-label">Épanouissement</span><span class="recap-value">${fulfillmentEmoji(ful)} ${ful}/10</span></div>
+      <div class="recap-row"><span class="recap-label">Bien-être positif</span><span class="recap-value">${wbPositive}/${wbCount||5}</span></div>
       <div class="recap-row"><span class="recap-label">Calls</span><span class="recap-value">${calls}</span></div>
-      <div class="recap-row"><span class="recap-label">DM</span><span class="recap-value">${dm}</span></div>
-      <div class="recap-row"><span class="recap-label">Vidéos</span><span class="recap-value">${videos}</span></div>
       <div class="recap-row"><span class="recap-label">Live</span><span class="recap-value">${live?'Oui':'—'}</span></div>
       <div class="recap-row"><span class="recap-label">CA</span><span class="recap-value">${ca.toFixed(2)}€</span></div>
       <div class="recap-points">${pts} pts</div>
@@ -325,7 +689,7 @@ body{
     const orb = document.getElementById('brain-orb');
     const pts = document.getElementById('brain-pts');
     if(!orb||!pts)return;
-    orb.className = points>=30?'brain-orb strong':(points>=12?'brain-orb':'brain-orb');
+    orb.className = points>=30?'brain-orb strong':'brain-orb';
     pts.textContent = points;
   }
 
@@ -335,17 +699,21 @@ body{
     if(!history || !history.length) return;
     let rows = '';
     history.slice(0,14).forEach(e=>{
-      const pts = calcPoints(e.calls,e.dm,e.videos,e.live);
+      const pts = calcPoints(e);
+      const hrs = parseFloat(e.hours_worked||0);
+      const ful = parseInt(e.fulfillment||0);
       rows += `<tr>
         <td>${e.entry_date}</td>
-        <td>${e.calls||0}</td><td>${e.dm||0}</td><td>${e.videos||0}</td>
+        <td>${hrs}h</td>
+        <td>${ful}/10</td>
+        <td>${e.calls||0}</td>
+        <td>${(e.ca_eur||0).toFixed(0)}€</td>
         <td>${e.live?'Oui':'—'}</td>
-        <td>${(e.ca_eur||0).toFixed(2)}€</td>
         <td>${pts}</td>
       </tr>`;
     });
     document.getElementById('history-table').innerHTML = `<table class="history-table">
-      <thead><tr><th>Date</th><th>Calls</th><th>DM</th><th>Vidéos</th><th>Live</th><th>CA</th><th>Pts</th></tr></thead>
+      <thead><tr><th>Date</th><th>Heures</th><th>Épan.</th><th>Calls</th><th>CA</th><th>Live</th><th>Pts</th></tr></thead>
       <tbody>${rows}</tbody></table>`;
   }
 
