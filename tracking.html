@@ -213,6 +213,67 @@ body{
 
 @keyframes fieldIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 
+/* Q&A SECTION — élève */
+.qa-section{margin:36px 0;padding:24px 22px;background:linear-gradient(155deg,rgba(74,60,140,.06) 0%,rgba(232,93,44,.04) 60%,rgba(107,58,79,.06) 100%);border:1.5px solid rgba(74,60,140,.18);border-radius:4px;box-shadow:inset 3px 3px 0 rgba(74,60,140,.06)}
+.qa-section h3{font-family:var(--display);font-weight:900;font-size:1.18rem;color:var(--indigo);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.qa-section h3::before{content:"❓";font-family:var(--serif);font-style:italic;font-size:1.2em}
+.qa-intro{font-family:var(--serif);font-style:italic;color:var(--plum);font-size:.95rem;margin-bottom:18px;line-height:1.45}
+.qa-intro strong{font-style:normal;color:var(--ember-deep)}
+.qa-input-area{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.qa-textarea{width:100%;min-height:90px;padding:12px;font-family:var(--serif);font-style:italic;font-size:1rem;line-height:1.5;background:rgba(255,252,245,.85);border:1.5px solid rgba(74,60,140,.25);border-radius:4px;color:var(--ink);outline:none;resize:vertical;transition:border-color .15s,background .15s}
+.qa-textarea:focus{border-color:var(--ember);background:rgba(255,252,245,1)}
+.qa-textarea:disabled{opacity:.55;cursor:not-allowed}
+.qa-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.qa-thread{margin-top:18px;padding-top:18px;border-top:1px dotted rgba(26,22,20,.15)}
+.qa-msg{padding:10px 14px;margin-bottom:10px;border-radius:6px;font-size:.95rem;line-height:1.4;animation:fieldIn .3s ease}
+.qa-msg--student{background:rgba(232,93,44,.08);border-left:3px solid var(--ember);font-style:italic}
+.qa-msg--llm{background:rgba(74,60,140,.08);border-left:3px solid var(--indigo);font-family:var(--display);font-weight:600}
+.qa-msg__role{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:4px;font-weight:600}
+.qa-status{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute);margin-top:12px;text-align:center;font-weight:600}
+.qa-status.deepening{color:var(--indigo)}
+.qa-status.qualified{color:var(--jade)}
+.qa-status.matched{color:var(--ember-deep)}
+.qa-status.awaiting{color:var(--plum)}
+.qa-status.answered{color:var(--jade);font-weight:800}
+.qa-status::before{content:"✦ "}
+.qa-match-card{margin-top:14px;padding:16px;background:rgba(29,138,111,.08);border:1.5px solid var(--jade);border-radius:4px}
+.qa-match-card h4{font-family:var(--display);font-weight:800;font-size:1rem;color:var(--jade);margin-bottom:6px}
+.qa-match-card__score{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--ink-mute);text-transform:uppercase;margin-bottom:10px}
+.qa-match-card__q{font-style:italic;font-family:var(--serif);font-size:.98rem;color:var(--ink-soft);margin-bottom:8px}
+.qa-match-card__a{font-size:.95rem;margin-bottom:12px;white-space:pre-wrap;line-height:1.5}
+.qa-answer-card{margin-top:14px;padding:18px;background:rgba(255,252,245,.92);border:2px solid var(--jade);box-shadow:4px 4px 0 rgba(29,138,111,.4)}
+.qa-answer-card h4{font-family:var(--display);font-weight:900;font-size:1.05rem;color:var(--jade);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.qa-answer-card__score{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--ink-mute);text-transform:uppercase;margin-bottom:12px}
+.qa-answer-card__body{font-size:1rem;line-height:1.55;white-space:pre-wrap}
+.qa-mine-list{margin-top:20px}
+.qa-mine-list h4{font-family:var(--display);font-weight:800;font-size:1rem;margin-bottom:10px;color:var(--ink)}
+.qa-mine-item{padding:10px 12px;margin-bottom:6px;background:rgba(255,252,245,.55);border-left:3px solid rgba(26,22,20,.18);font-size:.92rem;cursor:pointer;transition:all .15s}
+.qa-mine-item:hover{border-left-color:var(--ember);transform:translate(-1px,-1px);box-shadow:2px 2px 0 var(--ember-soft)}
+.qa-mine-item__q{font-style:italic;font-family:var(--serif);color:var(--ink-soft);margin-bottom:4px}
+.qa-mine-item__meta{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mute);display:flex;gap:10px;align-items:center}
+.qa-mine-item__status{padding:2px 6px;border-radius:3px;background:rgba(26,22,20,.06);font-weight:600}
+.qa-mine-item__status.answered{background:rgba(29,138,111,.15);color:var(--jade)}
+.qa-mine-item__status.awaiting{background:rgba(107,58,79,.12);color:var(--plum)}
+.qa-mine-item__status.matched{background:rgba(232,93,44,.12);color:var(--ember-deep)}
+.qa-mine-item__status.deepening{background:rgba(74,60,140,.12);color:var(--indigo)}
+
+/* KB Browser (cohorte) */
+.kb-section{margin:24px 0}
+.kb-section h4{font-family:var(--display);font-weight:800;font-size:1rem;color:var(--ink);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.kb-section h4 .count{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;font-weight:600;color:var(--ink-mute);text-transform:uppercase;font-style:normal}
+.kb-search{display:flex;gap:6px;margin-bottom:12px}
+.kb-search input{flex:1;padding:8px 12px;font-family:var(--serif);font-size:.95rem;background:rgba(255,252,245,.85);border:1.5px solid rgba(26,22,20,.18);border-radius:4px;outline:none}
+.kb-search input:focus{border-color:var(--ember)}
+.kb-search button{padding:8px 14px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;background:var(--ink);color:var(--paper);border:1.5px solid var(--ink);cursor:pointer}
+.kb-item{padding:12px 14px;margin-bottom:8px;background:rgba(255,252,245,.6);border:1.5px solid rgba(26,22,20,.12);cursor:pointer;transition:all .15s;position:relative}
+.kb-item:hover{border-color:var(--ember);transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ember-soft)}
+.kb-item__badge{position:absolute;top:-1px;right:8px;padding:3px 8px;font-family:var(--mono);font-size:9px;letter-spacing:.1em;font-weight:800;background:var(--gold);color:var(--ink);text-transform:uppercase}
+.kb-item__badge.top{background:var(--ember-deep);color:var(--paper)}
+.kb-item__title{font-family:var(--display);font-weight:800;font-size:.98rem;color:var(--ink);margin-bottom:4px;padding-right:60px}
+.kb-item__meta{font-family:var(--mono);font-size:9px;letter-spacing:.06em;color:var(--ink-mute);text-transform:uppercase;display:flex;gap:8px;align-items:center}
+.kb-item__answer{font-family:var(--serif);font-style:italic;font-size:.92rem;color:var(--ink-soft);margin-top:8px;display:none;white-space:pre-wrap;line-height:1.5}
+.kb-item.is-open .kb-item__answer{display:block;animation:fieldIn .3s ease}
+
 /* PLATE METAPHOR v2 — assiette figurative 3D du jour */
 .plate-stage{display:flex;flex-direction:column;align-items:center;margin:6px 0 28px;position:relative;z-index:2}
 .plate-stage__caption{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--ink-mute);margin-bottom:10px}
@@ -261,6 +322,24 @@ body{
 @media (prefers-reduced-motion:reduce){
   .food--shine,.plate-halo--pos,.plate-shine-hint{animation:none!important}
   .food{transition:none!important}
+}
+
+/* PLATE STICKY — toujours visible quand on scrolle */
+.plate-stage-sentinel{height:1px;width:1px;margin-top:-1px}
+.plate-stage.is-sticky{position:fixed;top:0;left:50%;transform:translateX(-50%) scale(.42);transform-origin:top center;z-index:50;margin:0;background:rgba(243,236,223,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:14px 18px;border-radius:0 0 12px 12px;box-shadow:0 6px 20px rgba(26,22,20,.18);border:1.5px solid rgba(26,22,20,.12);border-top:none;animation:plate-dock-in .35s cubic-bezier(.22,1,.36,1)}
+.plate-stage.is-sticky .plate-stage__caption{display:none}
+.plate-stage.is-sticky .plate-svg{width:min(280px,60vw)}
+.plate-stage.is-sticky .plate-growth{font-size:9px;margin-top:8px}
+.plate-stage.is-sticky .plate-legend{display:none}
+.plate-stage.is-sticky .plate-shine-hint{display:none}
+@keyframes plate-dock-in{from{transform:translateX(-50%) scale(.2);opacity:0}to{transform:translateX(-50%) scale(.42);opacity:1}}
+.plate-placeholder{display:none;height:120px;width:100%}
+.plate-placeholder.is-active{display:block}
+
+@media (max-width:500px){
+  .plate-stage.is-sticky{transform:translateX(-50%) scale(.38);padding:10px 14px;border-radius:0 0 8px 8px}
+  .plate-stage.is-sticky .plate-svg{width:min(220px,50vw)}
+  .plate-placeholder{height:90px}
 }
 
 @media (max-width:500px){
@@ -667,6 +746,252 @@ body{
     `;
   }
 
+  // ── Q&A SYSTEM ──────────────────────────────────────────
+  let _activeQuestion = null; // {id, status, thread, ...}
+  let _qaPollTimer = null;
+
+  async function qaApi(method, path, body){
+    return await api(method, '/qa' + path, body);  // existing api() prefix is /api
+  }
+
+  // Le edge function qa-handler est sur un autre path. On overide.
+  async function qaCall(method, path, body){
+    const url = 'https://nbnbsljqtolzzuqnkyae.supabase.co/functions/v1/qa-handler' + path;
+    const opts = {
+      method,
+      headers: {'Content-Type':'application/json','Authorization':'Bearer '+token},
+    };
+    if(body) opts.body = JSON.stringify(body);
+    try {
+      const res = await fetch(url, opts);
+      if(res.status === 401){ return {error:'auth'}; }
+      return await res.json();
+    } catch(e){ return {error: e.message||'network'}; }
+  }
+
+  function qaStatusLabel(s){
+    return ({deepening:'en train de creuser', qualified:'qualifiée, en route', matched:'réponse similaire trouvée', awaiting_djibril:'en attente de Djibril', answered:'répondue par Djibril'})[s] || s;
+  }
+
+  function renderQaActive(){
+    const area = document.getElementById('qa-active-area');
+    if(!area) return;
+    if(!_activeQuestion){
+      area.innerHTML = `
+        <div class="qa-input-area">
+          <textarea class="qa-textarea" id="qa-initial" placeholder="Ex: J'arrive pas à conclure mes calls, je sens que j'ai un blocage mais je sais pas où..."></textarea>
+          <div class="qa-actions">
+            <button class="btn btn--ember" id="qa-submit-btn">Lancer le creusage ✦</button>
+          </div>
+        </div>
+      `;
+      const btn = document.getElementById('qa-submit-btn');
+      if(btn) btn.addEventListener('click', submitNewQuestion);
+      return;
+    }
+    const q = _activeQuestion;
+    const threadHTML = (q.thread||[]).map(m => {
+      const role = m.role === 'student' ? user.first_name || 'Toi' : 'Mentor IA';
+      const cls = m.role === 'student' ? 'qa-msg--student' : 'qa-msg--llm';
+      return `<div class="qa-msg ${cls}"><div class="qa-msg__role">${role}</div>${m.text}</div>`;
+    }).join('');
+
+    let inputHTML = '';
+    if(q.status === 'deepening'){
+      inputHTML = `
+        <div class="qa-input-area" style="margin-top:14px">
+          <textarea class="qa-textarea" id="qa-answer-input" placeholder="Ta réponse à la relance…"></textarea>
+          <div class="qa-actions">
+            <button class="btn btn--ember" id="qa-answer-btn">Continuer le creusage</button>
+            <button class="btn btn--sm" id="qa-force-btn" title="J'ai compris, envoie tel quel à Djibril">Envoyer maintenant à Djibril</button>
+          </div>
+        </div>
+      `;
+    } else if(q.status === 'qualified'){
+      inputHTML = `<div class="qa-actions" style="margin-top:14px"><button class="btn btn--ember" id="qa-finalize-btn">Finaliser → chercher dans la base / envoyer à Djibril</button></div>`;
+    } else if(q.status === 'matched' && q.matched_kb){
+      const kb = q.matched_kb;
+      inputHTML = `
+        <div class="qa-match-card">
+          <h4>✦ Une question proche a déjà été répondue</h4>
+          <div class="qa-match-card__score">Pertinence : ${kb.pertinence_score}/100 · Note Djibril</div>
+          <div class="qa-match-card__q">${kb.question_summary || kb.question}</div>
+          <div class="qa-match-card__a">${kb.answer}</div>
+          <div class="qa-actions">
+            <button class="btn btn--sm btn--ember" id="qa-accept-match">Ça me suffit, merci</button>
+            <button class="btn btn--sm" id="qa-reject-match">Non, c'est pas mon cas → Djibril</button>
+          </div>
+        </div>
+      `;
+    } else if(q.status === 'awaiting_djibril'){
+      inputHTML = `<div class="qa-status awaiting">Ta question est en attente de Djibril ✦ tu recevras un mail dès qu'il a répondu</div>`;
+    } else if(q.status === 'answered' && q.matched_kb){
+      const kb = q.matched_kb;
+      inputHTML = `
+        <div class="qa-answer-card">
+          <h4>Réponse de Djibril ✦</h4>
+          <div class="qa-answer-card__score">Note pertinence : ${kb.pertinence_score}/100</div>
+          <div class="qa-answer-card__body">${kb.answer}</div>
+        </div>
+      `;
+    }
+
+    area.innerHTML = `
+      <div class="qa-thread">${threadHTML}</div>
+      <div class="qa-status ${q.status === 'awaiting_djibril' ? 'awaiting' : q.status}">${qaStatusLabel(q.status)}</div>
+      ${inputHTML}
+      <div style="margin-top:14px"><button class="btn btn--sm" id="qa-new-btn" style="background:transparent;color:var(--ink-mute);border-color:rgba(26,22,20,.2)">↻ Nouvelle question</button></div>
+    `;
+
+    document.getElementById('qa-answer-btn')?.addEventListener('click', () => sendAnswer(false));
+    document.getElementById('qa-force-btn')?.addEventListener('click', () => sendAnswer(true));
+    document.getElementById('qa-finalize-btn')?.addEventListener('click', finalizeQuestion);
+    document.getElementById('qa-accept-match')?.addEventListener('click', () => matchResponse(true));
+    document.getElementById('qa-reject-match')?.addEventListener('click', () => matchResponse(false));
+    document.getElementById('qa-new-btn')?.addEventListener('click', resetQa);
+  }
+
+  async function submitNewQuestion(){
+    const txt = document.getElementById('qa-initial').value.trim();
+    if(txt.length < 6){ alert('Question trop courte (min 6 caractères)'); return; }
+    const btn = document.getElementById('qa-submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Creusage en cours…';
+    const r = await qaCall('POST', '/qa/submit', {initial_question: txt});
+    if(r.error){ alert('Erreur: ' + r.error); btn.disabled = false; btn.textContent = 'Lancer le creusage ✦'; return; }
+    _activeQuestion = r.question;
+    renderQaActive();
+    refreshMineList();
+  }
+
+  async function sendAnswer(forceQualify){
+    if(!_activeQuestion) return;
+    const ans = document.getElementById('qa-answer-input').value.trim();
+    if(!forceQualify && ans.length < 3){ alert('Réponse trop courte'); return; }
+    const btn = document.getElementById('qa-answer-btn');
+    if(btn){ btn.disabled = true; btn.textContent = 'En cours…'; }
+    const r = await qaCall('POST', '/qa/answer/'+_activeQuestion.id, {answer_text: ans, force_qualify: !!forceQualify});
+    if(r.error){ alert('Erreur: ' + r.error); if(btn){btn.disabled=false;btn.textContent='Continuer le creusage';} return; }
+    _activeQuestion = r.question;
+    renderQaActive();
+  }
+
+  async function finalizeQuestion(){
+    if(!_activeQuestion) return;
+    const btn = document.getElementById('qa-finalize-btn');
+    if(btn){ btn.disabled = true; btn.textContent = 'Recherche en cours…'; }
+    const r = await qaCall('POST', '/qa/finalize/'+_activeQuestion.id, {});
+    if(r.error){ alert('Erreur: ' + r.error); return; }
+    // Reload full question with matched_kb
+    const full = await qaCall('GET', '/qa/get/'+_activeQuestion.id, null);
+    if(full && full.question){
+      _activeQuestion = {...full.question, matched_kb: full.kb};
+      renderQaActive();
+    }
+    refreshMineList();
+  }
+
+  async function matchResponse(accept){
+    if(!_activeQuestion) return;
+    const r = await qaCall('POST', '/qa/match-response/'+_activeQuestion.id, {accept});
+    if(r.error){ alert('Erreur: ' + r.error); return; }
+    const full = await qaCall('GET', '/qa/get/'+_activeQuestion.id, null);
+    if(full && full.question){
+      _activeQuestion = {...full.question, matched_kb: full.kb};
+      renderQaActive();
+    }
+    refreshMineList();
+  }
+
+  function resetQa(){
+    _activeQuestion = null;
+    renderQaActive();
+  }
+
+  async function refreshMineList(){
+    const r = await qaCall('GET', '/qa/mine', null);
+    if(r.error){ return; }
+    const area = document.getElementById('qa-mine-area');
+    if(!area) return;
+    const list = (r.questions||[]).filter(q => !_activeQuestion || q.id !== _activeQuestion.id).slice(0, 8);
+    if(list.length === 0){ area.innerHTML = ''; return; }
+    area.innerHTML = `
+      <div class="qa-mine-list">
+        <h4>Mes questions précédentes</h4>
+        ${list.map(q => {
+          const stat = q.status;
+          const dt = new Date(q.created_at).toLocaleDateString('fr-FR', {day:'2-digit', month:'short'});
+          return `<div class="qa-mine-item" data-id="${q.id}">
+            <div class="qa-mine-item__q">${q.qualified_question || q.initial_question}</div>
+            <div class="qa-mine-item__meta">
+              <span>${dt}</span>
+              <span class="qa-mine-item__status ${stat === 'awaiting_djibril' ? 'awaiting' : stat}">${qaStatusLabel(stat)}</span>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    `;
+    area.querySelectorAll('.qa-mine-item').forEach(el => {
+      el.addEventListener('click', async () => {
+        const id = el.dataset.id;
+        const full = await qaCall('GET', '/qa/get/'+id, null);
+        if(full && full.question){
+          _activeQuestion = {...full.question, matched_kb: full.kb};
+          renderQaActive();
+          window.scrollTo({top: document.getElementById('qa-section').offsetTop - 20, behavior: 'smooth'});
+        }
+      });
+    });
+  }
+
+  async function refreshKB(searchTerm){
+    const path = searchTerm ? `/qa/kb?q=${encodeURIComponent(searchTerm)}` : '/qa/kb';
+    const r = await qaCall('GET', path, null);
+    const list = r.kb || [];
+    document.getElementById('kb-count').textContent = `— ${list.length} ${list.length>1?'réponses':'réponse'}`;
+    const area = document.getElementById('kb-list');
+    if(list.length === 0){
+      area.innerHTML = '<p style="font-family:var(--serif);font-style:italic;color:var(--ink-mute);font-size:.92rem">Aucune question répondue pour l\'instant. Sois le premier à creuser.</p>';
+      return;
+    }
+    area.innerHTML = list.map((kb, idx) => {
+      const isTop = idx < 3 && kb.pertinence_score >= 70;
+      return `<div class="kb-item ${idx===0?'is-open':''}" data-id="${kb.id}">
+        <div class="kb-item__badge ${isTop?'top':''}">${kb.pertinence_score}/100</div>
+        <div class="kb-item__title">${kb.question_summary || kb.question}</div>
+        <div class="kb-item__meta">
+          <span>${kb.source_student_first_name || 'élève'}</span>
+          <span>${new Date(kb.created_at).toLocaleDateString('fr-FR',{day:'2-digit',month:'short'})}</span>
+          ${(kb.tags||[]).slice(0,3).map(t => `<span>·${t}</span>`).join('')}
+        </div>
+        <div class="kb-item__answer">${kb.answer}</div>
+      </div>`;
+    }).join('');
+    area.querySelectorAll('.kb-item').forEach(it => {
+      it.addEventListener('click', () => it.classList.toggle('is-open'));
+    });
+  }
+
+  // ── Sticky plate observer ──
+  function initStickyPlate(){
+    const sentinel = document.getElementById('plate-sentinel');
+    const stage = document.getElementById('plate-stage');
+    const placeholder = document.getElementById('plate-placeholder');
+    if(!sentinel || !stage || !('IntersectionObserver' in window)) return;
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(!entry.isIntersecting){
+          stage.classList.add('is-sticky');
+          placeholder.classList.add('is-active');
+        } else {
+          stage.classList.remove('is-sticky');
+          placeholder.classList.remove('is-active');
+        }
+      });
+    }, { rootMargin: "-1px 0px 0px 0px", threshold: 0 });
+    obs.observe(sentinel);
+  }
+
   // ── Render ──────────────────────────────────────────────
   async function render(){
     const shell = document.getElementById('shell');
@@ -710,6 +1035,8 @@ body{
       <div class="plate-stage" id="plate-stage" aria-label="Ton assiette du jour">
         <div class="plate-stage__caption">✦ Ton assiette du jour</div>
       </div>
+      <div class="plate-stage-sentinel" id="plate-sentinel"></div>
+      <div class="plate-placeholder" id="plate-placeholder"></div>
 
       <div id="msg-area"></div>
 
@@ -812,6 +1139,25 @@ body{
       </div>
 
       <div class="recap" id="recap-area"></div>
+
+      <div class="qa-section" id="qa-section">
+        <h3>Une question te tourmente ?</h3>
+        <p class="qa-intro">
+          Pose ta plus grosse problématique du moment (mental ou business).
+          <strong>L'IA va te poser 1-3 questions pour creuser</strong> avant que Djibril te réponde personnellement.
+          But : que tu sois 100% sûr de ton vrai problème — pas un écran de fumée.
+        </p>
+        <div id="qa-active-area"></div>
+        <div id="qa-mine-area"></div>
+        <div class="kb-section">
+          <h4>✦ Questions/Réponses de la cohorte <span class="count" id="kb-count">— chargement…</span></h4>
+          <div class="kb-search">
+            <input type="text" id="kb-search-input" placeholder="rechercher un sujet (calls, closing, mental…)">
+            <button id="kb-search-btn">Chercher</button>
+          </div>
+          <div id="kb-list"></div>
+        </div>
+      </div>
 
       <div class="history-section">
         <h3>Historique récent</h3>
@@ -1016,6 +1362,15 @@ body{
     });
     updateRecap(data);
     loadHistory();
+    // Q&A init (after main render)
+    initStickyPlate();
+    renderQaActive();
+    refreshMineList();
+    refreshKB(null);
+    const kbBtn = document.getElementById('kb-search-btn');
+    if(kbBtn) kbBtn.addEventListener('click', () => refreshKB(document.getElementById('kb-search-input').value.trim()));
+    const kbInput = document.getElementById('kb-search-input');
+    if(kbInput) kbInput.addEventListener('keypress', (e) => { if(e.key==='Enter') refreshKB(kbInput.value.trim()); });
   }
 
   // ── Save entry ──────────────────────────────────────────
@@ -1067,19 +1422,19 @@ body{
   }
 
   // ── Points + recap ──────────────────────────────────────
+  // Note 2026-05-13 : live n'octroie plus de points pour l'instant (à réactiver quand
+  // les créneaux live sont fixés par Djibril). live conservé pour data mais poids = 0.
   function calcPoints(data){
     const calls = data.calls||0;
-    const live = data.live||false;
     const hrs = parseFloat(data.hours_worked||0);
     const ful = parseInt(data.fulfillment||0);
     const wb = (data.wellbeing_answers && typeof data.wellbeing_answers==='object') ? data.wellbeing_answers : {};
-    // Count positive wb answers using static pool definitions
     let wbPositive = 0;
     Object.keys(wb).forEach(slug=>{
       const def = WB_POOL.find(q=>q.slug===slug);
       if(def && wb[slug] === def.positive) wbPositive++;
     });
-    return Math.round(hrs*2 + ful*1 + calls*2 + wbPositive*1 + (live?5:0));
+    return Math.round(hrs*2 + ful*1 + calls*2 + wbPositive*1); // + (live?0:0) — désactivé
   }
   function previewData(){
     return {
