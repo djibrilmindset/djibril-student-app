@@ -245,6 +245,13 @@ body{
 .qa-answer-card h4{font-family:var(--display);font-weight:900;font-size:1.05rem;color:var(--jade);margin-bottom:6px;display:flex;align-items:center;gap:6px}
 .qa-answer-card__score{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--ink-mute);text-transform:uppercase;margin-bottom:12px}
 .qa-answer-card__body{font-size:1rem;line-height:1.55;white-space:pre-wrap}
+/* Reformulation chirurgicale — validation/édition avant envoi */
+.qa-reformulation{margin-top:16px;padding:18px 18px 14px;background:rgba(255,252,245,.95);border:2px solid var(--ember);box-shadow:5px 5px 0 var(--ember-deep)}
+.qa-reformulation__head h5{font-family:var(--display);font-weight:900;font-size:1.05rem;color:var(--ember-deep);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.qa-reformulation__sub{font-family:var(--serif);font-style:italic;color:var(--ink-soft);font-size:.92rem;line-height:1.4;margin-bottom:14px}
+.qa-reformulation__sub strong{font-style:normal;color:var(--ember-deep);font-weight:700}
+.qa-reformulation__text{width:100%;padding:14px;font-family:var(--serif);font-size:1rem;line-height:1.55;background:rgba(243,236,223,.6);border:1.5px solid rgba(26,22,20,.18);border-radius:4px;color:var(--ink);outline:none;resize:vertical;font-style:italic}
+.qa-reformulation__text:focus{border-color:var(--ember);background:#fff}
 .qa-mine-list{margin-top:20px}
 .qa-mine-list h4{font-family:var(--display);font-weight:800;font-size:1rem;margin-bottom:10px;color:var(--ink)}
 .qa-mine-item{padding:10px 12px;margin-bottom:6px;background:rgba(255,252,245,.55);border-left:3px solid rgba(26,22,20,.18);font-size:.92rem;cursor:pointer;transition:all .15s}
@@ -808,7 +815,20 @@ body{
         </div>
       `;
     } else if(q.status === 'qualified'){
-      inputHTML = `<div class="qa-actions" style="margin-top:14px"><button class="btn btn--ember" id="qa-finalize-btn">Finaliser → chercher dans la base / envoyer à Djibril</button></div>`;
+      // Reformulation chirurgicale — éditable avant envoi
+      inputHTML = `
+        <div class="qa-reformulation">
+          <div class="qa-reformulation__head">
+            <h5>✦ Ta vraie question, reformulée</h5>
+            <p class="qa-reformulation__sub">Le mentor IA a synthétisé ce que tu as vraiment évoqué pendant le creusage. <strong>Relis bien</strong> — si quelque chose manque ou est inexact, édite directement avant d'envoyer.</p>
+          </div>
+          <textarea class="qa-reformulation__text" id="qa-reformulation-text" rows="6">${q.qualified_question || ''}</textarea>
+          <div class="qa-actions" style="margin-top:12px">
+            <button class="btn btn--ember" id="qa-finalize-btn">C'est ma vraie question ✦ envoyer</button>
+            <button class="btn btn--sm" id="qa-reroll-btn" title="Régénérer une autre reformulation">↻ Reformuler autrement</button>
+          </div>
+        </div>
+      `;
     } else if(q.status === 'matched' && q.matched_kb){
       const kb = q.matched_kb;
       inputHTML = `
@@ -846,9 +866,20 @@ body{
     document.getElementById('qa-answer-btn')?.addEventListener('click', () => sendAnswer(false));
     document.getElementById('qa-force-btn')?.addEventListener('click', () => sendAnswer(true));
     document.getElementById('qa-finalize-btn')?.addEventListener('click', finalizeQuestion);
+    document.getElementById('qa-reroll-btn')?.addEventListener('click', rerollReformulation);
     document.getElementById('qa-accept-match')?.addEventListener('click', () => matchResponse(true));
     document.getElementById('qa-reject-match')?.addEventListener('click', () => matchResponse(false));
     document.getElementById('qa-new-btn')?.addEventListener('click', resetQa);
+  }
+
+  async function rerollReformulation(){
+    if(!_activeQuestion) return;
+    const btn = document.getElementById('qa-reroll-btn');
+    if(btn){ btn.disabled = true; btn.textContent = '…'; }
+    const r = await qaCall('POST', '/qa/reformulate/'+_activeQuestion.id, {});
+    if(r.error){ alert('Erreur: ' + r.error); if(btn){btn.disabled=false;btn.textContent='↻ Reformuler autrement';} return; }
+    _activeQuestion = r.question;
+    renderQaActive();
   }
 
   async function submitNewQuestion(){
@@ -880,8 +911,11 @@ body{
     if(!_activeQuestion) return;
     const btn = document.getElementById('qa-finalize-btn');
     if(btn){ btn.disabled = true; btn.textContent = 'Recherche en cours…'; }
-    const r = await qaCall('POST', '/qa/finalize/'+_activeQuestion.id, {});
-    if(r.error){ alert('Erreur: ' + r.error); return; }
+    // Récupère la version potentiellement éditée par l'élève
+    const editedEl = document.getElementById('qa-reformulation-text');
+    const edited = editedEl ? editedEl.value.trim() : null;
+    const r = await qaCall('POST', '/qa/finalize/'+_activeQuestion.id, edited ? { edited_question: edited } : {});
+    if(r.error){ alert('Erreur: ' + r.error); if(btn){btn.disabled=false;btn.textContent='C\'est ma vraie question ✦ envoyer';} return; }
     // Reload full question with matched_kb
     const full = await qaCall('GET', '/qa/get/'+_activeQuestion.id, null);
     if(full && full.question){
