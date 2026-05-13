@@ -213,6 +213,40 @@ body{
 
 @keyframes fieldIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 
+/* PLATE METAPHOR — assiette du jour */
+.plate-stage{display:flex;flex-direction:column;align-items:center;margin:6px 0 28px;position:relative;z-index:2}
+.plate-stage__caption{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--ink-mute);margin-bottom:10px}
+.plate-svg{width:min(240px,72vw);height:auto;display:block;filter:drop-shadow(2px 4px 0 rgba(26,22,20,.08))}
+.plate-rim{fill:rgba(255,252,245,.95);stroke:var(--ink);stroke-width:2}
+.plate-rim-shadow{fill:none;stroke:rgba(26,22,20,.12);stroke-width:1;stroke-dasharray:0}
+.plate-inner{fill:url(#plateTexture);stroke:rgba(26,22,20,.08);stroke-width:.5}
+.plate-bubble{transition:r .6s cubic-bezier(.22,1,.36,1),opacity .3s;mix-blend-mode:multiply;opacity:.88}
+.plate-bubble--empty{opacity:.25;mix-blend-mode:normal}
+.plate-bubble__highlight{fill:rgba(255,255,255,.35);pointer-events:none;transition:r .6s cubic-bezier(.22,1,.36,1),opacity .3s}
+.plate-center-dot{fill:var(--ink);opacity:.25}
+.plate-ca-ring{fill:none;stroke:var(--gold);opacity:0;transition:stroke-width .5s,opacity .5s}
+.plate-ca-ring.is-on{opacity:.78}
+.plate-halo{fill:none;stroke-width:1.5;stroke-linecap:round;opacity:0;transition:opacity .4s}
+.plate-halo.is-on{opacity:.55}
+.plate-halo--pos{stroke:var(--jade);stroke-dasharray:5 6;animation:plate-halo-rotate 60s linear infinite}
+.plate-halo--neg{stroke:var(--crit);stroke-dasharray:2 4;opacity:.45!important}
+@keyframes plate-halo-rotate{from{stroke-dashoffset:0}to{stroke-dashoffset:-220}}
+.plate-cracks{opacity:0;transition:opacity .4s}
+.plate-cracks.is-on{opacity:.85}
+.plate-cracks path{fill:none;stroke:rgba(26,22,20,.22);stroke-width:1;stroke-dasharray:2 3;stroke-linecap:round}
+.plate-growth{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute);margin-top:14px;font-weight:600;min-height:1.2em;text-align:center}
+.plate-growth.pos{color:var(--jade)}
+.plate-growth.neg{color:var(--crit)}
+.plate-growth.empty{color:var(--ink-mute);font-style:italic;font-family:var(--serif);text-transform:none;letter-spacing:0;font-size:.95rem;font-weight:400}
+.plate-legend{display:flex;flex-wrap:wrap;gap:8px 14px;justify-content:center;margin-top:14px;padding:0 8px;max-width:380px}
+.plate-legend .leg-item{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;color:var(--ink-soft);display:inline-flex;align-items:center;gap:5px;text-transform:uppercase;font-weight:500}
+.plate-legend .leg-item .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;box-shadow:0 0 0 1.5px rgba(255,252,245,.9),0 0 0 2.5px currentColor;opacity:.85}
+.plate-legend .leg-item b{font-family:var(--display);font-weight:800;font-style:normal;color:var(--ink);margin-left:2px;letter-spacing:0;text-transform:none;font-size:11px}
+
+@media (prefers-reduced-motion:reduce){
+  .plate-bubble,.plate-bubble__highlight,.plate-ca-ring,.plate-halo--pos,.plate-cracks{animation:none!important;transition:none!important}
+}
+
 @media (max-width:500px){
   .card-today{padding:24px 20px;box-shadow:4px 4px 0 var(--ember-deep)}
   .field-row{grid-template-columns:1fr}
@@ -327,6 +361,148 @@ body{
     return '✨';
   }
 
+  // ── Plate metaphor (assiette du jour) ──────────────────
+  // Cache des 7 derniers jours (hors aujourd'hui) pour la comparaison
+  let _history7Cache = [];
+
+  function wbPositiveCount(wb){
+    if(!wb || typeof wb!=='object') return 0;
+    let n=0;
+    Object.keys(wb).forEach(slug=>{
+      const def = WB_POOL.find(q=>q.slug===slug);
+      if(def && wb[slug] === def.positive) n++;
+    });
+    return n;
+  }
+
+  function plateGrowthPct(currentPts, history7){
+    if(!history7 || !history7.length) return null;
+    const avg = history7.reduce((s,e)=>s+calcPoints(e),0) / history7.length;
+    if(avg <= 0) return null;
+    return ((currentPts - avg) / avg) * 100;
+  }
+
+  // Pentagon positions around plate center (radius 38 from center 120,120)
+  const PLATE_SLOTS = [
+    {key:'hours',   angle:-90, color:'var(--jade)',   max:12,  label:'Heures', unit:'h'},
+    {key:'calls',   angle:-18, color:'var(--gold)',   max:100, label:'Calls',  unit:''},
+    {key:'ful',     angle: 54, color:'var(--ember)',  max:10,  label:'Épan.',  unit:'/10'},
+    {key:'wb',      angle:126, color:'var(--indigo)', max:5,   label:'B-être', unit:''},
+    {key:'live',    angle:198, color:'var(--plum)',   max:1,   label:'Live',   unit:''}
+  ];
+
+  function bubbleRadius(value, max){
+    // Empty → tiny ghost circle (r=4). Full → r=24.
+    if(!max || value <= 0) return 4;
+    const ratio = Math.min(1, value/max);
+    return 4 + ratio * 20;
+  }
+
+  function renderPlate(){
+    const stage = document.getElementById('plate-stage');
+    if(!stage) return;
+
+    // Live values (depuis les inputs)
+    const hours = parseFloat(document.getElementById('field-hours').value)||0;
+    const ful   = parseInt(document.getElementById('field-fulfillment').value)||0;
+    const calls = parseInt(document.getElementById('field-calls').value)||0;
+    const ca    = parseFloat(document.getElementById('field-ca').value)||0;
+    const live  = _live ? 1 : 0;
+    const wbPos = wbPositiveCount(_wb);
+    const wbTot = Math.max(5, Object.keys(_wb).length || 5);
+
+    const values = {hours, calls, ful, wb:wbPos, live};
+    const displayValues = {hours:hours+'h', calls:calls, ful:ful+'/10', wb:wbPos+'/'+wbTot, live:(live?'oui':'non')};
+
+    // Bubbles
+    const bubbles = PLATE_SLOTS.map(slot=>{
+      const v = values[slot.key];
+      const r = bubbleRadius(v, slot.max);
+      const rad = (slot.angle * Math.PI) / 180;
+      const cx = 120 + 38 * Math.cos(rad);
+      const cy = 120 + 38 * Math.sin(rad);
+      const isEmpty = v <= 0;
+      const cls = 'plate-bubble' + (isEmpty?' plate-bubble--empty':'');
+      // shadow + main + highlight (food-like sheen)
+      return `
+        <g class="plate-portion" data-key="${slot.key}">
+          <circle class="${cls}" cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${r.toFixed(1)}" fill="${slot.color}" />
+          <circle class="plate-bubble__highlight" cx="${(cx-r*0.3).toFixed(1)}" cy="${(cy-r*0.3).toFixed(1)}" r="${(r*0.35).toFixed(1)}" />
+        </g>`;
+    }).join('');
+
+    // CA ring (proportionnel au CA, max ~2000€ pour épaisseur 12)
+    const caWidth = ca > 0 ? Math.min(12, 2 + ca/200) : 0;
+    const caRing = ca > 0
+      ? `<circle class="plate-ca-ring is-on" cx="120" cy="120" r="${(112+caWidth/2).toFixed(1)}" stroke-width="${caWidth.toFixed(1)}" />`
+      : `<circle class="plate-ca-ring" cx="120" cy="120" r="114" stroke-width="2" />`;
+
+    // Growth halo + label
+    const currentPts = calcPoints({calls, live:_live, hours_worked:hours, fulfillment:ful, wellbeing_answers:_wb});
+    const growth = plateGrowthPct(currentPts, _history7Cache);
+    const isEmpty = hours===0 && ful===0 && calls===0 && wbPos===0 && !live;
+    let haloHTML = '<circle class="plate-halo" cx="120" cy="120" r="120" />';
+    let growthLabelHTML = '<div class="plate-growth empty">à remplir — donne-lui du contenu</div>';
+    if(!isEmpty){
+      if(growth === null){
+        growthLabelHTML = '<div class="plate-growth empty">première assiette · pas encore de moyenne 7j</div>';
+      } else if(growth >= 5){
+        haloHTML = `<circle class="plate-halo plate-halo--pos is-on" cx="120" cy="120" r="120" />`;
+        growthLabelHTML = `<div class="plate-growth pos">↑ +${Math.round(growth)}% vs 7 derniers jours</div>`;
+      } else if(growth <= -5){
+        haloHTML = `<circle class="plate-halo plate-halo--neg is-on" cx="120" cy="120" r="120" />`;
+        growthLabelHTML = `<div class="plate-growth neg">↓ ${Math.round(growth)}% vs 7 derniers jours</div>`;
+      } else {
+        growthLabelHTML = `<div class="plate-growth empty">~ stable vs 7 derniers jours (${growth>=0?'+':''}${Math.round(growth)}%)</div>`;
+      }
+    }
+
+    // Empty plate cracks (frustration positive douce)
+    const cracksHTML = isEmpty ? `
+      <g class="plate-cracks is-on">
+        <path d="M62 88 Q92 116 100 142 Q106 168 130 178" />
+        <path d="M154 70 Q142 98 168 128" />
+        <path d="M170 162 Q182 146 162 122" />
+      </g>` : '<g class="plate-cracks"></g>';
+
+    // Legend
+    const legendHTML = PLATE_SLOTS.map(slot=>`
+      <span class="leg-item" style="color:${slot.color}">
+        <span class="dot" style="background:${slot.color}"></span>
+        ${slot.label} <b>${displayValues[slot.key]}</b>
+      </span>
+    `).join('');
+
+    // SVG plate
+    const svg = `
+      <svg class="plate-svg" viewBox="0 0 240 240" aria-hidden="false" role="img">
+        <defs>
+          <radialGradient id="plateTexture" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(243,236,223,0.85)" />
+            <stop offset="80%" stop-color="rgba(233,224,207,0.7)" />
+            <stop offset="100%" stop-color="rgba(220,210,190,0.65)" />
+          </radialGradient>
+        </defs>
+        ${haloHTML}
+        <circle class="plate-rim-shadow" cx="121" cy="123" r="110" />
+        <circle class="plate-rim" cx="120" cy="120" r="110" />
+        <circle class="plate-inner" cx="120" cy="120" r="100" />
+        ${caRing}
+        ${cracksHTML}
+        ${bubbles}
+        <circle class="plate-center-dot" cx="120" cy="120" r="2.5" />
+      </svg>
+    `;
+
+    // Preserve caption + replace rest
+    stage.innerHTML = `
+      <div class="plate-stage__caption">✦ Ton assiette du jour</div>
+      ${svg}
+      ${growthLabelHTML}
+      <div class="plate-legend">${legendHTML}</div>
+    `;
+  }
+
   // ── Render ──────────────────────────────────────────────
   async function render(){
     const shell = document.getElementById('shell');
@@ -366,6 +542,10 @@ body{
         <div class="brain-orb__capsule"></div>
         <div class="brain-orb__pts"><span id="brain-pts">0</span><small>pts</small></div>
       </div></div>
+
+      <div class="plate-stage" id="plate-stage" aria-label="Ton assiette du jour">
+        <div class="plate-stage__caption">✦ Ton assiette du jour</div>
+      </div>
 
       <div id="msg-area"></div>
 
@@ -740,6 +920,7 @@ body{
   function updateBrainPreview(){
     const pts = calcPoints(previewData());
     updateBrainOrb(pts);
+    renderPlate();
   }
   function updateRecap(data){
     const calls=data.calls||0;
@@ -779,7 +960,16 @@ body{
   // ── History ─────────────────────────────────────────────
   async function loadHistory(){
     const history = await api('GET','/me/history');
-    if(!history || !history.length) return;
+    if(!history || !history.length){
+      _history7Cache = [];
+      renderPlate();
+      return;
+    }
+    // Cache: 7 dernières entrées HORS aujourd'hui (pour comparer aujourd'hui à la moyenne récente)
+    const today = getTodayStr();
+    _history7Cache = history.filter(e => e.entry_date !== today).slice(0, 7);
+    renderPlate();
+
     let rows = '';
     history.slice(0,14).forEach(e=>{
       const pts = calcPoints(e);
