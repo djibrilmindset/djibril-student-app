@@ -213,38 +213,54 @@ body{
 
 @keyframes fieldIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 
-/* PLATE METAPHOR — assiette du jour */
+/* PLATE METAPHOR v2 — assiette figurative 3D du jour */
 .plate-stage{display:flex;flex-direction:column;align-items:center;margin:6px 0 28px;position:relative;z-index:2}
 .plate-stage__caption{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--ink-mute);margin-bottom:10px}
-.plate-svg{width:min(240px,72vw);height:auto;display:block;filter:drop-shadow(2px 4px 0 rgba(26,22,20,.08))}
-.plate-rim{fill:rgba(255,252,245,.95);stroke:var(--ink);stroke-width:2}
-.plate-rim-shadow{fill:none;stroke:rgba(26,22,20,.12);stroke-width:1;stroke-dasharray:0}
-.plate-inner{fill:url(#plateTexture);stroke:rgba(26,22,20,.08);stroke-width:.5}
-.plate-bubble{transition:r .6s cubic-bezier(.22,1,.36,1),opacity .3s;mix-blend-mode:multiply;opacity:.88}
-.plate-bubble--empty{opacity:.25;mix-blend-mode:normal}
-.plate-bubble__highlight{fill:rgba(255,255,255,.35);pointer-events:none;transition:r .6s cubic-bezier(.22,1,.36,1),opacity .3s}
-.plate-center-dot{fill:var(--ink);opacity:.25}
-.plate-ca-ring{fill:none;stroke:var(--gold);opacity:0;transition:stroke-width .5s,opacity .5s}
-.plate-ca-ring.is-on{opacity:.78}
+.plate-svg{width:min(320px,90vw);height:auto;display:block}
+/* 3D plate layers */
+.plate-shadow-ground{fill:rgba(26,22,20,.18)}
+.plate-base{fill:#9c8c70}
+.plate-base-shadow{fill:rgba(26,22,20,.25)}
+.plate-rim{fill:url(#gPlateRim);stroke:rgba(70,55,30,.35);stroke-width:1.2}
+.plate-inner{fill:url(#gPlate);stroke:rgba(26,22,20,.1);stroke-width:.6}
+.plate-inner-shadow{fill:rgba(0,0,0,.05)}
+.plate-inner-light{fill:rgba(255,250,235,.18)}
+/* foods */
+.food{transition:opacity .35s cubic-bezier(.22,1,.36,1)}
+.food--shine{animation:foodShine 1.6s ease-in-out infinite}
+@keyframes foodShine{
+  0%,100%{filter:drop-shadow(0 0 0 rgba(212,149,26,0)) brightness(1)}
+  50%{filter:drop-shadow(0 0 6px rgba(212,149,26,.95)) brightness(1.18)}
+}
+/* sauce gold */
+.plate-sauce{transition:stroke-width .5s,opacity .5s,stroke-dasharray .5s}
+/* halo growth */
 .plate-halo{fill:none;stroke-width:1.5;stroke-linecap:round;opacity:0;transition:opacity .4s}
 .plate-halo.is-on{opacity:.55}
 .plate-halo--pos{stroke:var(--jade);stroke-dasharray:5 6;animation:plate-halo-rotate 60s linear infinite}
 .plate-halo--neg{stroke:var(--crit);stroke-dasharray:2 4;opacity:.45!important}
 @keyframes plate-halo-rotate{from{stroke-dashoffset:0}to{stroke-dashoffset:-220}}
+/* cracks (assiette vide) */
 .plate-cracks{opacity:0;transition:opacity .4s}
-.plate-cracks.is-on{opacity:.85}
+.plate-cracks.is-on{opacity:.65}
 .plate-cracks path{fill:none;stroke:rgba(26,22,20,.22);stroke-width:1;stroke-dasharray:2 3;stroke-linecap:round}
+/* growth label */
 .plate-growth{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute);margin-top:14px;font-weight:600;min-height:1.2em;text-align:center}
 .plate-growth.pos{color:var(--jade)}
 .plate-growth.neg{color:var(--crit)}
 .plate-growth.empty{color:var(--ink-mute);font-style:italic;font-family:var(--serif);text-transform:none;letter-spacing:0;font-size:.95rem;font-weight:400}
+/* legend */
 .plate-legend{display:flex;flex-wrap:wrap;gap:8px 14px;justify-content:center;margin-top:14px;padding:0 8px;max-width:380px}
 .plate-legend .leg-item{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;color:var(--ink-soft);display:inline-flex;align-items:center;gap:5px;text-transform:uppercase;font-weight:500}
 .plate-legend .leg-item .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;box-shadow:0 0 0 1.5px rgba(255,252,245,.9),0 0 0 2.5px currentColor;opacity:.85}
 .plate-legend .leg-item b{font-family:var(--display);font-weight:800;font-style:normal;color:var(--ink);margin-left:2px;letter-spacing:0;text-transform:none;font-size:11px}
+/* shine hint */
+.plate-shine-hint{font-family:var(--serif);font-style:italic;font-size:.85rem;color:var(--gold);margin-top:4px;text-align:center;animation:plate-hint-fade 4s ease infinite}
+@keyframes plate-hint-fade{0%,100%{opacity:.6}50%{opacity:1}}
 
 @media (prefers-reduced-motion:reduce){
-  .plate-bubble,.plate-bubble__highlight,.plate-ca-ring,.plate-halo--pos,.plate-cracks{animation:none!important;transition:none!important}
+  .food--shine,.plate-halo--pos,.plate-shine-hint{animation:none!important}
+  .food{transition:none!important}
 }
 
 @media (max-width:500px){
@@ -382,27 +398,109 @@ body{
     return ((currentPts - avg) / avg) * 100;
   }
 
-  // Pentagon positions around plate center (radius 38 from center 120,120)
-  const PLATE_SLOTS = [
-    {key:'hours',   angle:-90, color:'var(--jade)',   max:12,  label:'Heures', unit:'h'},
-    {key:'calls',   angle:-18, color:'var(--gold)',   max:100, label:'Calls',  unit:''},
-    {key:'ful',     angle: 54, color:'var(--ember)',  max:10,  label:'Épan.',  unit:'/10'},
-    {key:'wb',      angle:126, color:'var(--indigo)', max:5,   label:'B-être', unit:''},
-    {key:'live',    angle:198, color:'var(--plum)',   max:1,   label:'Live',   unit:''}
-  ];
+  // ── PLATE v2 figurative ────────────────────────────────
+  // Granularité fine : 1 aliment par tranche (24 salades max, 30 grains max, 10 tomates, 5 herbes, 1 viande)
+  // Style 3D figuratif via SVG path détaillés + dégradés radiaux + ombres
+  // Animation shine sur derniers éléments ajoutés depuis dernier save (diff via localStorage)
 
-  function bubbleRadius(value, max){
-    // Empty → tiny ghost circle (r=4). Full → r=24.
-    if(!max || value <= 0) return 4;
-    const ratio = Math.min(1, value/max);
-    return 4 + ratio * 20;
+  const PLATE_VIEWBOX = {w:300, h:240, cx:150, cy:130, rx:100, ry:42};
+
+  // Stable PRNG (seed string → reproducible position)
+  function platePRNG(seed){
+    let h = 2166136261;
+    for(let i=0;i<seed.length;i++){h^=seed.charCodeAt(i);h=Math.imul(h,16777619)>>>0}
+    return ()=>{h+=0x6D2B79F5;let t=h;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296};
+  }
+
+  // Generate N positions in a zone (angle range in deg, distance ratio range)
+  function plateZone(seed, count, angleMin, angleMax, distMin, distMax){
+    const r = platePRNG(seed);
+    const out = [];
+    const {cx, cy, rx, ry} = PLATE_VIEWBOX;
+    for(let i=0;i<count;i++){
+      const angle = (angleMin + r() * (angleMax - angleMin)) * Math.PI / 180;
+      const dist = distMin + r() * (distMax - distMin);
+      const x = cx + Math.cos(angle) * rx * dist;
+      const y = cy + Math.sin(angle) * ry * dist * 0.9;  // flatten Y slightly for 3D
+      const rot = r() * 360;
+      const sc = 0.85 + r() * 0.4;
+      out.push({x, y, rot, sc});
+    }
+    return out;
+  }
+
+  // SVG path snippets for each food type
+  const FOOD_SHAPES = {
+    salad: `
+      <path d="M0,-9 Q5.5,-7 6.5,0 Q4,8 0,9 Q-4,8 -6.5,0 Q-5.5,-7 0,-9 Z" fill="url(#gSalad)" stroke="rgba(20,60,30,.3)" stroke-width=".3"/>
+      <path d="M0,-7 L0,7" stroke="rgba(20,80,30,.4)" stroke-width=".5" fill="none"/>
+      <path d="M0,-3 L-3,-1" stroke="rgba(20,80,30,.3)" stroke-width=".35" fill="none"/>
+      <path d="M0,1 L3,3" stroke="rgba(20,80,30,.3)" stroke-width=".35" fill="none"/>
+      <ellipse cx="-2" cy="-3" rx="1.8" ry="2.6" fill="rgba(255,255,255,.35)"/>`,
+    grain: `
+      <ellipse cx=".5" cy=".5" rx="2.6" ry="4" fill="rgba(0,0,0,.22)"/>
+      <ellipse cx="0" cy="0" rx="2.4" ry="3.8" fill="url(#gGrain)"/>
+      <path d="M0,-3.2 L0,3" stroke="rgba(120,75,20,.5)" stroke-width=".4" fill="none"/>
+      <ellipse cx="-.7" cy="-1.3" rx=".7" ry="1.2" fill="rgba(255,255,255,.45)"/>`,
+    tomato: `
+      <circle cx=".8" cy=".8" r="4.8" fill="rgba(0,0,0,.25)"/>
+      <circle cx="0" cy="0" r="4.5" fill="url(#gTomato)"/>
+      <path d="M-1.6,-3.6 L-.6,-4.8 L0,-4 L.6,-4.8 L1.6,-3.6 L0,-3 Z" fill="#1d8a6f"/>
+      <ellipse cx="-1.6" cy="-1.3" rx="1.5" ry="1" fill="rgba(255,255,255,.55)"/>`,
+    herb: `
+      <path d="M0,-7 L-2.5,-2 L-1,-1.5 L-2.2,2 L0,1.2 L2.2,2 L1,-1.5 L2.5,-2 Z" fill="url(#gHerb)" stroke="rgba(50,30,80,.35)" stroke-width=".3"/>
+      <line x1="0" y1="-7" x2="0" y2="3.5" stroke="rgba(70,40,90,.6)" stroke-width=".5"/>
+      <ellipse cx="-.8" cy="-3.5" rx=".7" ry="1.2" fill="rgba(255,255,255,.4)"/>`,
+    meat: `
+      <ellipse cx="3" cy="4" rx="26" ry="14" fill="rgba(0,0,0,.4)"/>
+      <ellipse cx="0" cy="0" rx="26" ry="14" fill="url(#gMeat)"/>
+      <path d="M-18,-5 Q0,-4 18,-5" stroke="rgba(45,12,5,.6)" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+      <path d="M-22,0 Q0,1 22,0" stroke="rgba(45,12,5,.6)" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+      <path d="M-18,5 Q0,6 18,5" stroke="rgba(45,12,5,.6)" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+      <ellipse cx="-9" cy="-6" rx="8" ry="2.5" fill="rgba(255,215,160,.5)"/>
+      <ellipse cx="0" cy="0" rx="26" ry="14" fill="none" stroke="rgba(70,30,15,.5)" stroke-width=".8"/>`
+  };
+
+  // Render group of foods of one type
+  function renderFoods(type, positions, newCount){
+    const total = positions.length;
+    return positions.map((p, i) => {
+      const isNew = i >= (total - newCount);
+      const cls = `food food--${type}${isNew?' food--shine':''}`;
+      return `<g class="${cls}" transform="translate(${p.x.toFixed(1)} ${p.y.toFixed(1)}) rotate(${p.rot.toFixed(0)}) scale(${p.sc.toFixed(2)})">${FOOD_SHAPES[type]}</g>`;
+    }).join('');
+  }
+
+  // Read/write last saved counts (for shine diff) — date-scoped
+  function getLastPlateCounts(){
+    try {
+      const obj = JSON.parse(localStorage.getItem('dj_plate_last') || '{}');
+      // New day = reset baseline (tout brille à nouveau)
+      if (obj.date !== getTodayStr()) return {};
+      return obj;
+    } catch(e){ return {}; }
+  }
+  function savePlateCounts(counts){
+    try {
+      localStorage.setItem('dj_plate_last', JSON.stringify({...counts, date: getTodayStr()}));
+    } catch(e){}
+  }
+  // Compute plate counts from a saved entry payload
+  function computePlateCounts(data){
+    return {
+      salads:   Math.floor((parseFloat(data.hours_worked||0)) * 2),
+      grains:   Math.min(30, Math.floor((parseInt(data.calls||0))/5)),
+      tomatoes: Math.min(10, parseInt(data.fulfillment||0)),
+      herbs:    Math.min(5, wbPositiveCount(data.wellbeing_answers||{})),
+      meat:     data.live ? 1 : 0
+    };
   }
 
   function renderPlate(){
     const stage = document.getElementById('plate-stage');
     if(!stage) return;
 
-    // Live values (depuis les inputs)
+    // ── Read live form values ──
     const hours = parseFloat(document.getElementById('field-hours').value)||0;
     const ful   = parseInt(document.getElementById('field-fulfillment').value)||0;
     const calls = parseInt(document.getElementById('field-calls').value)||0;
@@ -411,94 +509,160 @@ body{
     const wbPos = wbPositiveCount(_wb);
     const wbTot = Math.max(5, Object.keys(_wb).length || 5);
 
-    const values = {hours, calls, ful, wb:wbPos, live};
-    const displayValues = {hours:hours+'h', calls:calls, ful:ful+'/10', wb:wbPos+'/'+wbTot, live:(live?'oui':'non')};
+    // ── Compute food counts ──
+    const nSalads   = Math.floor(hours * 2);            // 1 salade par 30min (max 24 à 12h)
+    const nGrains   = Math.min(30, Math.floor(calls/5)); // 1 grain par 5 calls (cap 30)
+    const nTomatoes = Math.min(10, ful);                 // 1 tomate par point épanouissement
+    const nHerbs    = Math.min(5, wbPos);                // 1 herbe par BE positif
+    const hasMeat   = live === 1;
 
-    // Bubbles
-    const bubbles = PLATE_SLOTS.map(slot=>{
-      const v = values[slot.key];
-      const r = bubbleRadius(v, slot.max);
-      const rad = (slot.angle * Math.PI) / 180;
-      const cx = 120 + 38 * Math.cos(rad);
-      const cy = 120 + 38 * Math.sin(rad);
-      const isEmpty = v <= 0;
-      const cls = 'plate-bubble' + (isEmpty?' plate-bubble--empty':'');
-      // shadow + main + highlight (food-like sheen)
-      return `
-        <g class="plate-portion" data-key="${slot.key}">
-          <circle class="${cls}" cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${r.toFixed(1)}" fill="${slot.color}" />
-          <circle class="plate-bubble__highlight" cx="${(cx-r*0.3).toFixed(1)}" cy="${(cy-r*0.3).toFixed(1)}" r="${(r*0.35).toFixed(1)}" />
-        </g>`;
-    }).join('');
+    const currentCounts = {salads:nSalads, grains:nGrains, tomatoes:nTomatoes, herbs:nHerbs, meat:hasMeat?1:0, ca};
+    const last = getLastPlateCounts();
+    const newCounts = {
+      salads:   Math.max(0, nSalads   - (last.salads||0)),
+      grains:   Math.max(0, nGrains   - (last.grains||0)),
+      tomatoes: Math.max(0, nTomatoes - (last.tomatoes||0)),
+      herbs:    Math.max(0, nHerbs    - (last.herbs||0)),
+      meat:     (hasMeat && !last.meat) ? 1 : 0
+    };
+    const anyNew = newCounts.salads+newCounts.grains+newCounts.tomatoes+newCounts.herbs+newCounts.meat > 0;
 
-    // CA ring (proportionnel au CA, max ~2000€ pour épaisseur 12)
-    const caWidth = ca > 0 ? Math.min(12, 2 + ca/200) : 0;
-    const caRing = ca > 0
-      ? `<circle class="plate-ca-ring is-on" cx="120" cy="120" r="${(112+caWidth/2).toFixed(1)}" stroke-width="${caWidth.toFixed(1)}" />`
-      : `<circle class="plate-ca-ring" cx="120" cy="120" r="114" stroke-width="2" />`;
+    // ── Positions (zones autour de l'ovale) ──
+    // Angles: 0=droite, 90=bas (vers spectateur en 3D), 180=gauche, 270=haut
+    const saladPos   = plateZone('salad_v2',   nSalads,   210, 340, 0.40, 0.85);  // arrière gauche-haut
+    const grainPos   = plateZone('grain_v2',   nGrains,   -45,  60, 0.45, 0.85);  // droite
+    const tomatoPos  = plateZone('tomato_v2',  nTomatoes,  60, 130, 0.40, 0.78);  // avant
+    const herbPos    = plateZone('herb_v2',    nHerbs,      0, 360, 0.55, 0.92);  // sprinkled
 
-    // Growth halo + label
+    const saladsSVG   = renderFoods('salad',   saladPos,   newCounts.salads);
+    const grainsSVG   = renderFoods('grain',   grainPos,   newCounts.grains);
+    const tomatoesSVG = renderFoods('tomato',  tomatoPos,  newCounts.tomatoes);
+    const herbsSVG    = renderFoods('herb',    herbPos,    newCounts.herbs);
+    const meatSVG     = hasMeat
+      ? `<g class="food food--meat${newCounts.meat?' food--shine':''}" transform="translate(${PLATE_VIEWBOX.cx} ${PLATE_VIEWBOX.cy})">${FOOD_SHAPES.meat}</g>`
+      : '';
+
+    // ── Gold sauce (CA) ──
+    let sauceSVG = '';
+    if(ca > 0){
+      const sw = Math.min(9, 1.5 + ca/200);
+      const dashLen = Math.min(30, Math.max(3, ca/50));
+      sauceSVG = `<ellipse class="plate-sauce" cx="${PLATE_VIEWBOX.cx}" cy="${PLATE_VIEWBOX.cy+2}" rx="${PLATE_VIEWBOX.rx-4}" ry="${PLATE_VIEWBOX.ry+3}" fill="none" stroke="url(#gGoldSauce)" stroke-width="${sw.toFixed(1)}" stroke-dasharray="${dashLen.toFixed(0)} 4" opacity=".88" stroke-linecap="round"/>`;
+    }
+
+    // ── Growth halo + label ──
     const currentPts = calcPoints({calls, live:_live, hours_worked:hours, fulfillment:ful, wellbeing_answers:_wb});
     const growth = plateGrowthPct(currentPts, _history7Cache);
     const isEmpty = hours===0 && ful===0 && calls===0 && wbPos===0 && !live;
-    let haloHTML = '<circle class="plate-halo" cx="120" cy="120" r="120" />';
-    let growthLabelHTML = '<div class="plate-growth empty">à remplir — donne-lui du contenu</div>';
+    let haloHTML = `<ellipse class="plate-halo" cx="${PLATE_VIEWBOX.cx}" cy="${PLATE_VIEWBOX.cy}" rx="${PLATE_VIEWBOX.rx+18}" ry="${PLATE_VIEWBOX.ry+24}" />`;
+    let growthLabelHTML = '<div class="plate-growth empty">à remplir — commence par 1 portion</div>';
     if(!isEmpty){
       if(growth === null){
         growthLabelHTML = '<div class="plate-growth empty">première assiette · pas encore de moyenne 7j</div>';
       } else if(growth >= 5){
-        haloHTML = `<circle class="plate-halo plate-halo--pos is-on" cx="120" cy="120" r="120" />`;
+        haloHTML = `<ellipse class="plate-halo plate-halo--pos is-on" cx="${PLATE_VIEWBOX.cx}" cy="${PLATE_VIEWBOX.cy}" rx="${PLATE_VIEWBOX.rx+18}" ry="${PLATE_VIEWBOX.ry+24}" />`;
         growthLabelHTML = `<div class="plate-growth pos">↑ +${Math.round(growth)}% vs 7 derniers jours</div>`;
       } else if(growth <= -5){
-        haloHTML = `<circle class="plate-halo plate-halo--neg is-on" cx="120" cy="120" r="120" />`;
+        haloHTML = `<ellipse class="plate-halo plate-halo--neg is-on" cx="${PLATE_VIEWBOX.cx}" cy="${PLATE_VIEWBOX.cy}" rx="${PLATE_VIEWBOX.rx+18}" ry="${PLATE_VIEWBOX.ry+24}" />`;
         growthLabelHTML = `<div class="plate-growth neg">↓ ${Math.round(growth)}% vs 7 derniers jours</div>`;
       } else {
         growthLabelHTML = `<div class="plate-growth empty">~ stable vs 7 derniers jours (${growth>=0?'+':''}${Math.round(growth)}%)</div>`;
       }
     }
 
-    // Empty plate cracks (frustration positive douce)
+    // ── Cracks (assiette vide) ──
     const cracksHTML = isEmpty ? `
       <g class="plate-cracks is-on">
-        <path d="M62 88 Q92 116 100 142 Q106 168 130 178" />
-        <path d="M154 70 Q142 98 168 128" />
-        <path d="M170 162 Q182 146 162 122" />
-      </g>` : '<g class="plate-cracks"></g>';
+        <path d="M85 122 Q120 135 150 140 Q180 142 215 138" />
+        <path d="M125 110 Q132 130 148 148" />
+        <path d="M175 112 Q175 132 168 150" />
+      </g>` : '';
 
-    // Legend
-    const legendHTML = PLATE_SLOTS.map(slot=>`
-      <span class="leg-item" style="color:${slot.color}">
-        <span class="dot" style="background:${slot.color}"></span>
-        ${slot.label} <b>${displayValues[slot.key]}</b>
-      </span>
-    `).join('');
+    // ── Legend ──
+    const legendHTML = `
+      <span class="leg-item" style="color:var(--jade)"><span class="dot" style="background:var(--jade)"></span>Heures <b>${hours}h</b> · ${nSalads} 🥬</span>
+      <span class="leg-item" style="color:var(--gold)"><span class="dot" style="background:var(--gold)"></span>Calls <b>${calls}</b> · ${nGrains} 🌾</span>
+      <span class="leg-item" style="color:var(--ember)"><span class="dot" style="background:var(--ember)"></span>Épan. <b>${ful}/10</b> · ${nTomatoes} 🍅</span>
+      <span class="leg-item" style="color:var(--indigo)"><span class="dot" style="background:var(--indigo)"></span>B-être <b>${wbPos}/${wbTot}</b> · ${nHerbs} 🪻</span>
+      <span class="leg-item" style="color:var(--plum)"><span class="dot" style="background:var(--plum)"></span>Live <b>${live?'oui':'non'}</b></span>
+    `;
+    const shineHintHTML = anyNew && !isEmpty
+      ? '<div class="plate-shine-hint">✦ les éléments dorés brillent — c\'est ta progression depuis ton dernier enregistrement</div>'
+      : '';
 
-    // SVG plate
+    // ── Full SVG ──
     const svg = `
-      <svg class="plate-svg" viewBox="0 0 240 240" aria-hidden="false" role="img">
+      <svg class="plate-svg" viewBox="0 0 ${PLATE_VIEWBOX.w} ${PLATE_VIEWBOX.h}" role="img" aria-label="Ton assiette du jour">
         <defs>
-          <radialGradient id="plateTexture" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="rgba(243,236,223,0.85)" />
-            <stop offset="80%" stop-color="rgba(233,224,207,0.7)" />
-            <stop offset="100%" stop-color="rgba(220,210,190,0.65)" />
+          <radialGradient id="gPlate" cx="50%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#fbf5e7"/>
+            <stop offset="70%" stop-color="#ece1ca"/>
+            <stop offset="100%" stop-color="#c8b88a"/>
           </radialGradient>
+          <radialGradient id="gPlateRim" cx="50%" cy="40%" r="55%">
+            <stop offset="60%" stop-color="#fefaef"/>
+            <stop offset="100%" stop-color="#b8a677"/>
+          </radialGradient>
+          <radialGradient id="gSalad" cx="30%" cy="25%" r="80%">
+            <stop offset="0%" stop-color="#8de0a8"/>
+            <stop offset="55%" stop-color="#2d8a4f"/>
+            <stop offset="100%" stop-color="#15431f"/>
+          </radialGradient>
+          <radialGradient id="gGrain" cx="30%" cy="25%" r="70%">
+            <stop offset="0%" stop-color="#f5d889"/>
+            <stop offset="60%" stop-color="#c79830"/>
+            <stop offset="100%" stop-color="#7a5212"/>
+          </radialGradient>
+          <radialGradient id="gTomato" cx="28%" cy="22%" r="72%">
+            <stop offset="0%" stop-color="#ff9477"/>
+            <stop offset="55%" stop-color="#d94a2c"/>
+            <stop offset="100%" stop-color="#771f10"/>
+          </radialGradient>
+          <radialGradient id="gHerb" cx="35%" cy="28%" r="75%">
+            <stop offset="0%" stop-color="#a98ad8"/>
+            <stop offset="55%" stop-color="#5a4ba3"/>
+            <stop offset="100%" stop-color="#2d2562"/>
+          </radialGradient>
+          <radialGradient id="gMeat" cx="32%" cy="22%" r="78%">
+            <stop offset="0%" stop-color="#d09572"/>
+            <stop offset="45%" stop-color="#8a4218"/>
+            <stop offset="100%" stop-color="#3a1408"/>
+          </radialGradient>
+          <linearGradient id="gGoldSauce" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#f7da7e"/>
+            <stop offset="50%" stop-color="#d4951a"/>
+            <stop offset="100%" stop-color="#a06b0a"/>
+          </linearGradient>
         </defs>
+
         ${haloHTML}
-        <circle class="plate-rim-shadow" cx="121" cy="123" r="110" />
-        <circle class="plate-rim" cx="120" cy="120" r="110" />
-        <circle class="plate-inner" cx="120" cy="120" r="100" />
-        ${caRing}
+
+        <!-- 3D plate layers (back to front) -->
+        <ellipse class="plate-shadow-ground" cx="${PLATE_VIEWBOX.cx+3}" cy="${PLATE_VIEWBOX.cy+58}" rx="${PLATE_VIEWBOX.rx+12}" ry="9"/>
+        <ellipse class="plate-base-shadow" cx="${PLATE_VIEWBOX.cx}" cy="${PLATE_VIEWBOX.cy+12}" rx="${PLATE_VIEWBOX.rx+15}" ry="${PLATE_VIEWBOX.ry+4}"/>
+        <ellipse class="plate-base" cx="${PLATE_VIEWBOX.cx}" cy="${PLATE_VIEWBOX.cy+8}" rx="${PLATE_VIEWBOX.rx+13}" ry="${PLATE_VIEWBOX.ry+2}"/>
+        <ellipse class="plate-rim" cx="${PLATE_VIEWBOX.cx}" cy="${PLATE_VIEWBOX.cy}" rx="${PLATE_VIEWBOX.rx+13}" ry="${PLATE_VIEWBOX.ry+2}"/>
+        <ellipse class="plate-inner" cx="${PLATE_VIEWBOX.cx}" cy="${PLATE_VIEWBOX.cy}" rx="${PLATE_VIEWBOX.rx}" ry="${PLATE_VIEWBOX.ry}"/>
+        <ellipse class="plate-inner-shadow" cx="${PLATE_VIEWBOX.cx}" cy="${PLATE_VIEWBOX.cy+3}" rx="${PLATE_VIEWBOX.rx-4}" ry="${PLATE_VIEWBOX.ry-3}"/>
+        <ellipse class="plate-inner-light" cx="${PLATE_VIEWBOX.cx-15}" cy="${PLATE_VIEWBOX.cy-15}" rx="${PLATE_VIEWBOX.rx*0.45}" ry="${PLATE_VIEWBOX.ry*0.35}"/>
+
+        ${sauceSVG}
         ${cracksHTML}
-        ${bubbles}
-        <circle class="plate-center-dot" cx="120" cy="120" r="2.5" />
+
+        <!-- Foods, layered back→front for 3D depth -->
+        ${saladsSVG}
+        ${grainsSVG}
+        ${meatSVG}
+        ${tomatoesSVG}
+        ${herbsSVG}
       </svg>
     `;
 
-    // Preserve caption + replace rest
     stage.innerHTML = `
       <div class="plate-stage__caption">✦ Ton assiette du jour</div>
       ${svg}
       ${growthLabelHTML}
+      ${shineHintHTML}
       <div class="plate-legend">${legendHTML}</div>
     `;
   }
@@ -826,6 +990,13 @@ body{
     document.getElementById('note-count').textContent = (data.free_note||'').length + '/280';
     _wb = (data.wellbeing_answers && typeof data.wellbeing_answers==='object') ? data.wellbeing_answers : {};
     applyLockState(data.save_count || 0);
+    // Baseline shine: si l'élève a déjà une fiche, on baseline à ces valeurs sauvegardées.
+    // Sinon (fiche vide), baseline = 0 → tout brille dès le 1er input.
+    if ((data.save_count || 0) > 0) {
+      savePlateCounts(computePlateCounts(data));
+    } else {
+      savePlateCounts({salads:0, grains:0, tomatoes:0, herbs:0, meat:0});
+    }
     // Apply stored wb to buttons
     Object.keys(_wb).forEach(slug=>{
       const v = _wb[slug];
@@ -874,6 +1045,8 @@ body{
       } else {
         showMsg('ok','Fiche enregistrée ✦');
       }
+      // Reset shine baseline → ce qui vient d'être sauvé devient le nouveau "déjà acquis"
+      savePlateCounts(computePlateCounts(payload));
       updateRecap(data);
       loadHistory();
       applyLockState(sc);
