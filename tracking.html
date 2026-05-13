@@ -387,18 +387,18 @@ body{
     {slug:"solitude",label:"Tu as ressenti de la solitude aujourd'hui ?",positive:"no"},
     {slug:"doute",label:"Tu as douté de toi aujourd'hui ?",positive:"no"},
     {slug:"fierte",label:"Tu as ressenti de la fierté aujourd'hui ?",positive:"yes"},
-    {slug:"sommeil",label:"Tu as bien dormi cette nuit ?",positive:"yes"},
-    {slug:"energie",label:"Tu as eu de l'énergie aujourd'hui ?",positive:"yes"},
-    {slug:"aligne_objectif",label:"Tu t'es senti aligné avec ton objectif ?",positive:"yes"},
-    {slug:"gratitude",label:"Tu as ressenti de la gratitude aujourd'hui ?",positive:"yes"},
-    {slug:"presence",label:"Tu as été pleinement présent aujourd'hui ?",positive:"yes"},
-    {slug:"peurs",label:"Tu as eu des peurs aujourd'hui ?",positive:"no"},
-    {slug:"autonomie",label:"Tu as eu de l'autonomie aujourd'hui ?",positive:"yes"},
-    {slug:"motivation",label:"Tu as eu de la motivation aujourd'hui ?",positive:"yes"},
-    {slug:"support_social",label:"Tu as eu du soutien social aujourd'hui ?",positive:"yes"},
-    {slug:"alimentation",label:"Tu as mangé équilibré aujourd'hui ?",positive:"yes"},
-    {slug:"exercice",label:"Tu as fait de l'exercice aujourd'hui ?",positive:"yes"},
-    {slug:"focus",label:"Tu as été concentré aujourd'hui ?",positive:"yes"}
+    {slug:"sommeil",label:"Tu as dormi au moins 7h cette nuit ?",positive:"yes"},
+    {slug:"energie",label:"Tu as eu l'énergie de bosser à fond aujourd'hui (sans te traîner) ?",positive:"yes"},
+    {slug:"aligne_objectif",label:"Ce que tu as fait aujourd'hui te rapproche de tes 5-10k€/mois ?",positive:"yes"},
+    {slug:"gratitude",label:"Tu as pris 1 min pour kiffer ce que tu as déjà (santé, proches, opportunité) ?",positive:"yes"},
+    {slug:"presence",label:"Tu as bossé sans scroller ni zapper aujourd'hui (focus pur sur 1 tâche à la fois) ?",positive:"yes"},
+    {slug:"peurs",label:"Tu as ressenti des peurs qui t'ont bloqué d'agir aujourd'hui (peur du non, du jugement, de l'échec) ?",positive:"no"},
+    {slug:"autonomie",label:"Tu as exécuté tes calls/tâches seul aujourd'hui (sans demander d'aide à Djibril ou au groupe) ?",positive:"yes"},
+    {slug:"motivation",label:"Tu t'es levé motivé et tu as eu envie de passer à l'action aujourd'hui ?",positive:"yes"},
+    {slug:"support_social",label:"Tu as échangé avec au moins 1 proche / élève qui te tire vers le haut aujourd'hui ?",positive:"yes"},
+    {slug:"alimentation",label:"Tu as mangé équilibré aujourd'hui (protéines + légumes, peu de sucre transformé) ?",positive:"yes"},
+    {slug:"exercice",label:"Tu as bougé ton corps aujourd'hui (sport, muscu ou marche d'au moins 30 min) ?",positive:"yes"},
+    {slug:"focus",label:"Tu as tenu au moins 1 bloc de 60 min de travail concentré sans interruption aujourd'hui ?",positive:"yes"}
   ];
 
   // Pick 5 questions stable for the day (seed = today YYYY-MM-DD + student id)
@@ -1163,8 +1163,8 @@ body{
 
         <!-- FREE NOTE -->
         <div class="note-group">
-          <label for="field-note">Note libre (optionnel · 280 max)</label>
-          <textarea class="note-textarea" id="field-note" maxlength="280" placeholder="Une pensée, un déclic, une frustration..."></textarea>
+          <label for="field-note">Une chose à retenir aujourd'hui — déclic, frustration, win, doute (optionnel · 280 caractères)</label>
+          <textarea class="note-textarea" id="field-note" maxlength="280" placeholder="Ex : « Closing raté car j'ai pas écouté. » / « Premier oui à 500€ après 3 refus. » / « Je doute mais je continue. »"></textarea>
           <div class="note-count" id="note-count">0/280</div>
         </div>
 
