@@ -151,6 +151,20 @@ body{
 .live-toggle button{padding:8px 20px;border-radius:999px;border:1.5px solid rgba(26,22,20,.2);background:rgba(255,252,245,.6);color:var(--ink-soft);cursor:pointer;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;transition:all .15s}
 .live-toggle button.is-on{background:var(--ember-deep);border-color:var(--ember-deep);color:var(--paper)}
 
+/* MENTAL CHECK — qualification approfondie */
+.mental-check{margin-bottom:24px;padding:22px 20px;background:linear-gradient(155deg,rgba(29,138,111,.05) 0%,rgba(232,93,44,.04) 60%,rgba(74,60,140,.05) 100%);border:1.5px solid rgba(29,138,111,.2);border-radius:4px;box-shadow:inset 3px 3px 0 rgba(29,138,111,.06),0 1px 0 rgba(26,22,20,.05)}
+.mental-check h3{font-family:var(--display);font-weight:900;font-size:1.18rem;color:var(--jade);margin-bottom:6px;letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
+.mental-check h3::before{content:"⚡";color:var(--ember);font-family:var(--serif);font-style:italic;font-weight:400;font-size:1.3em;line-height:.8}
+.mental-check p.sub{font-family:var(--serif);font-style:italic;color:var(--plum);font-size:.92rem;margin-bottom:18px;letter-spacing:.01em;line-height:1.4}
+.mental-row{margin-bottom:18px}
+.mental-row:last-child{margin-bottom:0}
+.mental-row label{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--ink-soft);display:block;margin-bottom:6px}
+.mental-row .mini-val{display:inline-block;font-family:var(--mono);font-weight:700;color:var(--ember);font-size:1.1rem;margin-left:8px}
+.mental-row textarea{width:100%;min-height:50px;padding:10px;font-family:var(--serif);font-style:italic;font-size:.95rem;line-height:1.45;background:rgba(255,252,245,.85);border:1.5px solid rgba(26,22,20,.18);border-radius:4px;color:var(--ink);outline:none;resize:vertical;transition:border-color .15s,background .15s}
+.mental-row textarea:focus{border-color:var(--jade);background:rgba(255,252,245,1)}
+.mental-row input[type=text]{width:100%;padding:10px;font-family:var(--display);font-weight:700;font-size:1rem;background:rgba(255,252,245,.85);border:1.5px solid rgba(26,22,20,.18);border-radius:4px;color:var(--ink);outline:none}
+.mental-row input[type=text]:focus{border-color:var(--jade);background:rgba(255,252,245,1)}
+
 /* WELLBEING QUESTIONS — sophistiqué niche 3.0 */
 .wellbeing{margin-bottom:28px;padding:26px 22px 22px;background:linear-gradient(155deg,rgba(74,60,140,.05) 0%,rgba(232,93,44,.04) 60%,rgba(107,58,79,.05) 100%);border:1.5px solid rgba(74,60,140,.18);border-radius:4px;box-shadow:inset 3px 3px 0 rgba(74,60,140,.06),0 1px 0 rgba(26,22,20,.05)}
 .wellbeing h3{font-family:var(--display);font-weight:900;font-size:1.18rem;color:var(--indigo);margin-bottom:6px;letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
@@ -441,7 +455,7 @@ body{
   // ── Daily Qs (5 stable per student per day) ─────────────
   const dailyQs = pickDailyQuestions(getTodayStr() + (user.id || user.email || ''));
 
-  // ── Hours mood label (1 per range) ──────────────────────
+  // ── Hours mood label (1 per range, 0–16h) ───────────────
   function hoursMood(h){
     if(h<=0) return '— pas de travail';
     if(h<2) return 'mise en route douce';
@@ -450,7 +464,9 @@ body{
     if(h<8) return 'belle journée pleine';
     if(h<10) return 'gros bloc, beau focus';
     if(h<12) return 'marathon — respire bien';
-    return 'extrême — fais une pause demain';
+    if(h<14) return 'mode warrior — tiens le rythme';
+    if(h<16) return 'machine — surveille ton sommeil';
+    return 'extrême — repos obligatoire demain';
   }
 
   // ── Fulfillment emoji (0-10) ───────────────────────────
@@ -574,7 +590,7 @@ body{
   // Compute plate counts from a saved entry payload
   function computePlateCounts(data){
     return {
-      salads:   Math.floor((parseFloat(data.hours_worked||0)) * 2),
+      salads:   Math.min(24, Math.floor((parseFloat(data.hours_worked||0)) * 1.5)), // 0→16h max 24
       grains:   Math.min(30, Math.floor((parseInt(data.calls||0))/5)),
       tomatoes: Math.min(10, parseInt(data.fulfillment||0)),
       herbs:    Math.min(5, wbPositiveCount(data.wellbeing_answers||{})),
@@ -596,7 +612,7 @@ body{
     const wbTot = Math.max(5, Object.keys(_wb).length || 5);
 
     // ── Compute food counts ──
-    const nSalads   = Math.floor(hours * 2);            // 1 salade par 30min (max 24 à 12h)
+    const nSalads   = Math.min(24, Math.floor(hours * 1.5)); // 1 salade par 40min, cap 24 (atteint à 16h)
     const nGrains   = Math.min(30, Math.floor(calls/5)); // 1 grain par 5 calls (cap 30)
     const nTomatoes = Math.min(10, ful);                 // 1 tomate par point épanouissement
     const nHerbs    = Math.min(5, wbPos);                // 1 herbe par BE positif
@@ -805,24 +821,60 @@ body{
 
     let inputHTML = '';
     if(q.status === 'deepening'){
+      const turn = (q.thread||[]).filter(m=>m.role==='student').length + 1;
+      const totalTurns = q.target_turns || 3;
+      const conscience = q.consciousness_level || 1;
       inputHTML = `
+        <div style="margin-top:10px;padding:10px 14px;background:rgba(74,60,140,.08);border:1px solid rgba(74,60,140,.25);border-radius:4px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--indigo);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
+          <span>✦ Tour ${turn}/${totalTurns}</span>
+          <span>Niveau de conscience : ${conscience}/5</span>
+          <span>Encore ${Math.max(0,totalTurns-turn)} relance(s)</span>
+        </div>
         <div class="qa-input-area" style="margin-top:14px">
-          <textarea class="qa-textarea" id="qa-answer-input" placeholder="Ta réponse à la relance…"></textarea>
+          <textarea class="qa-textarea" id="qa-answer-input" placeholder="Sois précis. Plus tu creuses, plus la réponse sera utile."></textarea>
           <div class="qa-actions">
             <button class="btn btn--ember" id="qa-answer-btn">Continuer le creusage</button>
-            <button class="btn btn--sm" id="qa-force-btn" title="J'ai compris, envoie tel quel à Djibril">Envoyer maintenant à Djibril</button>
+            <button class="btn btn--sm" id="qa-force-btn" title="J'ai compris, envoie tel quel à Djibril">J'ai mon vrai problème ✦ synthétiser</button>
           </div>
         </div>
       `;
     } else if(q.status === 'qualified'){
-      // Reformulation chirurgicale — éditable avant envoi
+      // Reformulation chirurgicale en BLOCS — éditable avant envoi
+      const synth = q.synthesis || {};
+      const vraieProb   = (synth.vraie_problematique || q.qualified_question || '').toString();
+      const vraiBesoin  = (synth.vrai_besoin || '').toString();
+      const blocage     = (synth.blocage_emotionnel || '').toString();
+      const action      = (synth.action_concrete_proposee || '').toString();
+      const conscience  = synth.niveau_conscience || q.consciousness_level || null;
+      const tags        = Array.isArray(synth.tags) ? synth.tags : [];
       inputHTML = `
         <div class="qa-reformulation">
           <div class="qa-reformulation__head">
-            <h5>✦ Ta vraie question, reformulée</h5>
-            <p class="qa-reformulation__sub">Le mentor IA a synthétisé ce que tu as vraiment évoqué pendant le creusage. <strong>Relis bien</strong> — si quelque chose manque ou est inexact, édite directement avant d'envoyer.</p>
+            <h5>✦ Synthèse de ta vraie question</h5>
+            <p class="qa-reformulation__sub">
+              Le mentor IA a creusé avec toi. ${conscience ? `<strong>Niveau de conscience : ${conscience}/5</strong>. ` : ''}<strong>Relis et édite</strong> ce qui ne te ressemble pas.
+              ${tags.length ? `<br><span style="font-family:var(--mono);font-size:10px;letter-spacing:.1em">tags : ${tags.slice(0,5).join(' · ')}</span>` : ''}
+            </p>
           </div>
-          <textarea class="qa-reformulation__text" id="qa-reformulation-text" rows="6">${q.qualified_question || ''}</textarea>
+          <div style="margin-bottom:14px">
+            <label style="font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--ember-deep);display:block;margin-bottom:6px">✦ Ta vraie problématique</label>
+            <textarea class="qa-reformulation__text" id="qa-reformulation-text" rows="4" placeholder="Le vrai problème en 1-2 phrases">${vraieProb}</textarea>
+          </div>
+          ${vraiBesoin ? `
+          <div style="margin-bottom:14px">
+            <label style="font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--jade);display:block;margin-bottom:6px">→ Ton vrai besoin</label>
+            <textarea class="qa-reformulation__text" id="qa-reformulation-need" rows="2">${vraiBesoin}</textarea>
+          </div>` : ''}
+          ${blocage ? `
+          <div style="margin-bottom:14px">
+            <label style="font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--indigo);display:block;margin-bottom:6px">⚠ Blocage émotionnel détecté</label>
+            <textarea class="qa-reformulation__text" id="qa-reformulation-blocage" rows="2">${blocage}</textarea>
+          </div>` : ''}
+          ${action ? `
+          <div style="margin-bottom:14px">
+            <label style="font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--gold);display:block;margin-bottom:6px">▸ Action concrète proposée</label>
+            <textarea class="qa-reformulation__text" id="qa-reformulation-action" rows="2">${action}</textarea>
+          </div>` : ''}
           <div class="qa-actions" style="margin-top:12px">
             <button class="btn btn--ember" id="qa-finalize-btn">C'est ma vraie question ✦ envoyer</button>
             <button class="btn btn--sm" id="qa-reroll-btn" title="Régénérer une autre reformulation">↻ Reformuler autrement</button>
@@ -911,10 +963,16 @@ body{
     if(!_activeQuestion) return;
     const btn = document.getElementById('qa-finalize-btn');
     if(btn){ btn.disabled = true; btn.textContent = 'Recherche en cours…'; }
-    // Récupère la version potentiellement éditée par l'élève
-    const editedEl = document.getElementById('qa-reformulation-text');
-    const edited = editedEl ? editedEl.value.trim() : null;
-    const r = await qaCall('POST', '/qa/finalize/'+_activeQuestion.id, edited ? { edited_question: edited } : {});
+    // Récupère la version potentiellement éditée par l'élève (4 blocs)
+    const edited = (document.getElementById('qa-reformulation-text')||{}).value?.trim() || null;
+    const editedSynthesis = {
+      vraie_problematique:       edited,
+      vrai_besoin:               (document.getElementById('qa-reformulation-need')||{}).value?.trim() || null,
+      blocage_emotionnel:        (document.getElementById('qa-reformulation-blocage')||{}).value?.trim() || null,
+      action_concrete_proposee:  (document.getElementById('qa-reformulation-action')||{}).value?.trim() || null
+    };
+    const payload = edited ? { edited_question: edited, edited_synthesis: editedSynthesis } : {};
+    const r = await qaCall('POST', '/qa/finalize/'+_activeQuestion.id, payload);
     if(r.error){ alert('Erreur: ' + r.error); if(btn){btn.disabled=false;btn.textContent='C\'est ma vraie question ✦ envoyer';} return; }
     // Reload full question with matched_kb
     const full = await qaCall('GET', '/qa/get/'+_activeQuestion.id, null);
@@ -1089,16 +1147,16 @@ body{
             <span class="slider-value"><span id="hours-display">0</span><span class="unit">h</span></span>
           </div>
           <div class="range-wrap">
-            <input type="range" class="range" id="field-hours" min="0" max="12" step="0.5" value="0" aria-label="Heures travaillées">
+            <input type="range" class="range" id="field-hours" min="0" max="16" step="0.5" value="0" aria-label="Heures travaillées">
           </div>
           <div class="range-ticks">
             <button type="button" class="tick" data-target="field-hours" data-v="0">0h</button>
-            <button type="button" class="tick" data-target="field-hours" data-v="2">2h</button>
             <button type="button" class="tick" data-target="field-hours" data-v="4">4h</button>
-            <button type="button" class="tick" data-target="field-hours" data-v="6">6h</button>
             <button type="button" class="tick" data-target="field-hours" data-v="8">8h</button>
             <button type="button" class="tick" data-target="field-hours" data-v="10">10h</button>
             <button type="button" class="tick" data-target="field-hours" data-v="12">12h</button>
+            <button type="button" class="tick" data-target="field-hours" data-v="14">14h</button>
+            <button type="button" class="tick" data-target="field-hours" data-v="16">16h</button>
           </div>
           <div class="hours-mood" id="hours-mood">— pas encore</div>
         </div>
@@ -1127,6 +1185,37 @@ body{
           <h3>Bien-être du jour</h3>
           <p class="sub">5 questions tirées du pool. Réponds vite, c'est juste pour toi.</p>
           ${wbQuestionsHTML}
+        </div>
+
+        <!-- MENTAL CHECK QUALIFIÉ -->
+        <div class="mental-check">
+          <h3>Mental check — pour Djibril</h3>
+          <p class="sub">3 sliders + 2 phrases. C'est ce que Djibril regarde en 30 sec pour voir où tu en es vraiment.</p>
+
+          <div class="mental-row">
+            <label>Énergie mentale aujourd'hui<span class="mini-val" id="ment-energy-val">5</span><span style="font-family:var(--mono);font-size:10px;color:var(--ink-mute);margin-left:6px">/10</span></label>
+            <input type="range" class="range" id="ment-energy" min="0" max="10" step="1" value="5" aria-label="Énergie mentale">
+          </div>
+
+          <div class="mental-row">
+            <label>Envie de pousser plus que d'habitude<span class="mini-val" id="ment-drive-val">5</span><span style="font-family:var(--mono);font-size:10px;color:var(--ink-mute);margin-left:6px">/10</span></label>
+            <input type="range" class="range" id="ment-drive" min="0" max="10" step="1" value="5" aria-label="Envie de pousser plus">
+          </div>
+
+          <div class="mental-row">
+            <label>Niveau de tension/stress<span class="mini-val" id="ment-stress-val">5</span><span style="font-family:var(--mono);font-size:10px;color:var(--ink-mute);margin-left:6px">/10</span></label>
+            <input type="range" class="range" id="ment-stress" min="0" max="10" step="1" value="5" aria-label="Niveau de tension">
+          </div>
+
+          <div class="mental-row">
+            <label>1 mot qui décrit ton état mental aujourd'hui</label>
+            <input type="text" id="ment-mood-word" maxlength="40" placeholder="Ex : tendu, déterminé, fatigué, allumé, perdu…">
+          </div>
+
+          <div class="mental-row">
+            <label>Qu'est-ce qui t'a coûté le plus mentalement aujourd'hui ? (optionnel)</label>
+            <textarea id="ment-friction" maxlength="280" placeholder="Ex : Le call de 16h, j'ai senti que je voulais pas pousser. / Pas grand chose, journée fluide."></textarea>
+          </div>
         </div>
 
         <!-- COMPACT: Calls + CA -->
@@ -1266,6 +1355,20 @@ body{
       countEl.textContent = `${len}/280`;
       countEl.className = 'note-count' + (len>250?' is-near':'') + (len>=280?' is-full':'');
     });
+
+    // Mental check sliders
+    ['energy','drive','stress'].forEach(k=>{
+      const el = document.getElementById('ment-'+k);
+      const lbl = document.getElementById('ment-'+k+'-val');
+      if(!el || !lbl) return;
+      const upd = ()=>{
+        const v = parseInt(el.value)||0;
+        lbl.textContent = v;
+        el.style.setProperty('--val', (v/10*100)+'%');
+      };
+      el.addEventListener('input', upd);
+      upd();
+    });
   }
 
   function updateSuggestActive(group, val){
@@ -1276,7 +1379,7 @@ body{
 
   function updateHoursUI(){
     const v = parseFloat(document.getElementById('field-hours').value)||0;
-    const pct = (v/12)*100;
+    const pct = (v/16)*100;
     document.getElementById('field-hours').style.setProperty('--val', pct+'%');
     document.getElementById('hours-display').textContent = v;
     document.getElementById('hours-mood').textContent = hoursMood(v);
@@ -1369,6 +1472,14 @@ body{
     document.getElementById('field-note').value = data.free_note || '';
     document.getElementById('note-count').textContent = (data.free_note||'').length + '/280';
     _wb = (data.wellbeing_answers && typeof data.wellbeing_answers==='object') ? data.wellbeing_answers : {};
+    // Re-apply mental_state if backend returns it
+    const ms = (data.mental_state && typeof data.mental_state==='object') ? data.mental_state : {};
+    ['energy','drive','stress'].forEach(k=>{
+      const el = document.getElementById('ment-'+k);
+      if(el && ms[k] != null){ el.value = ms[k]; el.dispatchEvent(new Event('input')); }
+    });
+    if(ms.mood_word != null){ const el = document.getElementById('ment-mood-word'); if(el) el.value = ms.mood_word; }
+    if(ms.friction  != null){ const el = document.getElementById('ment-friction');  if(el) el.value = ms.friction; }
     applyLockState(data.save_count || 0);
     // Baseline shine: si l'élève a déjà une fiche, on baseline à ces valeurs sauvegardées.
     // Sinon (fiche vide), baseline = 0 → tout brille dès le 1er input.
@@ -1417,12 +1528,26 @@ body{
     const hours_worked = parseFloat(document.getElementById('field-hours').value)||0;
     const fulfillment = parseInt(document.getElementById('field-fulfillment').value)||0;
     const free_note = document.getElementById('field-note').value.slice(0,280);
+    const mental_state = {
+      energy:   parseInt(document.getElementById('ment-energy')?.value)||0,
+      drive:    parseInt(document.getElementById('ment-drive')?.value)||0,
+      stress:   parseInt(document.getElementById('ment-stress')?.value)||0,
+      mood_word: (document.getElementById('ment-mood-word')?.value||'').slice(0,40).trim() || null,
+      friction:  (document.getElementById('ment-friction')?.value||'').slice(0,280).trim() || null
+    };
     const payload = {
       calls, ca_eur: ca, live:_live,
       hours_worked, fulfillment,
       wellbeing_answers: _wb,
+      mental_state,
       free_note: free_note || null
     };
+    // Cache local au cas où backend pas encore migré (Djibril récupère via debug)
+    try {
+      const ls = JSON.parse(localStorage.getItem('dj_mental_log')||'[]');
+      ls.push({date: getTodayStr(), ...mental_state, free_note});
+      localStorage.setItem('dj_mental_log', JSON.stringify(ls.slice(-30)));
+    } catch(e){}
     const data = await api('PUT', '/me/entries/'+getTodayStr(), payload);
     btn.disabled = false;
     if(data && !data.error){
