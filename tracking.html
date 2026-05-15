@@ -1726,8 +1726,10 @@ body{
         stream.getTracks().forEach(t => t.stop());
         rec.btn.classList.remove('is-recording');
         const blob = new Blob(chunks, { type: mime || 'audio/webm' });
-        if(blob.size < 800){
-          _setMicHint(rec.hint, 'Trop court — réessaye', 'err');
+        const recordedMs = Date.now() - (rec.startedAt || Date.now());
+        if(blob.size < 4000 || recordedMs < 600){
+          // Trop court — évite hallucination Whisper sur silence/vide
+          _setMicHint(rec.hint, 'Parle plus longtemps (1s min)', 'err');
           _micActive = null; return;
         }
         rec.btn.classList.add('is-busy');
@@ -1769,6 +1771,7 @@ body{
       };
       rec.mr = mr;
       rec.stream = stream;
+      rec.startedAt = Date.now();
       mr.start();
       rec.btn.classList.add('is-recording');
       _setMicHint(rec.hint, '🎙 J\'écoute… relâche pour valider', 'ok');
