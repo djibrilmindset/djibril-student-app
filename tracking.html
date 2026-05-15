@@ -1263,45 +1263,19 @@ body{
 
       <div class="recap" id="recap-area"></div>
 
-      <!-- LEIA — Agent vocal Reset Ultra -->
-      <div class="leia-section" id="leia-section" style="margin:32px 0;padding:22px 22px 20px;background:linear-gradient(155deg,rgba(212,149,26,.08) 0%,rgba(232,93,44,.05) 60%,rgba(74,60,140,.06) 100%);border:1.5px solid rgba(212,149,26,.3);border-radius:4px;box-shadow:inset 3px 3px 0 rgba(212,149,26,.08)">
-        <h3 style="font-family:var(--display);font-weight:900;font-size:1.18rem;color:var(--ember-deep);margin-bottom:6px;letter-spacing:-.01em;display:flex;align-items:center;gap:10px">
-          <span style="display:inline-block;width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#d4951a,#e85d2c,#6b3a4f);box-shadow:0 0 16px rgba(212,149,26,.4);animation:leia-pulse 2.5s ease-in-out infinite"></span>
-          Leia — demande-lui à voix haute
-        </h3>
-        <p style="font-family:var(--serif);font-style:italic;color:var(--plum);font-size:.92rem;margin-bottom:16px;line-height:1.45">
-          Leia est ma voix. Parle-lui (ou écris). Elle fouille ce que Djibril a déjà répondu pour t'aider en direct.
-          <strong style="font-family:var(--display);font-style:normal;color:var(--ember-deep)">Si elle trouve une réponse</strong>, elle te la lit.
-          Sinon, elle t'oriente vers le creusage personnalisé.
-        </p>
-
-        <div id="leia-input-area">
-          <textarea id="leia-input" placeholder="Ex : 'Comment je fais pour ne plus avoir peur de pitcher le prix ?'"
-            style="width:100%;min-height:64px;padding:12px;font-family:var(--serif);font-style:italic;font-size:1rem;line-height:1.5;background:rgba(255,252,245,.85);border:1.5px solid rgba(212,149,26,.3);border-radius:4px;color:var(--ink);outline:none;resize:vertical;transition:border-color .15s,background .15s"></textarea>
-          <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
-            <button id="leia-ask-btn" class="btn btn--ember" style="flex:1;min-width:180px">Demander à Leia ✦</button>
-            <button id="leia-mic-btn" class="btn btn--sm" style="background:transparent;color:var(--ink);border:1.5px solid var(--ink);min-width:60px" title="Parle (maintiens enfoncé)">🎤</button>
-          </div>
-          <div id="leia-status" style="font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute);margin-top:8px;min-height:1.2em;font-weight:600"></div>
-        </div>
-
-        <div id="leia-result" style="margin-top:18px"></div>
-      </div>
+      <!-- Styles micro intégrés — bouton 🎤 sur chaque champ texte -->
       <style>
-        @keyframes leia-pulse{0%,100%{transform:scale(1);box-shadow:0 0 16px rgba(212,149,26,.4)}50%{transform:scale(1.08);box-shadow:0 0 26px rgba(232,93,44,.55)}}
-        .leia-mic-recording{background:var(--crit)!important;color:var(--paper)!important;border-color:var(--crit)!important;animation:leia-mic-pulse 1s ease-in-out infinite}
-        @keyframes leia-mic-pulse{0%,100%{box-shadow:0 0 0 0 rgba(199,62,58,.6)}50%{box-shadow:0 0 0 8px rgba(199,62,58,0)}}
-        .leia-match{margin-top:14px;padding:14px;background:rgba(255,252,245,.92);border:2px solid var(--gold);box-shadow:4px 4px 0 rgba(212,149,26,.35)}
-        .leia-match h4{font-family:var(--display);font-weight:900;font-size:1rem;color:var(--ember-deep);margin-bottom:8px;display:flex;align-items:center;gap:8px}
-        .leia-match__meta{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--ink-mute);text-transform:uppercase;margin-bottom:8px}
-        .leia-match__q{font-style:italic;font-family:var(--serif);color:var(--ink-soft);font-size:.95rem;margin-bottom:8px}
-        .leia-match__a{font-size:.96rem;line-height:1.55;white-space:pre-wrap;margin-bottom:10px}
-        .leia-intro-bubble{padding:14px 16px;background:linear-gradient(135deg,rgba(212,149,26,.08),rgba(107,58,79,.08));border-left:4px solid var(--gold);font-family:var(--display);font-weight:700;font-style:italic;font-size:1.02rem;color:var(--ink-soft);line-height:1.4;margin-bottom:8px;border-radius:0 4px 4px 0}
-        .leia-no-match{padding:14px 16px;background:rgba(107,58,79,.06);border-left:3px solid var(--plum);font-family:var(--serif);font-style:italic;color:var(--ink-soft);font-size:.95rem;line-height:1.5;margin-top:10px}
-        .leia-no-match strong{font-family:var(--display);font-style:normal;color:var(--ember-deep);font-weight:700}
-        .leia-audio-row{display:flex;align-items:center;gap:10px;margin-top:8px}
-        .leia-audio-row audio{flex:1;height:32px}
-        .leia-audio-row button{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:transparent;border:1px solid rgba(26,22,20,.2);padding:5px 10px;cursor:pointer;color:var(--ink-mute)}
+        .mic-wrap{position:relative}
+        .mic-wrap textarea, .mic-wrap input[type="text"]{padding-right:48px!important}
+        .mic-btn{position:absolute;top:6px;right:6px;width:36px;height:36px;border-radius:50%;border:1.5px solid rgba(26,22,20,.18);background:rgba(255,252,245,.95);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--ink-soft);transition:all .15s;padding:0;z-index:3;user-select:none;-webkit-user-select:none;touch-action:none}
+        .mic-btn:hover{border-color:var(--ember);color:var(--ember);background:var(--ember-soft);transform:scale(1.05)}
+        .mic-btn.is-recording{background:var(--crit);color:var(--paper);border-color:var(--crit);animation:mic-pulse 1s ease-in-out infinite}
+        .mic-btn.is-busy{opacity:.6;pointer-events:none;background:var(--gold);color:var(--paper);border-color:var(--gold)}
+        @keyframes mic-pulse{0%,100%{box-shadow:0 0 0 0 rgba(199,62,58,.6)}50%{box-shadow:0 0 0 10px rgba(199,62,58,0)}}
+        .mic-hint{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:var(--ink-mute);margin-top:6px;font-weight:600;text-transform:uppercase;min-height:1em;line-height:1.4}
+        .mic-hint.err{color:var(--crit)}
+        .mic-hint.ok{color:var(--jade)}
+        .mic-hint.busy{color:var(--gold)}
       </style>
 
       <div class="qa-section" id="qa-section">
@@ -1725,197 +1699,157 @@ body{
     setTimeout(()=>{area.innerHTML='';},3500);
   }
 
-  // ── LEIA — Agent vocal RAG ──────────────────────────────
-  const LEIA_API = 'https://nbnbsljqtolzzuqnkyae.supabase.co/functions/v1/leia';
-  let _leiaRecording = null;     // { mediaRecorder, chunks }
-  let _leiaPushTimer = null;
-  let _leiaLastAudio = null;     // pour replay
+  // ── ASR universel : bouton micro sur chaque champ texte (Djibril Chinois) ──
+  const ASR_API = 'https://nbnbsljqtolzzuqnkyae.supabase.co/functions/v1/asr-transcribe';
+  let _micActive = null;  // {wrap, btn, hint, mr, stream, target, mode}
 
-  function leiaSetStatus(txt, cls){
-    const el = document.getElementById('leia-status');
-    if(!el) return;
-    el.textContent = txt || '';
-    el.style.color = cls === 'err' ? 'var(--crit)' : (cls === 'ok' ? 'var(--jade)' : 'var(--ink-mute)');
+  function _setMicHint(hint, txt, cls){
+    if(!hint) return;
+    hint.textContent = txt || '';
+    hint.className = 'mic-hint' + (cls ? ' '+cls : '');
   }
 
-  async function leiaAsk(text, opts){
-    opts = opts || {};
-    const btn = document.getElementById('leia-ask-btn');
-    const res = document.getElementById('leia-result');
-    if(btn){ btn.disabled = true; btn.textContent = 'Leia réfléchit…'; }
-    leiaSetStatus('Recherche dans les réponses de Djibril…');
-    try {
-      const r = await fetch(LEIA_API + '/leia/ask', {
-        method: 'POST',
-        headers: {'Content-Type':'application/json','Authorization':'Bearer '+token},
-        body: JSON.stringify({ text, no_tts: false })
-      });
-      const data = await r.json();
-      if(data.error){ throw new Error(data.error); }
-      leiaRenderResult(data);
-      leiaSetStatus(data.no_match ? 'Aucune réponse précédente — je peux creuser avec toi' : '✦ Réponse de Djibril trouvée', 'ok');
-    } catch(e){
-      leiaSetStatus('Erreur : ' + (e.message||e), 'err');
-    } finally {
-      if(btn){ btn.disabled = false; btn.textContent = 'Demander à Leia ✦'; }
-    }
-  }
-
-  function leiaRenderResult(data){
-    const res = document.getElementById('leia-result');
-    if(!res) return;
-    let html = '';
-
-    // 1. Bulle intro Leia avec audio autoplay
-    if(data.leia_intro){
-      const audioId = 'leia-intro-audio-'+Date.now();
-      html += '<div class="leia-intro-bubble">"'+escapeHTML(data.leia_intro)+'"</div>';
-      if(data.audio_base64){
-        html += '<div class="leia-audio-row"><audio id="'+audioId+'" controls autoplay src="data:'+(data.mime||'audio/mpeg')+';base64,'+data.audio_base64+'"></audio></div>';
-      }
-    }
-
-    // 2. Match KB principale
-    if(data.matches && data.matches.length > 0){
-      const best = data.matches[0];
-      const kbAudioId = 'leia-kb-audio-'+Date.now();
-      html += '<div class="leia-match">';
-      html += '<h4>✦ Réponse de Djibril</h4>';
-      html += '<div class="leia-match__meta">Pertinence : '+(best.pertinence_score||'—')+'/100 · '+(best.tags||[]).slice(0,3).join(' · ')+'</div>';
-      html += '<div class="leia-match__q">"'+escapeHTML(best.question_summary || best.question || '')+'"</div>';
-      html += '<div class="leia-match__a">'+escapeHTML(best.answer || '')+'</div>';
-      if(data.kb_audio_b64){
-        html += '<div class="leia-audio-row"><audio id="'+kbAudioId+'" controls src="data:'+(data.mime||'audio/mpeg')+';base64,'+data.kb_audio_b64+'"></audio><button onclick="document.getElementById(\''+kbAudioId+'\').play()">▶ Réécouter</button></div>';
-      }
-      html += '</div>';
-
-      // Autres matches secondaires
-      if(data.matches.length > 1){
-        html += '<details style="margin-top:14px"><summary style="cursor:pointer;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--ink-mute);padding:6px 0">▸ '+(data.matches.length-1)+' autre(s) réponse(s) liée(s)</summary>';
-        for(let i=1; i<data.matches.length; i++){
-          const m = data.matches[i];
-          html += '<div style="margin-top:10px;padding:10px 12px;background:rgba(255,252,245,.55);border-left:2px solid rgba(212,149,26,.4)">';
-          html += '<div style="font-family:var(--mono);font-size:9px;color:var(--ink-mute);margin-bottom:4px">Pertinence '+(m.pertinence_score||'—')+'/100</div>';
-          html += '<div style="font-style:italic;color:var(--ink-soft);font-family:var(--serif);font-size:.92rem;margin-bottom:4px">'+escapeHTML(m.question_summary || m.question)+'</div>';
-          html += '<div style="font-size:.92rem;line-height:1.45">'+escapeHTML((m.answer||'').slice(0,300))+(m.answer && m.answer.length>300?'…':'')+'</div>';
-          html += '</div>';
-        }
-        html += '</details>';
-      }
-    } else {
-      // No match → invitation à creuser
-      html += '<div class="leia-no-match">';
-      html += '<strong>Pas encore de réponse à ce cas précis.</strong> Aucun élève n\'a posé exactement la même question (ou Djibril n\'y a pas encore répondu).<br><br>';
-      html += '<button class="btn btn--ember btn--sm" id="leia-to-qa-btn" style="margin-top:6px">Lancer le creusage avec l\'IA →</button>';
-      html += '</div>';
-    }
-
-    res.innerHTML = html;
-
-    // Lien vers creusage si pas de match
-    const toQa = document.getElementById('leia-to-qa-btn');
-    if(toQa){
-      toQa.addEventListener('click', ()=>{
-        const txt = document.getElementById('leia-input').value.trim();
-        if(!txt) return;
-        // Remplit l'input du QA et scroll
-        const qaInput = document.getElementById('qa-initial') || document.querySelector('#qa-active-area .qa-textarea');
-        if(qaInput){ qaInput.value = txt; qaInput.focus(); }
-        document.getElementById('qa-section').scrollIntoView({behavior:'smooth', block:'start'});
-      });
-    }
-  }
-
-  function escapeHTML(s){
-    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
-
-  // ── Micro Leia (Web Audio recording) ──
-  async function startMicLeia(){
+  async function _micStart(rec){
     if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
-      leiaSetStatus('Micro non supporté par ce navigateur', 'err');
-      return;
+      _setMicHint(rec.hint, 'Micro non supporté par ce navigateur', 'err'); return;
     }
     try {
       const stream = await navigator.mediaDevices.getUserMedia({audio:true});
-      const mr = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+      // Choix codec: webm/opus prioritaire, fallback mp4
+      let mime = 'audio/webm;codecs=opus';
+      if(!MediaRecorder.isTypeSupported(mime)) mime = 'audio/webm';
+      if(!MediaRecorder.isTypeSupported(mime)) mime = 'audio/mp4';
+      const mr = new MediaRecorder(stream, mime ? {mimeType:mime} : undefined);
       const chunks = [];
       mr.ondataavailable = e => { if(e.data && e.data.size) chunks.push(e.data); };
       mr.onstop = async () => {
         stream.getTracks().forEach(t => t.stop());
-        const blob = new Blob(chunks, {type:'audio/webm'});
-        if(blob.size < 1000){ leiaSetStatus('Trop court — réessaye', 'err'); return; }
-        leiaSetStatus('Transcription en cours…');
+        rec.btn.classList.remove('is-recording');
+        const blob = new Blob(chunks, { type: mime || 'audio/webm' });
+        if(blob.size < 800){
+          _setMicHint(rec.hint, 'Trop court — réessaye', 'err');
+          _micActive = null; return;
+        }
+        rec.btn.classList.add('is-busy');
+        _setMicHint(rec.hint, 'Transcription en cours…', 'busy');
         const reader = new FileReader();
         reader.onload = async () => {
-          const b64 = (reader.result+'').split(',')[1];
+          const dataUrl = reader.result+'';
+          const b64 = dataUrl.split(',')[1];
           try {
-            const r = await fetch(LEIA_API + '/leia/ask-voice', {
+            const r = await fetch(ASR_API + '/asr', {
               method: 'POST',
               headers: {'Content-Type':'application/json','Authorization':'Bearer '+token},
-              body: JSON.stringify({ audio_base64: b64, mime: 'audio/webm', no_tts: false })
+              body: JSON.stringify({ audio_base64: b64, mime: blob.type })
             });
             const data = await r.json();
-            if(data.error){ throw new Error(data.error); }
-            // Affiche le transcript dans l'input
-            const inp = document.getElementById('leia-input');
-            if(inp && data.transcript) inp.value = data.transcript;
-            leiaRenderResult(data);
-            leiaSetStatus(data.no_match ? 'Aucune réponse précédente — je peux creuser' : '✦ Réponse de Djibril trouvée', 'ok');
-          } catch(e){ leiaSetStatus('Erreur : '+(e.message||e), 'err'); }
+            rec.btn.classList.remove('is-busy');
+            if(data.error){ _setMicHint(rec.hint, 'Erreur : '+data.error, 'err'); _micActive = null; return; }
+            const txt = (data.text || '').trim();
+            if(!txt){ _setMicHint(rec.hint, 'Rien entendu — réessaye', 'err'); _micActive = null; return; }
+            // Insère/append le texte dans la cible
+            if(rec.target){
+              const existing = rec.target.value || '';
+              const sep = existing && !existing.endsWith(' ') && !existing.endsWith('\n') ? ' ' : '';
+              rec.target.value = existing + sep + txt;
+              // Trigger input event pour update char counters etc.
+              rec.target.dispatchEvent(new Event('input', {bubbles:true}));
+              rec.target.focus();
+            }
+            _setMicHint(rec.hint, '✦ Transcrit', 'ok');
+            setTimeout(()=>_setMicHint(rec.hint, ''), 2500);
+            _micActive = null;
+          } catch(e){
+            rec.btn.classList.remove('is-busy');
+            _setMicHint(rec.hint, 'Erreur réseau', 'err');
+            _micActive = null;
+          }
         };
         reader.readAsDataURL(blob);
       };
-      _leiaRecording = { mr, chunks, stream };
+      rec.mr = mr;
+      rec.stream = stream;
       mr.start();
-      document.getElementById('leia-mic-btn').classList.add('leia-mic-recording');
-      leiaSetStatus('🎙 J\'écoute… relâche pour envoyer', 'ok');
+      rec.btn.classList.add('is-recording');
+      _setMicHint(rec.hint, '🎙 J\'écoute… relâche pour valider', 'ok');
+      _micActive = rec;
     } catch(e){
-      leiaSetStatus('Micro refusé : '+(e.message||e), 'err');
-    }
-  }
-  function stopMicLeia(){
-    if(_leiaRecording && _leiaRecording.mr && _leiaRecording.mr.state === 'recording'){
-      _leiaRecording.mr.stop();
-    }
-    document.getElementById('leia-mic-btn').classList.remove('leia-mic-recording');
-    _leiaRecording = null;
-  }
-
-  function bindLeia(){
-    const btn = document.getElementById('leia-ask-btn');
-    const mic = document.getElementById('leia-mic-btn');
-    const inp = document.getElementById('leia-input');
-    if(btn) btn.addEventListener('click', ()=>{
-      const t = (inp && inp.value || '').trim();
-      if(t.length < 3){ leiaSetStatus('Écris ou parle une vraie question', 'err'); return; }
-      leiaAsk(t);
-    });
-    if(mic){
-      // Push-to-talk : maintenir enfoncé
-      const startEv = (e)=>{ e.preventDefault(); startMicLeia(); };
-      const endEv   = (e)=>{ e.preventDefault(); stopMicLeia(); };
-      mic.addEventListener('mousedown', startEv);
-      mic.addEventListener('mouseup', endEv);
-      mic.addEventListener('mouseleave', endEv);
-      mic.addEventListener('touchstart', startEv, {passive:false});
-      mic.addEventListener('touchend', endEv, {passive:false});
-      mic.addEventListener('touchcancel', endEv, {passive:false});
-    }
-    if(inp){
-      inp.addEventListener('keypress', e=>{
-        if(e.key === 'Enter' && (e.metaKey || e.ctrlKey)){ e.preventDefault(); btn?.click(); }
-      });
+      _setMicHint(rec.hint, 'Micro refusé : '+(e.message||e), 'err');
     }
   }
 
-  // Bind Leia après render
-  setTimeout(bindLeia, 200);
-  // Et re-bind après loadToday en cas de re-render
-  const _origLoadToday = window.__loadToday__;
+  function _micStop(rec){
+    if(rec && rec.mr && rec.mr.state === 'recording'){
+      rec.mr.stop();
+    }
+  }
+
+  // Attache un bouton micro à un input/textarea
+  // opts.label : optionnel label/placeholder pour le hint
+  function attachMicTo(elementId, opts){
+    opts = opts || {};
+    const el = document.getElementById(elementId);
+    if(!el) return false;
+    if(el.dataset.micAttached === '1') return true;
+    // Wrap parent si pas déjà
+    let wrap = el.parentElement;
+    if(!wrap.classList.contains('mic-wrap')){
+      // Crée un wrap autour de l'élément
+      wrap = document.createElement('div');
+      wrap.className = 'mic-wrap';
+      el.parentNode.insertBefore(wrap, el);
+      wrap.appendChild(el);
+    } else {
+      wrap.classList.add('mic-wrap');
+    }
+    // Bouton
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'mic-btn';
+    btn.title = 'Parle au lieu d\'écrire — maintiens enfoncé';
+    btn.setAttribute('aria-label', 'Dicter à la voix');
+    btn.innerHTML = '🎤';
+    wrap.appendChild(btn);
+    // Hint sous l'élément
+    let hint = wrap.nextElementSibling;
+    if(!hint || !hint.classList || !hint.classList.contains('mic-hint')){
+      hint = document.createElement('div');
+      hint.className = 'mic-hint';
+      wrap.parentNode.insertBefore(hint, wrap.nextSibling);
+    }
+    const rec = { wrap, btn, hint, target: el, mr: null, stream: null };
+    const start = (e)=>{ e.preventDefault(); if(_micActive) _micStop(_micActive); _micStart(rec); };
+    const stop  = (e)=>{ e.preventDefault(); if(_micActive === rec) _micStop(rec); };
+    btn.addEventListener('mousedown', start);
+    btn.addEventListener('mouseup', stop);
+    btn.addEventListener('mouseleave', (e)=>{ if(rec.btn.classList.contains('is-recording')) stop(e); });
+    btn.addEventListener('touchstart', start, {passive:false});
+    btn.addEventListener('touchend', stop, {passive:false});
+    btn.addEventListener('touchcancel', stop, {passive:false});
+    el.dataset.micAttached = '1';
+    return true;
+  }
+
+  // Attache aux champs texte connus au render initial
+  function attachMicsAll(){
+    [
+      'ment-mood-word','ment-friction','field-note',
+      'qa-initial','qa-answer-input',
+      'qa-reformulation-text','qa-reformulation-need',
+      'qa-reformulation-blocage','qa-reformulation-action',
+    ].forEach(id => attachMicTo(id));
+  }
+
+  // Observer : ré-attache quand le DOM Q&A se rerender
+  const _micObserver = new MutationObserver(()=>{ attachMicsAll(); });
+  setTimeout(()=>{
+    const qaArea = document.getElementById('qa-active-area');
+    if(qaArea) _micObserver.observe(qaArea, { childList: true, subtree: true });
+    attachMicsAll();
+  }, 300);
 
   // ── Start ───────────────────────────────────────────────
-  render().then(()=>bindLeia());
+  render().then(()=>{ attachMicsAll(); });
 })();
 </script>
 
