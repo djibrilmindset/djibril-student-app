@@ -398,21 +398,21 @@ body{
 
   // Wellbeing question pool (15 questions, slug + label + positive answer)
   const WB_POOL = [
-    {slug:"solitude",label:"Tu as ressenti de la solitude aujourd'hui ?",positive:"no"},
-    {slug:"doute",label:"Tu as douté de toi aujourd'hui ?",positive:"no"},
-    {slug:"fierte",label:"Tu as ressenti de la fierté aujourd'hui ?",positive:"yes"},
-    {slug:"sommeil",label:"Tu as dormi au moins 7h cette nuit ?",positive:"yes"},
-    {slug:"energie",label:"Tu as eu l'énergie de bosser à fond aujourd'hui (sans te traîner) ?",positive:"yes"},
-    {slug:"aligne_objectif",label:"Ce que tu as fait aujourd'hui te rapproche de tes 5-10k€/mois ?",positive:"yes"},
-    {slug:"gratitude",label:"Tu as pris 1 min pour kiffer ce que tu as déjà (santé, proches, opportunité) ?",positive:"yes"},
-    {slug:"presence",label:"Tu as bossé sans scroller ni zapper aujourd'hui (focus pur sur 1 tâche à la fois) ?",positive:"yes"},
-    {slug:"peurs",label:"Tu as ressenti des peurs qui t'ont bloqué d'agir aujourd'hui (peur du non, du jugement, de l'échec) ?",positive:"no"},
-    {slug:"autonomie",label:"Tu as exécuté tes calls/tâches seul aujourd'hui (sans demander d'aide à Djibril ou au groupe) ?",positive:"yes"},
-    {slug:"motivation",label:"Tu t'es levé motivé et tu as eu envie de passer à l'action aujourd'hui ?",positive:"yes"},
-    {slug:"support_social",label:"Tu as échangé avec au moins 1 proche / élève qui te tire vers le haut aujourd'hui ?",positive:"yes"},
-    {slug:"alimentation",label:"Tu as mangé équilibré aujourd'hui (protéines + légumes, peu de sucre transformé) ?",positive:"yes"},
-    {slug:"exercice",label:"Tu as bougé ton corps aujourd'hui (sport, muscu ou marche d'au moins 30 min) ?",positive:"yes"},
-    {slug:"focus",label:"Tu as tenu au moins 1 bloc de 60 min de travail concentré sans interruption aujourd'hui ?",positive:"yes"}
+    {slug:"solitude",label:"Tu t'es senti seul aujourd'hui ?",positive:"no"},
+    {slug:"doute",label:"Tu t'es mis en doute aujourd'hui ?",positive:"no"},
+    {slug:"fierte",label:"Tu t'es senti fier aujourd'hui ?",positive:"yes"},
+    {slug:"sommeil",label:"T'as dormi au moins 7h cette nuit ?",positive:"yes"},
+    {slug:"energie",label:"T'as eu l'énergie de bosser à fond aujourd'hui (sans traîner) ?",positive:"yes"},
+    {slug:"aligne_objectif",label:"Ce que t'as fait aujourd'hui te rapproche de tes 5-10k€/mois ?",positive:"yes"},
+    {slug:"gratitude",label:"T'as pris 1 min pour kiffer ce que t'as déjà (santé, proches, opportunité) ?",positive:"yes"},
+    {slug:"presence",label:"T'as bossé sans scroller ni zapper (focus pur sur 1 tâche à la fois) ?",positive:"yes"},
+    {slug:"peurs",label:"Des peurs t'ont bloqué d'agir aujourd'hui (non, jugement, échec) ?",positive:"no"},
+    {slug:"autonomie",label:"T'as fait tes calls/tâches seul (sans demander d'aide à Djibril ou au groupe) ?",positive:"yes"},
+    {slug:"motivation",label:"T'es levé motivé et t'avais envie d'agir aujourd'hui ?",positive:"yes"},
+    {slug:"support_social",label:"T'as parlé à un proche ou un élève qui te tire vers le haut ?",positive:"yes"},
+    {slug:"alimentation",label:"T'as mangé équilibré (protéines + légumes, peu de sucre transformé) ?",positive:"yes"},
+    {slug:"exercice",label:"T'as bougé ton corps (sport, muscu ou marche ≥30 min) ?",positive:"yes"},
+    {slug:"focus",label:"T'as tenu un bloc de 60 min de taf concentré sans interruption ?",positive:"yes"}
   ];
 
   // Pick 5 questions stable for the day (seed = today YYYY-MM-DD + student id)
@@ -834,7 +834,7 @@ body{
           <textarea class="qa-textarea" id="qa-answer-input" placeholder="Sois précis. Plus tu creuses, plus la réponse sera utile."></textarea>
           <div class="qa-actions">
             <button class="btn btn--ember" id="qa-answer-btn">Continuer le creusage</button>
-            <button class="btn btn--sm" id="qa-force-btn" title="J'ai compris, envoie tel quel à Djibril">J'ai mon vrai problème ✦ synthétiser</button>
+            <button class="btn btn--sm" id="qa-force-btn" title="J'ai compris, envoie tel quel à Djibril">J’ai mon vrai problème ✦ synthétiser</button>
           </div>
         </div>
       `;
@@ -876,7 +876,7 @@ body{
             <textarea class="qa-reformulation__text" id="qa-reformulation-action" rows="2">${action}</textarea>
           </div>` : ''}
           <div class="qa-actions" style="margin-top:12px">
-            <button class="btn btn--ember" id="qa-finalize-btn">C'est ma vraie question ✦ envoyer</button>
+            <button class="btn btn--ember" id="qa-finalize-btn">C’est ma vraie question ✦ envoyer</button>
             <button class="btn btn--sm" id="qa-reroll-btn" title="Régénérer une autre reformulation">↻ Reformuler autrement</button>
           </div>
         </div>
@@ -896,7 +896,7 @@ body{
         </div>
       `;
     } else if(q.status === 'awaiting_djibril'){
-      inputHTML = `<div class="qa-status awaiting">Ta question est en attente de Djibril ✦ tu recevras un mail dès qu'il a répondu</div>`;
+      inputHTML = `<div class="qa-status awaiting">Ta question attend Djibril ✦ tu recevras un mail dès qu'il répond</div>`;
     } else if(q.status === 'answered' && q.matched_kb){
       const kb = q.matched_kb;
       inputHTML = `
@@ -1143,11 +1143,11 @@ body{
         <!-- HEURES TRAVAILLÉES -->
         <div class="slider-group">
           <div class="slider-head">
-            <span class="slider-label">Heures travaillées</span>
+            <span class="slider-label">Heures de taff</span>
             <span class="slider-value"><span id="hours-display">0</span><span class="unit">h</span></span>
           </div>
           <div class="range-wrap">
-            <input type="range" class="range" id="field-hours" min="0" max="16" step="0.5" value="0" aria-label="Heures travaillées">
+            <input type="range" class="range" id="field-hours" min="0" max="16" step="0.5" value="0" aria-label="Heures de taff">
           </div>
           <div class="range-ticks">
             <button type="button" class="tick" data-target="field-hours" data-v="0">0h</button>
@@ -1183,38 +1183,38 @@ body{
         <!-- QUESTIONS BIEN-ÊTRE -->
         <div class="wellbeing">
           <h3>Bien-être du jour</h3>
-          <p class="sub">5 questions tirées du pool. Réponds vite, c'est juste pour toi.</p>
+          <p class="sub">5 questions rapides. Réponds vite, c'est juste pour toi.</p>
           ${wbQuestionsHTML}
         </div>
 
         <!-- MENTAL CHECK QUALIFIÉ -->
         <div class="mental-check">
           <h3>Mental check — pour Djibril</h3>
-          <p class="sub">3 sliders + 2 phrases. C'est ce que Djibril regarde en 30 sec pour voir où tu en es vraiment.</p>
+          <p class="sub">3 sliders + 2 phrases. Djibril regarde ça en 30 sec pour voir où t'en es.</p>
 
           <div class="mental-row">
-            <label>Énergie mentale aujourd'hui<span class="mini-val" id="ment-energy-val">5</span><span style="font-family:var(--mono);font-size:10px;color:var(--ink-mute);margin-left:6px">/10</span></label>
+            <label>Énergie mentale<span class="mini-val" id="ment-energy-val">5</span><span style="font-family:var(--mono);font-size:10px;color:var(--ink-mute);margin-left:6px">/10</span></label>
             <input type="range" class="range" id="ment-energy" min="0" max="10" step="1" value="5" aria-label="Énergie mentale">
           </div>
 
           <div class="mental-row">
-            <label>Envie de pousser plus que d'habitude<span class="mini-val" id="ment-drive-val">5</span><span style="font-family:var(--mono);font-size:10px;color:var(--ink-mute);margin-left:6px">/10</span></label>
+            <label>Envie de pousser plus<span class="mini-val" id="ment-drive-val">5</span><span style="font-family:var(--mono);font-size:10px;color:var(--ink-mute);margin-left:6px">/10</span></label>
             <input type="range" class="range" id="ment-drive" min="0" max="10" step="1" value="5" aria-label="Envie de pousser plus">
           </div>
 
           <div class="mental-row">
-            <label>Niveau de tension/stress<span class="mini-val" id="ment-stress-val">5</span><span style="font-family:var(--mono);font-size:10px;color:var(--ink-mute);margin-left:6px">/10</span></label>
+            <label>Tension / stress<span class="mini-val" id="ment-stress-val">5</span><span style="font-family:var(--mono);font-size:10px;color:var(--ink-mute);margin-left:6px">/10</span></label>
             <input type="range" class="range" id="ment-stress" min="0" max="10" step="1" value="5" aria-label="Niveau de tension">
           </div>
 
           <div class="mental-row">
-            <label>1 mot qui décrit ton état mental aujourd'hui</label>
+            <label>1 mot pour ton état mental</label>
             <input type="text" id="ment-mood-word" maxlength="40" placeholder="Ex : tendu, déterminé, fatigué, allumé, perdu…">
           </div>
 
           <div class="mental-row">
-            <label>Qu'est-ce qui t'a coûté le plus mentalement aujourd'hui ? (optionnel)</label>
-            <textarea id="ment-friction" maxlength="280" placeholder="Ex : Le call de 16h, j'ai senti que je voulais pas pousser. / Pas grand chose, journée fluide."></textarea>
+            <label>Qu'est-ce qui t'a coûté le plus mentalement ? (optionnel)</label>
+            <textarea id="ment-friction" maxlength="280" placeholder="Ex : Le call de 16h, j’ai senti que je voulais pas pousser. / Pas grand chose, journée fluide."></textarea>
           </div>
         </div>
 
@@ -1252,8 +1252,8 @@ body{
 
         <!-- FREE NOTE -->
         <div class="note-group">
-          <label for="field-note">Une chose à retenir aujourd'hui — déclic, frustration, win, doute (optionnel · 280 caractères)</label>
-          <textarea class="note-textarea" id="field-note" maxlength="280" placeholder="Ex : « Closing raté car j'ai pas écouté. » / « Premier oui à 500€ après 3 refus. » / « Je doute mais je continue. »"></textarea>
+          <label for="field-note">Une chose à retenir — déclic, frustration, win, doute (optionnel · 280 caractères)</label>
+          <textarea class="note-textarea" id="field-note" maxlength="280" placeholder="Ex : « Closing raté car j’ai pas écouté. » / « Premier oui à 500€ après 3 refus. » / « Je doute mais je continue. »"></textarea>
           <div class="note-count" id="note-count">0/280</div>
         </div>
 
@@ -1263,8 +1263,49 @@ body{
 
       <div class="recap" id="recap-area"></div>
 
+      <!-- LEIA — Agent vocal Reset Ultra -->
+      <div class="leia-section" id="leia-section" style="margin:32px 0;padding:22px 22px 20px;background:linear-gradient(155deg,rgba(212,149,26,.08) 0%,rgba(232,93,44,.05) 60%,rgba(74,60,140,.06) 100%);border:1.5px solid rgba(212,149,26,.3);border-radius:4px;box-shadow:inset 3px 3px 0 rgba(212,149,26,.08)">
+        <h3 style="font-family:var(--display);font-weight:900;font-size:1.18rem;color:var(--ember-deep);margin-bottom:6px;letter-spacing:-.01em;display:flex;align-items:center;gap:10px">
+          <span style="display:inline-block;width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#d4951a,#e85d2c,#6b3a4f);box-shadow:0 0 16px rgba(212,149,26,.4);animation:leia-pulse 2.5s ease-in-out infinite"></span>
+          Leia — demande-lui à voix haute
+        </h3>
+        <p style="font-family:var(--serif);font-style:italic;color:var(--plum);font-size:.92rem;margin-bottom:16px;line-height:1.45">
+          Leia est ma voix. Parle-lui (ou écris). Elle fouille ce que Djibril a déjà répondu pour t'aider en direct.
+          <strong style="font-family:var(--display);font-style:normal;color:var(--ember-deep)">Si elle trouve une réponse</strong>, elle te la lit.
+          Sinon, elle t'oriente vers le creusage personnalisé.
+        </p>
+
+        <div id="leia-input-area">
+          <textarea id="leia-input" placeholder="Ex : 'Comment je fais pour ne plus avoir peur de pitcher le prix ?'"
+            style="width:100%;min-height:64px;padding:12px;font-family:var(--serif);font-style:italic;font-size:1rem;line-height:1.5;background:rgba(255,252,245,.85);border:1.5px solid rgba(212,149,26,.3);border-radius:4px;color:var(--ink);outline:none;resize:vertical;transition:border-color .15s,background .15s"></textarea>
+          <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+            <button id="leia-ask-btn" class="btn btn--ember" style="flex:1;min-width:180px">Demander à Leia ✦</button>
+            <button id="leia-mic-btn" class="btn btn--sm" style="background:transparent;color:var(--ink);border:1.5px solid var(--ink);min-width:60px" title="Parle (maintiens enfoncé)">🎤</button>
+          </div>
+          <div id="leia-status" style="font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute);margin-top:8px;min-height:1.2em;font-weight:600"></div>
+        </div>
+
+        <div id="leia-result" style="margin-top:18px"></div>
+      </div>
+      <style>
+        @keyframes leia-pulse{0%,100%{transform:scale(1);box-shadow:0 0 16px rgba(212,149,26,.4)}50%{transform:scale(1.08);box-shadow:0 0 26px rgba(232,93,44,.55)}}
+        .leia-mic-recording{background:var(--crit)!important;color:var(--paper)!important;border-color:var(--crit)!important;animation:leia-mic-pulse 1s ease-in-out infinite}
+        @keyframes leia-mic-pulse{0%,100%{box-shadow:0 0 0 0 rgba(199,62,58,.6)}50%{box-shadow:0 0 0 8px rgba(199,62,58,0)}}
+        .leia-match{margin-top:14px;padding:14px;background:rgba(255,252,245,.92);border:2px solid var(--gold);box-shadow:4px 4px 0 rgba(212,149,26,.35)}
+        .leia-match h4{font-family:var(--display);font-weight:900;font-size:1rem;color:var(--ember-deep);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+        .leia-match__meta{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--ink-mute);text-transform:uppercase;margin-bottom:8px}
+        .leia-match__q{font-style:italic;font-family:var(--serif);color:var(--ink-soft);font-size:.95rem;margin-bottom:8px}
+        .leia-match__a{font-size:.96rem;line-height:1.55;white-space:pre-wrap;margin-bottom:10px}
+        .leia-intro-bubble{padding:14px 16px;background:linear-gradient(135deg,rgba(212,149,26,.08),rgba(107,58,79,.08));border-left:4px solid var(--gold);font-family:var(--display);font-weight:700;font-style:italic;font-size:1.02rem;color:var(--ink-soft);line-height:1.4;margin-bottom:8px;border-radius:0 4px 4px 0}
+        .leia-no-match{padding:14px 16px;background:rgba(107,58,79,.06);border-left:3px solid var(--plum);font-family:var(--serif);font-style:italic;color:var(--ink-soft);font-size:.95rem;line-height:1.5;margin-top:10px}
+        .leia-no-match strong{font-family:var(--display);font-style:normal;color:var(--ember-deep);font-weight:700}
+        .leia-audio-row{display:flex;align-items:center;gap:10px;margin-top:8px}
+        .leia-audio-row audio{flex:1;height:32px}
+        .leia-audio-row button{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:transparent;border:1px solid rgba(26,22,20,.2);padding:5px 10px;cursor:pointer;color:var(--ink-mute)}
+      </style>
+
       <div class="qa-section" id="qa-section">
-        <h3>Une question te tourmente ?</h3>
+        <h3>Une question te tourne dans la tête ?</h3>
         <p class="qa-intro">
           Pose ta plus grosse problématique du moment (mental ou business).
           <strong>L'IA va te poser 1-3 questions pour creuser</strong> avant que Djibril te réponde personnellement.
@@ -1624,7 +1665,7 @@ body{
     });
     const pts = calcPoints(data);
     document.getElementById('recap-area').innerHTML = `
-      <h3>Récapitulatif du jour</h3>
+      <h3>Récap du jour</h3>
       <div class="recap-row"><span class="recap-label">Heures</span><span class="recap-value">${hrs}h</span></div>
       <div class="recap-row"><span class="recap-label">Épanouissement</span><span class="recap-value">${fulfillmentEmoji(ful)} ${ful}/10</span></div>
       <div class="recap-row"><span class="recap-label">Bien-être positif</span><span class="recap-value">${wbPositive}/${wbCount||5}</span></div>
@@ -1684,8 +1725,197 @@ body{
     setTimeout(()=>{area.innerHTML='';},3500);
   }
 
+  // ── LEIA — Agent vocal RAG ──────────────────────────────
+  const LEIA_API = 'https://nbnbsljqtolzzuqnkyae.supabase.co/functions/v1/leia';
+  let _leiaRecording = null;     // { mediaRecorder, chunks }
+  let _leiaPushTimer = null;
+  let _leiaLastAudio = null;     // pour replay
+
+  function leiaSetStatus(txt, cls){
+    const el = document.getElementById('leia-status');
+    if(!el) return;
+    el.textContent = txt || '';
+    el.style.color = cls === 'err' ? 'var(--crit)' : (cls === 'ok' ? 'var(--jade)' : 'var(--ink-mute)');
+  }
+
+  async function leiaAsk(text, opts){
+    opts = opts || {};
+    const btn = document.getElementById('leia-ask-btn');
+    const res = document.getElementById('leia-result');
+    if(btn){ btn.disabled = true; btn.textContent = 'Leia réfléchit…'; }
+    leiaSetStatus('Recherche dans les réponses de Djibril…');
+    try {
+      const r = await fetch(LEIA_API + '/leia/ask', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json','Authorization':'Bearer '+token},
+        body: JSON.stringify({ text, no_tts: false })
+      });
+      const data = await r.json();
+      if(data.error){ throw new Error(data.error); }
+      leiaRenderResult(data);
+      leiaSetStatus(data.no_match ? 'Aucune réponse précédente — je peux creuser avec toi' : '✦ Réponse de Djibril trouvée', 'ok');
+    } catch(e){
+      leiaSetStatus('Erreur : ' + (e.message||e), 'err');
+    } finally {
+      if(btn){ btn.disabled = false; btn.textContent = 'Demander à Leia ✦'; }
+    }
+  }
+
+  function leiaRenderResult(data){
+    const res = document.getElementById('leia-result');
+    if(!res) return;
+    let html = '';
+
+    // 1. Bulle intro Leia avec audio autoplay
+    if(data.leia_intro){
+      const audioId = 'leia-intro-audio-'+Date.now();
+      html += '<div class="leia-intro-bubble">"'+escapeHTML(data.leia_intro)+'"</div>';
+      if(data.audio_base64){
+        html += '<div class="leia-audio-row"><audio id="'+audioId+'" controls autoplay src="data:'+(data.mime||'audio/mpeg')+';base64,'+data.audio_base64+'"></audio></div>';
+      }
+    }
+
+    // 2. Match KB principale
+    if(data.matches && data.matches.length > 0){
+      const best = data.matches[0];
+      const kbAudioId = 'leia-kb-audio-'+Date.now();
+      html += '<div class="leia-match">';
+      html += '<h4>✦ Réponse de Djibril</h4>';
+      html += '<div class="leia-match__meta">Pertinence : '+(best.pertinence_score||'—')+'/100 · '+(best.tags||[]).slice(0,3).join(' · ')+'</div>';
+      html += '<div class="leia-match__q">"'+escapeHTML(best.question_summary || best.question || '')+'"</div>';
+      html += '<div class="leia-match__a">'+escapeHTML(best.answer || '')+'</div>';
+      if(data.kb_audio_b64){
+        html += '<div class="leia-audio-row"><audio id="'+kbAudioId+'" controls src="data:'+(data.mime||'audio/mpeg')+';base64,'+data.kb_audio_b64+'"></audio><button onclick="document.getElementById(\''+kbAudioId+'\').play()">▶ Réécouter</button></div>';
+      }
+      html += '</div>';
+
+      // Autres matches secondaires
+      if(data.matches.length > 1){
+        html += '<details style="margin-top:14px"><summary style="cursor:pointer;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--ink-mute);padding:6px 0">▸ '+(data.matches.length-1)+' autre(s) réponse(s) liée(s)</summary>';
+        for(let i=1; i<data.matches.length; i++){
+          const m = data.matches[i];
+          html += '<div style="margin-top:10px;padding:10px 12px;background:rgba(255,252,245,.55);border-left:2px solid rgba(212,149,26,.4)">';
+          html += '<div style="font-family:var(--mono);font-size:9px;color:var(--ink-mute);margin-bottom:4px">Pertinence '+(m.pertinence_score||'—')+'/100</div>';
+          html += '<div style="font-style:italic;color:var(--ink-soft);font-family:var(--serif);font-size:.92rem;margin-bottom:4px">'+escapeHTML(m.question_summary || m.question)+'</div>';
+          html += '<div style="font-size:.92rem;line-height:1.45">'+escapeHTML((m.answer||'').slice(0,300))+(m.answer && m.answer.length>300?'…':'')+'</div>';
+          html += '</div>';
+        }
+        html += '</details>';
+      }
+    } else {
+      // No match → invitation à creuser
+      html += '<div class="leia-no-match">';
+      html += '<strong>Pas encore de réponse à ce cas précis.</strong> Aucun élève n\'a posé exactement la même question (ou Djibril n\'y a pas encore répondu).<br><br>';
+      html += '<button class="btn btn--ember btn--sm" id="leia-to-qa-btn" style="margin-top:6px">Lancer le creusage avec l\'IA →</button>';
+      html += '</div>';
+    }
+
+    res.innerHTML = html;
+
+    // Lien vers creusage si pas de match
+    const toQa = document.getElementById('leia-to-qa-btn');
+    if(toQa){
+      toQa.addEventListener('click', ()=>{
+        const txt = document.getElementById('leia-input').value.trim();
+        if(!txt) return;
+        // Remplit l'input du QA et scroll
+        const qaInput = document.getElementById('qa-initial') || document.querySelector('#qa-active-area .qa-textarea');
+        if(qaInput){ qaInput.value = txt; qaInput.focus(); }
+        document.getElementById('qa-section').scrollIntoView({behavior:'smooth', block:'start'});
+      });
+    }
+  }
+
+  function escapeHTML(s){
+    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // ── Micro Leia (Web Audio recording) ──
+  async function startMicLeia(){
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+      leiaSetStatus('Micro non supporté par ce navigateur', 'err');
+      return;
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+      const mr = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+      const chunks = [];
+      mr.ondataavailable = e => { if(e.data && e.data.size) chunks.push(e.data); };
+      mr.onstop = async () => {
+        stream.getTracks().forEach(t => t.stop());
+        const blob = new Blob(chunks, {type:'audio/webm'});
+        if(blob.size < 1000){ leiaSetStatus('Trop court — réessaye', 'err'); return; }
+        leiaSetStatus('Transcription en cours…');
+        const reader = new FileReader();
+        reader.onload = async () => {
+          const b64 = (reader.result+'').split(',')[1];
+          try {
+            const r = await fetch(LEIA_API + '/leia/ask-voice', {
+              method: 'POST',
+              headers: {'Content-Type':'application/json','Authorization':'Bearer '+token},
+              body: JSON.stringify({ audio_base64: b64, mime: 'audio/webm', no_tts: false })
+            });
+            const data = await r.json();
+            if(data.error){ throw new Error(data.error); }
+            // Affiche le transcript dans l'input
+            const inp = document.getElementById('leia-input');
+            if(inp && data.transcript) inp.value = data.transcript;
+            leiaRenderResult(data);
+            leiaSetStatus(data.no_match ? 'Aucune réponse précédente — je peux creuser' : '✦ Réponse de Djibril trouvée', 'ok');
+          } catch(e){ leiaSetStatus('Erreur : '+(e.message||e), 'err'); }
+        };
+        reader.readAsDataURL(blob);
+      };
+      _leiaRecording = { mr, chunks, stream };
+      mr.start();
+      document.getElementById('leia-mic-btn').classList.add('leia-mic-recording');
+      leiaSetStatus('🎙 J\'écoute… relâche pour envoyer', 'ok');
+    } catch(e){
+      leiaSetStatus('Micro refusé : '+(e.message||e), 'err');
+    }
+  }
+  function stopMicLeia(){
+    if(_leiaRecording && _leiaRecording.mr && _leiaRecording.mr.state === 'recording'){
+      _leiaRecording.mr.stop();
+    }
+    document.getElementById('leia-mic-btn').classList.remove('leia-mic-recording');
+    _leiaRecording = null;
+  }
+
+  function bindLeia(){
+    const btn = document.getElementById('leia-ask-btn');
+    const mic = document.getElementById('leia-mic-btn');
+    const inp = document.getElementById('leia-input');
+    if(btn) btn.addEventListener('click', ()=>{
+      const t = (inp && inp.value || '').trim();
+      if(t.length < 3){ leiaSetStatus('Écris ou parle une vraie question', 'err'); return; }
+      leiaAsk(t);
+    });
+    if(mic){
+      // Push-to-talk : maintenir enfoncé
+      const startEv = (e)=>{ e.preventDefault(); startMicLeia(); };
+      const endEv   = (e)=>{ e.preventDefault(); stopMicLeia(); };
+      mic.addEventListener('mousedown', startEv);
+      mic.addEventListener('mouseup', endEv);
+      mic.addEventListener('mouseleave', endEv);
+      mic.addEventListener('touchstart', startEv, {passive:false});
+      mic.addEventListener('touchend', endEv, {passive:false});
+      mic.addEventListener('touchcancel', endEv, {passive:false});
+    }
+    if(inp){
+      inp.addEventListener('keypress', e=>{
+        if(e.key === 'Enter' && (e.metaKey || e.ctrlKey)){ e.preventDefault(); btn?.click(); }
+      });
+    }
+  }
+
+  // Bind Leia après render
+  setTimeout(bindLeia, 200);
+  // Et re-bind après loadToday en cas de re-render
+  const _origLoadToday = window.__loadToday__;
+
   // ── Start ───────────────────────────────────────────────
-  render();
+  render().then(()=>bindLeia());
 })();
 </script>
 
