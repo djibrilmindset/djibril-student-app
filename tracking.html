@@ -188,14 +188,50 @@ body{
 .lock-warn{margin-top:14px;padding:10px 14px;background:rgba(212,149,26,.1);border-left:3px solid var(--gold);font-family:var(--serif);font-style:italic;color:var(--ink-soft);font-size:.92rem;line-height:1.4;border-radius:0 4px 4px 0}
 .btn:disabled.is-locked{background:rgba(26,22,20,.4);border-color:rgba(26,22,20,.4);color:var(--paper);cursor:not-allowed}
 
-/* FREE NOTE */
-.note-group{margin-bottom:24px}
-.note-group label{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--ink-soft);display:block;margin-bottom:8px}
+/* STATE EMOJIS (V5 — remplace slider 0-10) */
+.state-emojis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:8px 0 4px}
+.state-emojis .state-btn{font-size:1.8rem;padding:14px 0;background:rgba(255,252,245,.85);border:1.5px solid rgba(26,22,20,.22);border-radius:8px;cursor:pointer;transition:all .15s;line-height:1}
+.state-emojis .state-btn:hover{transform:translateY(-2px);border-color:var(--ember)}
+.state-emojis .state-btn.is-on{background:var(--ember-soft);border-color:var(--ember);box-shadow:3px 3px 0 var(--ember-deep)}
+
+/* VIDEO ROW (cold + closing) */
+.video-row .field label{color:var(--indigo)}
+.video-hint{font-family:var(--mono);font-size:9px;color:var(--ink-mute);margin-top:2px;letter-spacing:.04em}
+.video-hint a{color:var(--ember);text-decoration:none;border-bottom:1px dotted var(--ember)}
+
+/* TEXTAREA (V5: problème) */
 .note-textarea{width:100%;min-height:80px;padding:12px;font-family:var(--serif);font-style:italic;font-size:.98rem;line-height:1.5;background:rgba(255,252,245,.85);border:1.5px solid rgba(26,22,20,.18);border-radius:4px;color:var(--ink);outline:none;resize:vertical;transition:border-color .15s,background .15s}
 .note-textarea:focus{border-color:var(--ember);background:rgba(255,252,245,1)}
 .note-count{display:flex;justify-content:flex-end;font-family:var(--mono);font-size:9px;color:var(--ink-mute);letter-spacing:.05em;margin-top:4px}
 .note-count.is-near{color:var(--warn)}
 .note-count.is-full{color:var(--crit);font-weight:700}
+.note-count.is-short{color:var(--crit);font-weight:700}
+
+/* MANDATORY BLOCKS (V5: problème + qualif) */
+.block-mandatory{margin:24px 0;padding:20px 18px 18px;background:rgba(199,62,58,.04);border:1.5px solid rgba(199,62,58,.22);border-radius:6px}
+.block-mandatory h3{font-family:var(--display);font-weight:900;font-size:1.05rem;color:var(--ink);margin-bottom:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.block-mandatory h3 .req{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;background:var(--crit);color:var(--paper);padding:3px 8px;border-radius:999px}
+.block-mandatory .sub{font-family:var(--serif);font-style:italic;color:var(--ink-soft);font-size:.92rem;margin-bottom:12px}
+.qualif-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px}
+.qualif-grid .field input{font-size:1.2rem}
+.qualif-grid .qualif-milestone{grid-column:1/-1}
+.qualif-grid .qualif-milestone input{font-size:1rem;text-align:left;font-style:italic}
+
+/* REVELATION BLOCK (V5: tu ne savais pas que...) */
+.block-revelation{margin:24px 0;padding:22px 20px;background:linear-gradient(155deg,rgba(74,60,140,.08) 0%,rgba(212,149,26,.08) 100%);border:1.5px solid rgba(74,60,140,.3);border-radius:6px;box-shadow:inset 2px 2px 0 rgba(74,60,140,.06)}
+.block-revelation .rev-tag{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--indigo);background:rgba(74,60,140,.12);padding:4px 10px;border-radius:999px;margin-bottom:10px}
+.block-revelation h3{font-family:var(--display);font-weight:900;font-size:1.18rem;color:var(--ink);margin-bottom:10px;line-height:1.25}
+.block-revelation p{font-family:var(--serif);font-style:italic;color:var(--ink-soft);font-size:1rem;line-height:1.5;margin-bottom:16px}
+.block-revelation p b{font-style:normal;font-weight:700;color:var(--ember-deep)}
+.rev-check{display:flex;align-items:center;gap:10px;cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink);background:rgba(255,252,245,.7);padding:12px 14px;border-radius:6px;border:1.5px solid rgba(26,22,20,.18);transition:all .15s}
+.rev-check:hover{border-color:var(--indigo);background:rgba(255,252,245,.95)}
+.rev-check input[type=checkbox]{width:20px;height:20px;cursor:pointer;accent-color:var(--indigo);margin:0}
+.rev-check.is-on{background:rgba(29,138,111,.1);border-color:var(--jade);color:var(--jade);font-weight:600}
+
+/* MISSING CHECKLIST */
+.missing-list{margin:12px 0;padding:12px 14px;background:rgba(212,149,26,.1);border-left:3px solid var(--gold);font-family:var(--mono);font-size:10px;letter-spacing:.04em;color:var(--ink-soft);border-radius:0 4px 4px 0}
+.missing-list ul{margin:6px 0 0 18px;padding:0}
+.missing-list li{margin:3px 0}
 
 .btn{font-family:var(--mono);font-weight:600;font-size:11px;letter-spacing:.18em;text-transform:uppercase;background:var(--ink);color:var(--paper);border:1.5px solid var(--ink);padding:14px 24px;cursor:pointer;transition:transform .15s,box-shadow .15s}
 .btn:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ember-deep)}
@@ -396,34 +432,53 @@ body{
   const TOKEN_KEY = 'dj_token';
   const USER_KEY = 'dj_user';
 
-  // Wellbeing question pool (15 questions, slug + label + positive answer)
-  const WB_POOL = [
-    {slug:"solitude",label:"Tu t'es senti seul aujourd'hui ?",positive:"no"},
-    {slug:"doute",label:"Tu t'es mis en doute aujourd'hui ?",positive:"no"},
-    {slug:"fierte",label:"Tu t'es senti fier aujourd'hui ?",positive:"yes"},
-    {slug:"sommeil",label:"T'as dormi au moins 7h cette nuit ?",positive:"yes"},
-    {slug:"energie",label:"T'as eu l'énergie de bosser à fond aujourd'hui (sans traîner) ?",positive:"yes"},
-    {slug:"aligne_objectif",label:"Ce que t'as fait aujourd'hui te rapproche de tes 5-10k€/mois ?",positive:"yes"},
-    {slug:"gratitude",label:"T'as pris 1 min pour kiffer ce que t'as déjà (santé, proches, opportunité) ?",positive:"yes"},
-    {slug:"presence",label:"T'as bossé sans scroller ni zapper (focus pur sur 1 tâche à la fois) ?",positive:"yes"},
-    {slug:"peurs",label:"Des peurs t'ont bloqué d'agir aujourd'hui (non, jugement, échec) ?",positive:"no"},
-    {slug:"autonomie",label:"T'as fait tes calls/tâches seul (sans demander d'aide à Djibril ou au groupe) ?",positive:"yes"},
-    {slug:"motivation",label:"T'es levé motivé et t'avais envie d'agir aujourd'hui ?",positive:"yes"},
-    {slug:"support_social",label:"T'as parlé à un proche ou un élève qui te tire vers le haut ?",positive:"yes"},
-    {slug:"alimentation",label:"T'as mangé équilibré (protéines + légumes, peu de sucre transformé) ?",positive:"yes"},
-    {slug:"exercice",label:"T'as bougé ton corps (sport, muscu ou marche ≥30 min) ?",positive:"yes"},
-    {slug:"focus",label:"T'as tenu un bloc de 60 min de taf concentré sans interruption ?",positive:"yes"}
+  // ─── V5 REFONTE 2026-05-16 ──────────────────────────────
+  // Moins d'infos, plus de clarté.
+  // - 15 WB questions → 1 pulse rotative (énergie/fierté/doute/focus)
+  // - Slider 0-10 épanouissement → 4 emojis état du jour
+  // - Free note libre → problématique du jour OBLIGATOIRE
+  // - Ajout: vidéos cold/closing, qualif semaine, révélation Socratic
+  // ───────────────────────────────────────────────────────
+  const PULSE_POOL = [
+    {slug:"energie",label:"T'as eu l'énergie d'attaquer fort aujourd'hui ?",positive:"yes"},
+    {slug:"fierte",label:"Tu peux nommer 1 truc dont t'es fier aujourd'hui ?",positive:"yes"},
+    {slug:"doute",label:"Le doute t'a fait stopper aujourd'hui ?",positive:"no"},
+    {slug:"focus",label:"T'as tenu 1 bloc 60 min focus pur (sans tel/scroll) ?",positive:"yes"}
   ];
+  const WB_POOL = PULSE_POOL; // backward-compat (calcPoints, plate)
 
-  // Pick 5 questions stable for the day (seed = today YYYY-MM-DD + student id)
   function pickDailyQuestions(seed){
-    const arr=[...WB_POOL];
-    // Deterministic shuffle via mulberry32 seeded
+    const arr=[...PULSE_POOL];
     let h=2166136261;
     for(let i=0;i<seed.length;i++){h^=seed.charCodeAt(i);h=Math.imul(h,16777619)>>>0}
     const rand=()=>{h+=0x6D2B79F5;let t=h;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296};
-    for(let i=arr.length-1;i>0;i--){const j=Math.floor(rand()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}
-    return arr.slice(0,5);
+    return [arr[Math.floor(rand() * arr.length)]];
+  }
+
+  // ── Révélations Socratic — 1 / jour rotation, oblige checkbox ──
+  const REVELATIONS = [
+    {title:"Tu écoutes pas avant de pitcher",body:"La méthode CELIA (Pelabère) commence par <b>Connecter</b> — pas Écouter. Sans rapport humain, ton écoute paraît tactique. Ton job dans les 30 premières sec : 1 point commun réel."},
+    {title:"Les objections n'existent pas",body:"Voss (Never Split) : ce que tu prends pour une objection est un <b>besoin non-dit</b>. \"C'est cher\" = peur de regretter. Reformule la peur cachée avant de défendre le prix."},
+    {title:"Tu vends à la mauvaise personne",body:"80% des refus en B2B = mauvais ICP (profil cible). Avant d'améliorer ton script, vérifie : ton prospect a le <b>budget + le pouvoir de décision</b>. Sinon t'es chronométré pour rien."},
+    {title:"Le silence vaut 1000 mots",body:"3 secondes de silence après une objection forcent le prospect à se justifier. Tes calls les plus mauvais : tu parles trop. Compte mentalement \"1-2-3\" après chaque question."},
+    {title:"Le \"non\" est ton vrai feedback",body:"Jim Camp (\"Commencez par Non\") : un \"oui\" rapide = signe danger (faux engagement). Un \"non\" franc te donne <b>la vraie info</b> pour pivoter. Cherche les \"non\", pas les \"oui\"."},
+    {title:"Ton script tue ton authenticité",body:"Les top closers ne récitent pas. Ils ont 5 questions ouvertes en tête + écoutent. Ton script doit faire 1 page max — le reste, c'est ta présence."},
+    {title:"Pré-suasion > Persuasion",body:"Cialdini : ce que tu dis dans les 10 premières sec <b>cadre tout le reste</b>. Pré-frame avec un compliment sincère ou une question forte → +30% conversion."},
+    {title:"L'urgence fake est sentie",body:"\"Offre limitée 24h\" sans raison → le prospect sent le bluff. Crée une vraie raison (calendrier saturé, prix bientôt à 1500€, fin d'année fiscale). Sinon ferme la bouche."},
+    {title:"Tu sous-estimes le follow-up",body:"60% des ventes B2B closent entre l'appel 4 et 6. La majorité des sales abandonnent à 2. Ton avantage : un suivi structuré sur 14 jours (J+1, J+3, J+7, J+14)."},
+    {title:"Le prix est presque jamais le problème",body:"Si le prospect dit \"c'est cher\", il dit en fait <b>\"je vois pas la valeur\"</b>. Re-cadre la valeur 3× avant de toucher au prix. Le prix se discute en dernier."},
+    {title:"Tu confonds activité et progrès",body:"100 calls sans qualif = 0 progrès. 30 calls sur des ICP qualifiés = 5 RDV. Ton métrique vrai : <b>qualité de la liste</b>, pas volume de calls."},
+    {title:"Le rapport est ton seul actif",body:"Personne n'achète au 1er call sauf rapport instantané. Concentre-toi sur le <b>ton de voix + le mirroring</b> bien plus que le contenu de tes phrases."},
+    {title:"Le \"closing\" est un mythe",body:"Tu ne \"closes\" pas — tu confirmes l'évidence d'une décision déjà prise par le prospect. Si tu sens que tu pousses, t'as raté l'étape 2 (Écouter)."},
+    {title:"L'argent ne stresse pas les pros",body:"Un closer avec 10 leads en pipe ne stresse pas pour 1 vente. Tu stresses = ton funnel est sec. Solution : 30 calls/jour minimum cette semaine."},
+    {title:"Tes peurs sont visibles à la voix",body:"Le prospect entend ta nervosité avant ton offre. Avant chaque call : 4×4 respiration (4s in, 4s hold, 4s out) → calibre ton ton à \"docteur qui annonce\" — calme + autorité."}
+  ];
+
+  function pickDailyRevelation(seed){
+    let h=2166136261;
+    for(let i=0;i<seed.length;i++){h^=seed.charCodeAt(i);h=Math.imul(h,16777619)>>>0}
+    const rand=()=>{h+=0x6D2B79F5;let t=h;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296};
+    return REVELATIONS[Math.floor(rand() * REVELATIONS.length)];
   }
 
   // Check auth
@@ -1164,58 +1219,23 @@ body{
         <!-- ÉPANOUISSEMENT -->
         <div class="slider-group">
           <div class="slider-head">
-            <span class="slider-label">Épanouissement</span>
-            <span class="slider-value"><span class="emoji" id="ful-emoji">😐</span><span id="ful-display">0</span><span class="unit">/10</span></span>
+            <span class="slider-label">État du jour</span>
+            <span class="slider-value"><span class="emoji" id="ful-emoji">😐</span></span>
           </div>
-          <div class="range-wrap">
-            <input type="range" class="range" id="field-fulfillment" min="0" max="10" step="1" value="0" aria-label="Épanouissement">
+          <div class="state-emojis" role="radiogroup" aria-label="État du jour">
+            <button type="button" class="state-btn" data-v="2" aria-label="Mauvais">😞</button>
+            <button type="button" class="state-btn" data-v="5" aria-label="Moyen">😐</button>
+            <button type="button" class="state-btn" data-v="8" aria-label="Bon">😊</button>
+            <button type="button" class="state-btn" data-v="10" aria-label="Excellent">✨</button>
           </div>
-          <div class="range-ticks">
-            <button type="button" class="tick" data-target="field-fulfillment" data-v="0">0</button>
-            <button type="button" class="tick" data-target="field-fulfillment" data-v="2">2</button>
-            <button type="button" class="tick" data-target="field-fulfillment" data-v="4">4</button>
-            <button type="button" class="tick" data-target="field-fulfillment" data-v="6">6</button>
-            <button type="button" class="tick" data-target="field-fulfillment" data-v="8">8</button>
-            <button type="button" class="tick" data-target="field-fulfillment" data-v="10">10</button>
-          </div>
+          <input type="hidden" id="field-fulfillment" value="0">
         </div>
 
-        <!-- QUESTIONS BIEN-ÊTRE -->
+        <!-- PULSE — 1 seule question (rotation 4 essentielles) -->
         <div class="wellbeing">
-          <h3>Bien-être du jour</h3>
-          <p class="sub">5 questions rapides. Réponds vite, c'est juste pour toi.</p>
+          <h3>Pulse</h3>
+          <p class="sub">1 question. Réponds franc.</p>
           ${wbQuestionsHTML}
-        </div>
-
-        <!-- MENTAL CHECK QUALIFIÉ -->
-        <div class="mental-check">
-          <h3>Mental check — pour Djibril</h3>
-          <p class="sub">3 sliders + 2 phrases. Djibril regarde ça en 30 sec pour voir où t'en es.</p>
-
-          <div class="mental-row">
-            <label>Énergie mentale<span class="mini-val" id="ment-energy-val">5</span><span style="font-family:var(--mono);font-size:10px;color:var(--ink-mute);margin-left:6px">/10</span></label>
-            <input type="range" class="range" id="ment-energy" min="0" max="10" step="1" value="5" aria-label="Énergie mentale">
-          </div>
-
-          <div class="mental-row">
-            <label>Envie de pousser plus<span class="mini-val" id="ment-drive-val">5</span><span style="font-family:var(--mono);font-size:10px;color:var(--ink-mute);margin-left:6px">/10</span></label>
-            <input type="range" class="range" id="ment-drive" min="0" max="10" step="1" value="5" aria-label="Envie de pousser plus">
-          </div>
-
-          <div class="mental-row">
-            <label>Tension / stress<span class="mini-val" id="ment-stress-val">5</span><span style="font-family:var(--mono);font-size:10px;color:var(--ink-mute);margin-left:6px">/10</span></label>
-            <input type="range" class="range" id="ment-stress" min="0" max="10" step="1" value="5" aria-label="Niveau de tension">
-          </div>
-
-          <div class="mental-row">
-            <label>1 mot pour ton état mental</label>
-            <input type="text" id="ment-mood-word" maxlength="40" placeholder="Ex : tendu, déterminé, fatigué, allumé, perdu…">
-          </div>
-
-          <div class="mental-row">
-            <label>Qu'est-ce qui t'a coûté le plus mentalement ? (optionnel)</label>
-            <textarea id="ment-friction" maxlength="280" placeholder="Ex : Le call de 16h, j’ai senti que je voulais pas pousser. / Pas grand chose, journée fluide."></textarea>
-          </div>
         </div>
 
         <!-- COMPACT: Calls + CA -->
@@ -1243,6 +1263,20 @@ body{
           </div>
         </div>
 
+        <!-- VIDÉOS RÉFÉRENCE (cold call + closing) -->
+        <div class="field-row video-row">
+          <div class="field">
+            <label>Vidéos Cold Call vues 🎯</label>
+            <input type="number" id="field-videos-cold" min="0" max="50" value="0" inputmode="numeric">
+            <div class="video-hint">depuis <a href="https://docs.google.com/document/d/1P0x0NSB1GQDdp-ScGlaFgzwDeHKiVdhAbAK4f1RVFjI/edit" target="_blank">Doc Cold V4</a></div>
+          </div>
+          <div class="field">
+            <label>Vidéos Closing vues 💎</label>
+            <input type="number" id="field-videos-closing" min="0" max="50" value="0" inputmode="numeric">
+            <div class="video-hint">depuis <a href="https://docs.google.com/document/d/1BlwQNznQ9ciEcsLWrXXsD3TTDYmbgaFg8hu10H-p92k/edit" target="_blank">Doc Closing V4</a></div>
+          </div>
+        </div>
+
         <!-- LIVE -->
         <div class="live-toggle">
           <span>Live diffusion</span>
@@ -1250,14 +1284,47 @@ body{
           <button id="btn-live-yes">Oui</button>
         </div>
 
-        <!-- FREE NOTE -->
-        <div class="note-group">
-          <label for="field-note">Une chose à retenir — déclic, frustration, win, doute (optionnel · 280 caractères)</label>
-          <textarea class="note-textarea" id="field-note" maxlength="280" placeholder="Ex : « Closing raté car j’ai pas écouté. » / « Premier oui à 500€ après 3 refus. » / « Je doute mais je continue. »"></textarea>
-          <div class="note-count" id="note-count">0/280</div>
+        <!-- PROBLÉMATIQUE DU JOUR — OBLIGATOIRE -->
+        <div class="block-mandatory" id="block-problem">
+          <h3>Ta problématique du jour <span class="req">obligatoire</span></h3>
+          <p class="sub">1 vraie difficulté business ou mentale rencontrée aujourd'hui. Pas de vague — du concret.</p>
+          <textarea class="note-textarea" id="field-problem" maxlength="400" placeholder="Ex : « 30 calls, 0 RDV — je pense que mon ouverture est nulle, je récite. »"></textarea>
+          <div class="note-count" id="problem-count">0/400 · min 30 caractères</div>
+        </div>
+
+        <!-- QUALIFICATION SITUATION (forcée) -->
+        <div class="block-mandatory" id="block-qualif">
+          <h3>Ta situation cette semaine <span class="req">obligatoire</span></h3>
+          <p class="sub">3 chiffres précis. Si tu sais pas exact → estime, mais réponds.</p>
+          <div class="qualif-grid">
+            <div class="field">
+              <label>Appels cumulés cette semaine</label>
+              <input type="number" id="qualif-weekly-calls" min="0" value="0" inputmode="numeric">
+            </div>
+            <div class="field">
+              <label>CA encaissé cette semaine (€)</label>
+              <input type="number" id="qualif-weekly-ca" min="0" step="0.01" value="0" inputmode="decimal">
+            </div>
+            <div class="field qualif-milestone">
+              <label>Prochain milestone précis + date</label>
+              <input type="text" id="qualif-milestone" maxlength="120" placeholder="Ex : « 5 RDV pris d'ici vendredi 22 mai »">
+            </div>
+          </div>
+        </div>
+
+        <!-- RÉVÉLATION DU JOUR — OBLIGATOIRE checkbox -->
+        <div class="block-revelation" id="block-revelation">
+          <div class="rev-tag">Tu ne savais pas que…</div>
+          <h3 id="rev-title">—</h3>
+          <p id="rev-body">—</p>
+          <label class="rev-check">
+            <input type="checkbox" id="rev-acknowledge">
+            <span>✓ J'ai pigé. Je vais l'appliquer aujourd'hui ou demain.</span>
+          </label>
         </div>
 
         <div id="lock-warn-area"></div>
+        <div id="missing-area"></div>
         <button class="btn btn--full btn--ember" id="btn-save">Enregistrer ma fiche</button>
       </div>
 
@@ -1303,12 +1370,21 @@ body{
       </div>
     `;
 
+    // Injecter révélation du jour (rotation stable / jour / élève)
+    _dailyRev = pickDailyRevelation(today + (user.id || user.email || ''));
+    const revTitle = document.getElementById('rev-title');
+    const revBody = document.getElementById('rev-body');
+    if(revTitle && _dailyRev) revTitle.textContent = _dailyRev.title;
+    if(revBody && _dailyRev) revBody.innerHTML = _dailyRev.body;
+
     bindEvents();
     await loadToday();
+    updateMissing();
   }
 
   // ── State for wellbeing answers ─────────────────────────
   let _wb = {}; // { slug: 'yes' | 'no' }
+  let _dailyRev = null; // révélation du jour
 
   // ── Events ───────────────────────────────────────────────
   function bindEvents(){
@@ -1317,20 +1393,31 @@ body{
     document.getElementById('btn-live-yes').addEventListener('click',()=>toggleLive(true));
     document.getElementById('btn-live-no').addEventListener('click',()=>toggleLive(false));
 
-    // Sliders live update
+    // Hours slider only (fulfillment is now state-btn)
     const hoursEl = document.getElementById('field-hours');
-    const fulEl = document.getElementById('field-fulfillment');
     hoursEl.addEventListener('input', updateHoursUI);
-    fulEl.addEventListener('input', updateFulUI);
 
-    // Tick buttons (slider suggestions)
+    // Tick buttons (hours slider)
     document.querySelectorAll('.range-ticks .tick').forEach(t=>{
       t.addEventListener('click',()=>{
         const target = document.getElementById(t.dataset.target);
         target.value = t.dataset.v;
         target.dispatchEvent(new Event('input'));
-        // haptic
         if(navigator.vibrate) navigator.vibrate(8);
+      });
+    });
+
+    // State emojis (4 buttons → fulfillment 0-10 mapping)
+    document.querySelectorAll('.state-btn').forEach(b=>{
+      b.addEventListener('click',()=>{
+        document.querySelectorAll('.state-btn').forEach(x=>x.classList.remove('is-on'));
+        b.classList.add('is-on');
+        const v = parseInt(b.dataset.v);
+        document.getElementById('field-fulfillment').value = v;
+        document.getElementById('ful-emoji').textContent = b.textContent;
+        if(navigator.vibrate) navigator.vibrate(10);
+        updateBrainPreview();
+        updateMissing();
       });
     });
 
@@ -1346,44 +1433,79 @@ body{
           if(navigator.vibrate) navigator.vibrate(8);
         });
       });
-      target.addEventListener('input',()=>{updateSuggestActive(group, target.value); updateBrainPreview();});
+      target.addEventListener('input',()=>{updateSuggestActive(group, target.value); updateBrainPreview(); updateMissing();});
     });
 
-    // Wellbeing toggles
+    // Pulse toggle (1 WB question)
     document.querySelectorAll('.wb-btn').forEach(btn=>{
       btn.addEventListener('click',()=>{
         const q = btn.dataset.q;
         const v = btn.dataset.v;
-        _wb[q] = v;
+        _wb = {}; _wb[q] = v;
         document.querySelectorAll(`.wb-btn[data-q="${q}"]`).forEach(b=>b.classList.remove('is-on','positive','negative'));
         btn.classList.add('is-on', btn.dataset.positive);
         if(navigator.vibrate) navigator.vibrate(10);
         updateBrainPreview();
+        updateMissing();
       });
     });
 
-    // Note textarea
-    const noteEl = document.getElementById('field-note');
-    const countEl = document.getElementById('note-count');
-    noteEl.addEventListener('input',()=>{
-      const len = noteEl.value.length;
-      countEl.textContent = `${len}/280`;
-      countEl.className = 'note-count' + (len>250?' is-near':'') + (len>=280?' is-full':'');
-    });
+    // Problème textarea (mandatory min 30 chars)
+    const probEl = document.getElementById('field-problem');
+    const probCount = document.getElementById('problem-count');
+    if(probEl && probCount){
+      probEl.addEventListener('input',()=>{
+        const len = probEl.value.length;
+        const short = len < 30;
+        probCount.textContent = short ? `${len}/400 · min 30 caractères` : `${len}/400 ✓`;
+        probCount.className = 'note-count' + (short?' is-short':'') + (len>380?' is-near':'') + (len>=400?' is-full':'');
+        updateMissing();
+      });
+    }
 
-    // Mental check sliders
-    ['energy','drive','stress'].forEach(k=>{
-      const el = document.getElementById('ment-'+k);
-      const lbl = document.getElementById('ment-'+k+'-val');
-      if(!el || !lbl) return;
-      const upd = ()=>{
-        const v = parseInt(el.value)||0;
-        lbl.textContent = v;
-        el.style.setProperty('--val', (v/10*100)+'%');
-      };
-      el.addEventListener('input', upd);
-      upd();
-    });
+    // Qualif + videos inputs → trigger mandatory check
+    ['qualif-weekly-calls','qualif-weekly-ca','qualif-milestone','field-videos-cold','field-videos-closing']
+      .forEach(id=>{
+        const el = document.getElementById(id);
+        if(el) el.addEventListener('input', updateMissing);
+      });
+
+    // Revelation acknowledge checkbox
+    const revCk = document.getElementById('rev-acknowledge');
+    if(revCk){
+      revCk.addEventListener('change',()=>{
+        revCk.parentElement.classList.toggle('is-on', revCk.checked);
+        updateMissing();
+      });
+    }
+  }
+
+  // ── Mandatory checklist (V5) ────────────────────────────
+  function updateMissing(){
+    const probEl = document.getElementById('field-problem');
+    const revCk = document.getElementById('rev-acknowledge');
+    const milestone = document.getElementById('qualif-milestone');
+    const calls = parseInt(document.getElementById('field-calls').value)||0;
+    const hours = parseFloat(document.getElementById('field-hours').value)||0;
+    const ful = parseInt(document.getElementById('field-fulfillment').value)||0;
+    const probLen = probEl ? probEl.value.trim().length : 0;
+    const missEl = document.getElementById('missing-area');
+    const saveBtn = document.getElementById('btn-save');
+
+    const missing = [];
+    if(hours <= 0 && calls <= 0) missing.push('Au moins 1 chiffre d\'activité (heures ou calls)');
+    if(ful <= 0) missing.push('État du jour (1 emoji)');
+    if(probLen < 30) missing.push(`Problématique du jour (encore ${Math.max(0, 30-probLen)} caractères)`);
+    if(milestone && !milestone.value.trim()) missing.push('Prochain milestone précis + date');
+    if(revCk && !revCk.checked) missing.push('Cocher « j\'ai pigé » sur la révélation');
+
+    if(missing.length && missEl){
+      missEl.innerHTML = `<div class="missing-list">Avant d'enregistrer, il manque :<ul>${missing.map(m=>`<li>· ${m}</li>`).join('')}</ul></div>`;
+      if(saveBtn && !saveBtn.classList.contains('is-locked')) saveBtn.disabled = true;
+    } else {
+      if(missEl) missEl.innerHTML = '';
+      if(saveBtn && !saveBtn.classList.contains('is-locked')) saveBtn.disabled = false;
+    }
   }
 
   function updateSuggestActive(group, val){
@@ -1398,21 +1520,21 @@ body{
     document.getElementById('field-hours').style.setProperty('--val', pct+'%');
     document.getElementById('hours-display').textContent = v;
     document.getElementById('hours-mood').textContent = hoursMood(v);
-    // ticks active
     document.querySelectorAll('.range-ticks .tick[data-target="field-hours"]').forEach(t=>{
       t.classList.toggle('is-active', parseFloat(t.dataset.v)===v);
     });
     updateBrainPreview();
+    updateMissing();
   }
   function updateFulUI(){
     const v = parseInt(document.getElementById('field-fulfillment').value)||0;
-    const pct = (v/10)*100;
-    document.getElementById('field-fulfillment').style.setProperty('--val', pct+'%');
-    document.getElementById('ful-display').textContent = v;
-    document.getElementById('ful-emoji').textContent = fulfillmentEmoji(v);
-    document.querySelectorAll('.range-ticks .tick[data-target="field-fulfillment"]').forEach(t=>{
-      t.classList.toggle('is-active', parseInt(t.dataset.v)===v);
+    document.querySelectorAll('.state-btn').forEach(b=>{
+      b.classList.toggle('is-on', parseInt(b.dataset.v)===v);
     });
+    if(v > 0){
+      const onBtn = document.querySelector('.state-btn.is-on');
+      if(onBtn) document.getElementById('ful-emoji').textContent = onBtn.textContent;
+    }
     updateBrainPreview();
   }
 
@@ -1436,7 +1558,6 @@ body{
     const lockBadge = document.getElementById('lock-badge');
     const warnArea = document.getElementById('lock-warn-area');
     const saveBtn = document.getElementById('btn-save');
-    const noteEl = document.getElementById('field-note');
 
     if(saveCount === 0){
       // Empty fiche
@@ -1467,12 +1588,13 @@ body{
       saveBtn.disabled = true;
       saveBtn.classList.add('is-locked');
       // Disable all inputs visually
-      document.querySelectorAll('#field-hours, #field-fulfillment, #field-calls, #field-ca, #field-note, .wb-btn, .tick, .input-suggest button, #btn-live-yes, #btn-live-no').forEach(el => {
+      document.querySelectorAll('#field-hours, #field-fulfillment, #field-calls, #field-ca, #field-problem, #field-videos-cold, #field-videos-closing, #qualif-weekly-calls, #qualif-weekly-ca, #qualif-milestone, #rev-acknowledge, .wb-btn, .state-btn, .tick, .input-suggest button, #btn-live-yes, #btn-live-no').forEach(el => {
         el.disabled = true;
         el.style.pointerEvents = 'none';
         el.style.opacity = '0.55';
       });
-      noteEl.readOnly = true;
+      const probLocked = document.getElementById('field-problem');
+      if(probLocked) probLocked.readOnly = true;
     }
   }
 
@@ -1484,17 +1606,37 @@ body{
     document.getElementById('field-ca').value = data.ca_eur || 0;
     document.getElementById('field-hours').value = data.hours_worked || 0;
     document.getElementById('field-fulfillment').value = data.fulfillment || 0;
-    document.getElementById('field-note').value = data.free_note || '';
-    document.getElementById('note-count').textContent = (data.free_note||'').length + '/280';
+
+    // V5 — parse free_note JSON (marker peut être en fin de note)
+    let v5 = null;
+    const raw = data.free_note || '';
+    const markerIdx = raw.indexOf('__V5__');
+    if(markerIdx >= 0){
+      try { v5 = JSON.parse(raw.slice(markerIdx + 6)); } catch(_){}
+    }
+    if(v5){
+      const probEl = document.getElementById('field-problem');
+      if(probEl) probEl.value = v5.problem || '';
+      const vc = document.getElementById('field-videos-cold');     if(vc) vc.value = v5.videos_cold || 0;
+      const vcl = document.getElementById('field-videos-closing'); if(vcl) vcl.value = v5.videos_closing || 0;
+      if(v5.qualif){
+        const qc = document.getElementById('qualif-weekly-calls'); if(qc) qc.value = v5.qualif.weekly_calls || 0;
+        const qa = document.getElementById('qualif-weekly-ca');    if(qa) qa.value = v5.qualif.weekly_ca || 0;
+        const qm = document.getElementById('qualif-milestone');    if(qm) qm.value = v5.qualif.milestone || '';
+      }
+      if(v5.revelation && v5.revelation.acknowledged){
+        const ck = document.getElementById('rev-acknowledge');
+        if(ck){ ck.checked = true; ck.parentElement.classList.add('is-on'); }
+      }
+    }
+    const probEl2 = document.getElementById('field-problem');
+    if(probEl2){
+      const l = (probEl2.value||'').length;
+      const pc = document.getElementById('problem-count');
+      if(pc) pc.textContent = l < 30 ? `${l}/400 · min 30 caractères` : `${l}/400 ✓`;
+    }
+
     _wb = (data.wellbeing_answers && typeof data.wellbeing_answers==='object') ? data.wellbeing_answers : {};
-    // Re-apply mental_state if backend returns it
-    const ms = (data.mental_state && typeof data.mental_state==='object') ? data.mental_state : {};
-    ['energy','drive','stress'].forEach(k=>{
-      const el = document.getElementById('ment-'+k);
-      if(el && ms[k] != null){ el.value = ms[k]; el.dispatchEvent(new Event('input')); }
-    });
-    if(ms.mood_word != null){ const el = document.getElementById('ment-mood-word'); if(el) el.value = ms.mood_word; }
-    if(ms.friction  != null){ const el = document.getElementById('ment-friction');  if(el) el.value = ms.friction; }
     applyLockState(data.save_count || 0);
     // Baseline shine: si l'élève a déjà une fiche, on baseline à ces valeurs sauvegardées.
     // Sinon (fiche vide), baseline = 0 → tout brille dès le 1er input.
@@ -1542,26 +1684,36 @@ body{
     const ca = parseFloat(document.getElementById('field-ca').value)||0;
     const hours_worked = parseFloat(document.getElementById('field-hours').value)||0;
     const fulfillment = parseInt(document.getElementById('field-fulfillment').value)||0;
-    const free_note = document.getElementById('field-note').value.slice(0,280);
-    const mental_state = {
-      energy:   parseInt(document.getElementById('ment-energy')?.value)||0,
-      drive:    parseInt(document.getElementById('ment-drive')?.value)||0,
-      stress:   parseInt(document.getElementById('ment-stress')?.value)||0,
-      mood_word: (document.getElementById('ment-mood-word')?.value||'').slice(0,40).trim() || null,
-      friction:  (document.getElementById('ment-friction')?.value||'').slice(0,280).trim() || null
+    // V5 structured payload — stocké dans free_note pour rester backward-compat
+    const v5Data = {
+      problem: (document.getElementById('field-problem')||{}).value?.slice(0,400)?.trim() || '',
+      videos_cold: parseInt((document.getElementById('field-videos-cold')||{}).value)||0,
+      videos_closing: parseInt((document.getElementById('field-videos-closing')||{}).value)||0,
+      qualif: {
+        weekly_calls: parseInt((document.getElementById('qualif-weekly-calls')||{}).value)||0,
+        weekly_ca:    parseFloat((document.getElementById('qualif-weekly-ca')||{}).value)||0,
+        milestone:    ((document.getElementById('qualif-milestone')||{}).value||'').slice(0,120).trim()
+      },
+      revelation: {
+        title: _dailyRev?.title || '',
+        acknowledged: !!(document.getElementById('rev-acknowledge')||{}).checked
+      }
     };
+    // Texte problème en clair (pour emails) + marker + JSON V5
+    const probText = v5Data.problem || '';
+    const free_note = probText + '\n\n__V5__' + JSON.stringify(v5Data);
+
     const payload = {
       calls, ca_eur: ca, live:_live,
       hours_worked, fulfillment,
       wellbeing_answers: _wb,
-      mental_state,
-      free_note: free_note || null
+      free_note
     };
-    // Cache local au cas où backend pas encore migré (Djibril récupère via debug)
+    // Cache local pour debug Djibril (récup historique V5)
     try {
-      const ls = JSON.parse(localStorage.getItem('dj_mental_log')||'[]');
-      ls.push({date: getTodayStr(), ...mental_state, free_note});
-      localStorage.setItem('dj_mental_log', JSON.stringify(ls.slice(-30)));
+      const ls = JSON.parse(localStorage.getItem('dj_v5_log')||'[]');
+      ls.push({date: getTodayStr(), ...v5Data});
+      localStorage.setItem('dj_v5_log', JSON.stringify(ls.slice(-30)));
     } catch(e){}
     const data = await api('PUT', '/me/entries/'+getTodayStr(), payload);
     btn.disabled = false;
@@ -1836,7 +1988,7 @@ body{
   // Attache aux champs texte connus au render initial
   function attachMicsAll(){
     [
-      'ment-mood-word','ment-friction','field-note',
+      'field-problem','qualif-milestone',
       'qa-initial','qa-answer-input',
       'qa-reformulation-text','qa-reformulation-need',
       'qa-reformulation-blocage','qa-reformulation-action',
