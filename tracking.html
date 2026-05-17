@@ -278,22 +278,12 @@ body{
 .recap-value{font-family:var(--display);font-weight:800;font-size:1.05rem;color:var(--ink)}
 .recap-points{margin-top:16px;text-align:right;font-family:var(--display);font-size:2.5rem;font-weight:800;color:var(--ember);line-height:1}
 
-/* HISTORY */
-.history-section{margin-top:48px}
-.history-section h3{font-family:var(--display);font-weight:900;font-size:1.1rem;color:var(--ink);margin-bottom:16px}
-.history-table{width:100%;border-collapse:collapse;font-size:12px}
-.history-table th{text-align:left;padding:8px 12px;font-size:10px;font-weight:600;color:var(--ink-mute);text-transform:uppercase;border-bottom:1.5px solid rgba(26,22,20,.2);background:rgba(255,252,245,.5);font-family:var(--mono);letter-spacing:.08em}
-.history-table td{padding:8px 12px;border-bottom:1px solid rgba(26,22,20,.1);font-family:var(--mono);font-size:11px;font-weight:500}
-.history-table td:last-child{font-family:var(--display);font-weight:800;color:var(--ember);font-size:13px}
+/* HISTORY — removed V6, kept cache _history7Cache uniquement pour renderPlate */
 
 @keyframes fieldIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 
 /* Q&A SECTION — élève */
-.qa-section{margin:36px 0;padding:24px 22px;background:linear-gradient(155deg,rgba(74,60,140,.06) 0%,rgba(232,93,44,.04) 60%,rgba(107,58,79,.06) 100%);border:1.5px solid rgba(74,60,140,.18);border-radius:4px;box-shadow:inset 3px 3px 0 rgba(74,60,140,.06)}
-.qa-section h3{font-family:var(--display);font-weight:900;font-size:1.18rem;color:var(--indigo);margin-bottom:6px;display:flex;align-items:center;gap:8px}
-.qa-section h3::before{content:"❓";font-family:var(--serif);font-style:italic;font-size:1.2em}
-.qa-intro{font-family:var(--serif);font-style:italic;color:var(--plum);font-size:.95rem;margin-bottom:18px;line-height:1.45}
-.qa-intro strong{font-style:normal;color:var(--ember-deep)}
+/* .qa-section + .qa-intro — supprimés V6 (creusage maintenant inline dans block-problem) */
 .qa-input-area{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
 .qa-textarea{width:100%;min-height:90px;padding:12px;font-family:var(--serif);font-style:italic;font-size:1rem;line-height:1.5;background:rgba(255,252,245,.85);border:1.5px solid rgba(74,60,140,.25);border-radius:4px;color:var(--ink);outline:none;resize:vertical;transition:border-color .15s,background .15s}
 .qa-textarea:focus{border-color:var(--ember);background:rgba(255,252,245,1)}
@@ -327,34 +317,9 @@ body{
 .qa-reformulation__sub strong{font-style:normal;color:var(--ember-deep);font-weight:700}
 .qa-reformulation__text{width:100%;padding:14px;font-family:var(--serif);font-size:1rem;line-height:1.55;background:rgba(243,236,223,.6);border:1.5px solid rgba(26,22,20,.18);border-radius:4px;color:var(--ink);outline:none;resize:vertical;font-style:italic}
 .qa-reformulation__text:focus{border-color:var(--ember);background:#fff}
-.qa-mine-list{margin-top:20px}
-.qa-mine-list h4{font-family:var(--display);font-weight:800;font-size:1rem;margin-bottom:10px;color:var(--ink)}
-.qa-mine-item{padding:10px 12px;margin-bottom:6px;background:rgba(255,252,245,.55);border-left:3px solid rgba(26,22,20,.18);font-size:.92rem;cursor:pointer;transition:all .15s}
-.qa-mine-item:hover{border-left-color:var(--ember);transform:translate(-1px,-1px);box-shadow:2px 2px 0 var(--ember-soft)}
-.qa-mine-item__q{font-style:italic;font-family:var(--serif);color:var(--ink-soft);margin-bottom:4px}
-.qa-mine-item__meta{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mute);display:flex;gap:10px;align-items:center}
-.qa-mine-item__status{padding:2px 6px;border-radius:3px;background:rgba(26,22,20,.06);font-weight:600}
-.qa-mine-item__status.answered{background:rgba(29,138,111,.15);color:var(--jade)}
-.qa-mine-item__status.awaiting{background:rgba(107,58,79,.12);color:var(--plum)}
-.qa-mine-item__status.matched{background:rgba(232,93,44,.12);color:var(--ember-deep)}
-.qa-mine-item__status.deepening{background:rgba(74,60,140,.12);color:var(--indigo)}
+/* .qa-mine-* — supprimé V6 (questions précédentes plus listées côté élève) */
 
-/* KB Browser (cohorte) */
-.kb-section{margin:24px 0}
-.kb-section h4{font-family:var(--display);font-weight:800;font-size:1rem;color:var(--ink);margin-bottom:10px;display:flex;align-items:center;gap:8px}
-.kb-section h4 .count{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;font-weight:600;color:var(--ink-mute);text-transform:uppercase;font-style:normal}
-.kb-search{display:flex;gap:6px;margin-bottom:12px}
-.kb-search input{flex:1;padding:8px 12px;font-family:var(--serif);font-size:.95rem;background:rgba(255,252,245,.85);border:1.5px solid rgba(26,22,20,.18);border-radius:4px;outline:none}
-.kb-search input:focus{border-color:var(--ember)}
-.kb-search button{padding:8px 14px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;background:var(--ink);color:var(--paper);border:1.5px solid var(--ink);cursor:pointer}
-.kb-item{padding:12px 14px;margin-bottom:8px;background:rgba(255,252,245,.6);border:1.5px solid rgba(26,22,20,.12);cursor:pointer;transition:all .15s;position:relative}
-.kb-item:hover{border-color:var(--ember);transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ember-soft)}
-.kb-item__badge{position:absolute;top:-1px;right:8px;padding:3px 8px;font-family:var(--mono);font-size:9px;letter-spacing:.1em;font-weight:800;background:var(--gold);color:var(--ink);text-transform:uppercase}
-.kb-item__badge.top{background:var(--ember-deep);color:var(--paper)}
-.kb-item__title{font-family:var(--display);font-weight:800;font-size:.98rem;color:var(--ink);margin-bottom:4px;padding-right:60px}
-.kb-item__meta{font-family:var(--mono);font-size:9px;letter-spacing:.06em;color:var(--ink-mute);text-transform:uppercase;display:flex;gap:8px;align-items:center}
-.kb-item__answer{font-family:var(--serif);font-style:italic;font-size:.92rem;color:var(--ink-soft);margin-top:8px;display:none;white-space:pre-wrap;line-height:1.5}
-.kb-item.is-open .kb-item__answer{display:block;animation:fieldIn .3s ease}
+/* .kb-* — supprimé V6 (browse KB cohorte retiré côté élève, admin only via coach.html) */
 
 /* PLATE METAPHOR v2 — assiette figurative 3D du jour */
 .plate-stage{display:flex;flex-direction:column;align-items:center;margin:6px 0 28px;position:relative;z-index:2}
@@ -1063,7 +1028,6 @@ body{
       _activeQuestion = {...full.question, matched_kb: full.kb};
       renderQaActive();
     }
-    refreshMineList();
   }
 
   async function matchResponse(accept){
@@ -1075,7 +1039,6 @@ body{
       _activeQuestion = {...full.question, matched_kb: full.kb};
       renderQaActive();
     }
-    refreshMineList();
   }
 
   function resetQa(){
@@ -1091,73 +1054,7 @@ body{
     if(typeof updateMissing === 'function') try { updateMissing(); } catch(e){}
   }
 
-  async function refreshMineList(){
-    // V6 : no-op silencieux (qa-mine-area supprimé du DOM)
-    const area = document.getElementById('qa-mine-area');
-    if(!area) return;
-    const r = await qaCall('GET', '/qa/mine', null);
-    if(r.error){ return; }
-    const list = (r.questions||[]).filter(q => !_activeQuestion || q.id !== _activeQuestion.id).slice(0, 8);
-    if(list.length === 0){ area.innerHTML = ''; return; }
-    area.innerHTML = `
-      <div class="qa-mine-list">
-        <h4>Mes questions précédentes</h4>
-        ${list.map(q => {
-          const stat = q.status;
-          const dt = new Date(q.created_at).toLocaleDateString('fr-FR', {day:'2-digit', month:'short'});
-          return `<div class="qa-mine-item" data-id="${q.id}">
-            <div class="qa-mine-item__q">${q.qualified_question || q.initial_question}</div>
-            <div class="qa-mine-item__meta">
-              <span>${dt}</span>
-              <span class="qa-mine-item__status ${stat === 'awaiting_djibril' ? 'awaiting' : stat}">${qaStatusLabel(stat)}</span>
-            </div>
-          </div>`;
-        }).join('')}
-      </div>
-    `;
-    area.querySelectorAll('.qa-mine-item').forEach(el => {
-      el.addEventListener('click', async () => {
-        const id = el.dataset.id;
-        const full = await qaCall('GET', '/qa/get/'+id, null);
-        if(full && full.question){
-          _activeQuestion = {...full.question, matched_kb: full.kb};
-          renderQaActive();
-          window.scrollTo({top: document.getElementById('qa-section').offsetTop - 20, behavior: 'smooth'});
-        }
-      });
-    });
-  }
-
-  async function refreshKB(searchTerm){
-    // V6 : no-op silencieux (kb-section supprimée du DOM)
-    const countEl = document.getElementById('kb-count');
-    const area = document.getElementById('kb-list');
-    if(!countEl || !area) return;
-    const path = searchTerm ? `/qa/kb?q=${encodeURIComponent(searchTerm)}` : '/qa/kb';
-    const r = await qaCall('GET', path, null);
-    const list = r.kb || [];
-    countEl.textContent = `— ${list.length} ${list.length>1?'réponses':'réponse'}`;
-    if(list.length === 0){
-      area.innerHTML = '<p style="font-family:var(--serif);font-style:italic;color:var(--ink-mute);font-size:.92rem">Aucune question répondue pour l\'instant. Sois le premier à creuser.</p>';
-      return;
-    }
-    area.innerHTML = list.map((kb, idx) => {
-      const isTop = idx < 3 && kb.pertinence_score >= 70;
-      return `<div class="kb-item ${idx===0?'is-open':''}" data-id="${kb.id}">
-        <div class="kb-item__badge ${isTop?'top':''}">${kb.pertinence_score}/100</div>
-        <div class="kb-item__title">${kb.question_summary || kb.question}</div>
-        <div class="kb-item__meta">
-          <span>${kb.source_student_first_name || 'élève'}</span>
-          <span>${new Date(kb.created_at).toLocaleDateString('fr-FR',{day:'2-digit',month:'short'})}</span>
-          ${(kb.tags||[]).slice(0,3).map(t => `<span>·${t}</span>`).join('')}
-        </div>
-        <div class="kb-item__answer">${kb.answer}</div>
-      </div>`;
-    }).join('');
-    area.querySelectorAll('.kb-item').forEach(it => {
-      it.addEventListener('click', () => it.classList.toggle('is-open'));
-    });
-  }
+  // V6 : refreshMineList + refreshKB supprimés (DOM cibles retirés, KB admin only via coach.html)
 
   // ── Sticky plate observer ──
   function initStickyPlate(){
@@ -1320,8 +1217,8 @@ body{
         <!-- LIVE -->
         <div class="live-toggle">
           <span>Live diffusion</span>
-          <button id="btn-live-no" class="is-on">Non</button>
-          <button id="btn-live-yes">Oui</button>
+          <button id="btn-live-no" class="is-on" aria-label="Pas de live diffusion aujourd'hui">Non</button>
+          <button id="btn-live-yes" aria-label="J'ai fait une live diffusion aujourd'hui">Oui</button>
         </div>
 
         <!-- PROBLÉMATIQUE DU JOUR — CREUSAGE INLINE OBLIGATOIRE -->
@@ -1333,7 +1230,7 @@ body{
           <div id="prob-step-write">
             <textarea class="note-textarea" id="field-problem" maxlength="400" placeholder="Ex : « 30 calls, 0 RDV — je pense que mon ouverture est nulle, je récite. »"></textarea>
             <div class="note-count" id="problem-count">0/400 · min 30 caractères</div>
-            <button class="btn btn--sm btn--ember" id="btn-deepen" disabled style="margin-top:10px">🧠 Creuser avec LIA</button>
+            <button class="btn btn--sm btn--ember" id="btn-deepen" disabled style="margin-top:10px" aria-label="Lancer le creusage de la problématique par LIA">🧠 Creuser avec LIA</button>
           </div>
 
           <!-- Étape 2 — creusage IA + réponse Djibril (réutilise qa-active-area existant) -->
@@ -1372,8 +1269,8 @@ body{
         </div>
 
         <div id="lock-warn-area"></div>
-        <div id="missing-area"></div>
-        <button class="btn btn--full btn--ember" id="btn-save">Enregistrer ma fiche</button>
+        <div id="missing-area" aria-live="polite"></div>
+        <button class="btn btn--full btn--ember" id="btn-save" aria-label="Enregistrer ma fiche du jour">Enregistrer ma fiche</button>
       </div>
 
       <div class="recap" id="recap-area"></div>
