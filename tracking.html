@@ -233,6 +233,31 @@ body{
 .missing-list ul{margin:6px 0 0 18px;padding:0}
 .missing-list li{margin:3px 0}
 
+/* CREUSAGE INLINE (problématique LIA) */
+.hidden{display:none!important}
+#btn-deepen{margin-top:10px;display:inline-flex;align-items:center;gap:6px}
+#btn-deepen:disabled{opacity:.4;cursor:not-allowed}
+.dig-flow{margin-top:14px;animation:fieldIn .3s ease}
+.dig-thread{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.dig-msg{padding:11px 14px;border-radius:10px;font-size:.96rem;line-height:1.45;max-width:92%}
+.dig-msg--ia{background:rgba(74,60,140,.08);border:1px solid rgba(74,60,140,.2);color:var(--ink);align-self:flex-start;font-family:var(--display);font-weight:500}
+.dig-msg--ia::before{content:'LIA  ';font-family:var(--mono);font-size:8px;letter-spacing:.18em;font-weight:700;color:var(--indigo);display:block;margin-bottom:3px;text-transform:uppercase}
+.dig-msg--user{background:rgba(232,93,44,.08);border:1px solid rgba(232,93,44,.25);color:var(--ink);align-self:flex-end;font-style:italic}
+.dig-input-row{display:flex;flex-direction:column;gap:8px}
+.dig-input-row textarea{width:100%;min-height:60px;padding:10px 12px;font-family:var(--serif);font-size:.96rem;background:rgba(255,252,245,.95);border:1.5px solid rgba(26,22,20,.18);border-radius:6px;color:var(--ink);outline:none;resize:vertical}
+.dig-input-row textarea:focus{border-color:var(--indigo);background:rgba(255,252,245,1)}
+.dig-input-row .dig-actions{display:flex;gap:8px}
+.dig-status{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:var(--ink-mute);margin-top:8px;font-weight:600;text-transform:uppercase;line-height:1.4}
+.dig-status.ok{color:var(--jade)}
+.dig-status.err{color:var(--crit)}
+.dig-status.busy{color:var(--gold)}
+
+/* RÉPONSE DJIBRIL */
+.dj-answer-card{background:linear-gradient(155deg,rgba(29,138,111,.07) 0%,rgba(212,149,26,.07) 100%);border:1.5px solid rgba(29,138,111,.3);border-radius:8px;padding:18px 16px;animation:fieldIn .4s ease}
+.dj-answer-card .dj-tag{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--jade);background:rgba(29,138,111,.13);padding:4px 10px;border-radius:999px;margin-bottom:10px}
+.dj-answer-card .dj-body{font-family:var(--serif);font-size:1.02rem;line-height:1.55;color:var(--ink);white-space:pre-wrap}
+.dj-answer-card .dj-meta{font-family:var(--mono);font-size:9px;letter-spacing:.05em;color:var(--ink-mute);margin-top:12px;border-top:1px dotted rgba(26,22,20,.15);padding-top:8px}
+
 .btn{font-family:var(--mono);font-weight:600;font-size:11px;letter-spacing:.18em;text-transform:uppercase;background:var(--ink);color:var(--paper);border:1.5px solid var(--ink);padding:14px 24px;cursor:pointer;transition:transform .15s,box-shadow .15s}
 .btn:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ember-deep)}
 .btn:active{transform:translate(1px,1px);box-shadow:none}
@@ -855,16 +880,9 @@ body{
     const area = document.getElementById('qa-active-area');
     if(!area) return;
     if(!_activeQuestion){
-      area.innerHTML = `
-        <div class="qa-input-area">
-          <textarea class="qa-textarea" id="qa-initial" placeholder="Ex: J'arrive pas à conclure mes calls, je sens que j'ai un blocage mais je sais pas où..."></textarea>
-          <div class="qa-actions">
-            <button class="btn btn--ember" id="qa-submit-btn">Lancer le creusage ✦</button>
-          </div>
-        </div>
-      `;
-      const btn = document.getElementById('qa-submit-btn');
-      if(btn) btn.addEventListener('click', submitNewQuestion);
+      // V6 : pas de textarea ici — le textarea principal est #field-problem dans block-problem
+      // qa-active-area reste vide tant qu'aucune question active
+      area.innerHTML = '';
       return;
     }
     const q = _activeQuestion;
@@ -977,6 +995,8 @@ body{
     document.getElementById('qa-accept-match')?.addEventListener('click', () => matchResponse(true));
     document.getElementById('qa-reject-match')?.addEventListener('click', () => matchResponse(false));
     document.getElementById('qa-new-btn')?.addEventListener('click', resetQa);
+    // V6 : recalcule mandatory checklist à chaque changement statut
+    if(typeof updateMissing === 'function') try { updateMissing(); } catch(e){}
   }
 
   async function rerollReformulation(){
@@ -990,16 +1010,24 @@ body{
   }
 
   async function submitNewQuestion(){
-    const txt = document.getElementById('qa-initial').value.trim();
-    if(txt.length < 6){ alert('Question trop courte (min 6 caractères)'); return; }
-    const btn = document.getElementById('qa-submit-btn');
-    btn.disabled = true;
-    btn.textContent = 'Creusage en cours…';
+    // V6 : lit field-problem (bloc problématique) au lieu de qa-initial
+    const fEl = document.getElementById('field-problem');
+    const bEl = document.getElementById('btn-deepen');
+    const txt = (fEl?.value || '').trim();
+    if(txt.length < 30){ showMsg('err', 'Décris ta problématique en au moins 30 caractères concrets'); return; }
+    if(bEl){ bEl.disabled = true; bEl.textContent = '🧠 LIA réfléchit…'; }
     const r = await qaCall('POST', '/qa/submit', {initial_question: txt});
-    if(r.error){ alert('Erreur: ' + r.error); btn.disabled = false; btn.textContent = 'Lancer le creusage ✦'; return; }
+    if(r.error){
+      showMsg('err', 'Erreur LIA : ' + r.error);
+      if(bEl){ bEl.disabled = false; bEl.textContent = '🧠 Creuser avec LIA'; }
+      return;
+    }
     _activeQuestion = r.question;
+    // Cache le bouton, le textarea reste visible (en lecture seule mentale)
+    if(bEl) bEl.classList.add('hidden');
+    if(fEl) fEl.readOnly = true;
     renderQaActive();
-    refreshMineList();
+    updateMissing();
   }
 
   async function sendAnswer(forceQualify){
@@ -1052,14 +1080,23 @@ body{
 
   function resetQa(){
     _activeQuestion = null;
+    // V6 : re-débloquer textarea problème + bouton creuser
+    const fEl = document.getElementById('field-problem');
+    if(fEl){ fEl.readOnly = false; fEl.value = ''; fEl.focus(); }
+    const bEl = document.getElementById('btn-deepen');
+    if(bEl){ bEl.classList.remove('hidden'); bEl.disabled = true; bEl.textContent = '🧠 Creuser avec LIA'; }
+    const pc = document.getElementById('problem-count');
+    if(pc) pc.textContent = '0/400 · min 30 caractères';
     renderQaActive();
+    if(typeof updateMissing === 'function') try { updateMissing(); } catch(e){}
   }
 
   async function refreshMineList(){
-    const r = await qaCall('GET', '/qa/mine', null);
-    if(r.error){ return; }
+    // V6 : no-op silencieux (qa-mine-area supprimé du DOM)
     const area = document.getElementById('qa-mine-area');
     if(!area) return;
+    const r = await qaCall('GET', '/qa/mine', null);
+    if(r.error){ return; }
     const list = (r.questions||[]).filter(q => !_activeQuestion || q.id !== _activeQuestion.id).slice(0, 8);
     if(list.length === 0){ area.innerHTML = ''; return; }
     area.innerHTML = `
@@ -1092,11 +1129,14 @@ body{
   }
 
   async function refreshKB(searchTerm){
+    // V6 : no-op silencieux (kb-section supprimée du DOM)
+    const countEl = document.getElementById('kb-count');
+    const area = document.getElementById('kb-list');
+    if(!countEl || !area) return;
     const path = searchTerm ? `/qa/kb?q=${encodeURIComponent(searchTerm)}` : '/qa/kb';
     const r = await qaCall('GET', path, null);
     const list = r.kb || [];
-    document.getElementById('kb-count').textContent = `— ${list.length} ${list.length>1?'réponses':'réponse'}`;
-    const area = document.getElementById('kb-list');
+    countEl.textContent = `— ${list.length} ${list.length>1?'réponses':'réponse'}`;
     if(list.length === 0){
       area.innerHTML = '<p style="font-family:var(--serif);font-style:italic;color:var(--ink-mute);font-size:.92rem">Aucune question répondue pour l\'instant. Sois le premier à creuser.</p>';
       return;
@@ -1284,12 +1324,20 @@ body{
           <button id="btn-live-yes">Oui</button>
         </div>
 
-        <!-- PROBLÉMATIQUE DU JOUR — OBLIGATOIRE -->
+        <!-- PROBLÉMATIQUE DU JOUR — CREUSAGE INLINE OBLIGATOIRE -->
         <div class="block-mandatory" id="block-problem">
           <h3>Ta problématique du jour <span class="req">obligatoire</span></h3>
-          <p class="sub">1 vraie difficulté business ou mentale rencontrée aujourd'hui. Pas de vague — du concret.</p>
-          <textarea class="note-textarea" id="field-problem" maxlength="400" placeholder="Ex : « 30 calls, 0 RDV — je pense que mon ouverture est nulle, je récite. »"></textarea>
-          <div class="note-count" id="problem-count">0/400 · min 30 caractères</div>
+          <p class="sub">1 vraie difficulté concrète. LIA te pose 1-2 questions pour creuser, puis Djibril te répond.</p>
+
+          <!-- Étape 1 — saisie initiale problème -->
+          <div id="prob-step-write">
+            <textarea class="note-textarea" id="field-problem" maxlength="400" placeholder="Ex : « 30 calls, 0 RDV — je pense que mon ouverture est nulle, je récite. »"></textarea>
+            <div class="note-count" id="problem-count">0/400 · min 30 caractères</div>
+            <button class="btn btn--sm btn--ember" id="btn-deepen" disabled style="margin-top:10px">🧠 Creuser avec LIA</button>
+          </div>
+
+          <!-- Étape 2 — creusage IA + réponse Djibril (réutilise qa-active-area existant) -->
+          <div id="qa-active-area" class="dig-flow"></div>
         </div>
 
         <!-- QUALIFICATION SITUATION (forcée) -->
@@ -1345,29 +1393,6 @@ body{
         .mic-hint.busy{color:var(--gold)}
       </style>
 
-      <div class="qa-section" id="qa-section">
-        <h3>Une question te tourne dans la tête ?</h3>
-        <p class="qa-intro">
-          Pose ta plus grosse problématique du moment (mental ou business).
-          <strong>L'IA va te poser 1-3 questions pour creuser</strong> avant que Djibril te réponde personnellement.
-          But : que tu sois 100% sûr de ton vrai problème — pas un écran de fumée.
-        </p>
-        <div id="qa-active-area"></div>
-        <div id="qa-mine-area"></div>
-        <div class="kb-section">
-          <h4>✦ Questions/Réponses de la cohorte <span class="count" id="kb-count">— chargement…</span></h4>
-          <div class="kb-search">
-            <input type="text" id="kb-search-input" placeholder="rechercher un sujet (calls, closing, mental…)">
-            <button id="kb-search-btn">Chercher</button>
-          </div>
-          <div id="kb-list"></div>
-        </div>
-      </div>
-
-      <div class="history-section">
-        <h3>Historique récent</h3>
-        <div id="history-table"></div>
-      </div>
     `;
 
     // Injecter révélation du jour (rotation stable / jour / élève)
@@ -1450,18 +1475,21 @@ body{
       });
     });
 
-    // Problème textarea (mandatory min 30 chars)
+    // Problème textarea (mandatory min 30 chars + enable bouton creuser)
     const probEl = document.getElementById('field-problem');
     const probCount = document.getElementById('problem-count');
+    const deepenBtn = document.getElementById('btn-deepen');
     if(probEl && probCount){
       probEl.addEventListener('input',()=>{
-        const len = probEl.value.length;
+        const len = probEl.value.trim().length;
         const short = len < 30;
-        probCount.textContent = short ? `${len}/400 · min 30 caractères` : `${len}/400 ✓`;
+        probCount.textContent = short ? `${len}/400 · min 30 caractères` : `${len}/400 ✓ prêt à creuser`;
         probCount.className = 'note-count' + (short?' is-short':'') + (len>380?' is-near':'') + (len>=400?' is-full':'');
+        if(deepenBtn) deepenBtn.disabled = short || !!_activeQuestion;
         updateMissing();
       });
     }
+    if(deepenBtn) deepenBtn.addEventListener('click', submitNewQuestion);
 
     // Qualif + videos inputs → trigger mandatory check
     ['qualif-weekly-calls','qualif-weekly-ca','qualif-milestone','field-videos-cold','field-videos-closing']
@@ -1480,7 +1508,7 @@ body{
     }
   }
 
-  // ── Mandatory checklist (V5) ────────────────────────────
+  // ── Mandatory checklist (V6) ────────────────────────────
   function updateMissing(){
     const probEl = document.getElementById('field-problem');
     const revCk = document.getElementById('rev-acknowledge');
@@ -1491,11 +1519,15 @@ body{
     const probLen = probEl ? probEl.value.trim().length : 0;
     const missEl = document.getElementById('missing-area');
     const saveBtn = document.getElementById('btn-save');
+    const qStatus = _activeQuestion?.status;
 
     const missing = [];
     if(hours <= 0 && calls <= 0) missing.push('Au moins 1 chiffre d\'activité (heures ou calls)');
     if(ful <= 0) missing.push('État du jour (1 emoji)');
     if(probLen < 30) missing.push(`Problématique du jour (encore ${Math.max(0, 30-probLen)} caractères)`);
+    else if(!_activeQuestion) missing.push('Cliquer « Creuser avec LIA » sur ta problématique');
+    else if(qStatus === 'deepening') missing.push('Répondre à la question de LIA pour terminer le creusage');
+    else if(qStatus === 'qualified') missing.push('Cliquer « Envoyer à Djibril » pour finaliser la question');
     if(milestone && !milestone.value.trim()) missing.push('Prochain milestone précis + date');
     if(revCk && !revCk.checked) missing.push('Cocher « j\'ai pigé » sur la révélation');
 
@@ -1664,15 +1696,32 @@ body{
     });
     updateRecap(data);
     loadHistory();
-    // Q&A init (after main render)
+    // V6 : loadHistory cache plate moyenne 7j (history-table absent du DOM, refresh silencieux)
+    loadHistory();
+    // Q&A init — V6 : seul renderQaActive utilisé (inline dans block-problem)
     initStickyPlate();
-    renderQaActive();
-    refreshMineList();
-    refreshKB(null);
-    const kbBtn = document.getElementById('kb-search-btn');
-    if(kbBtn) kbBtn.addEventListener('click', () => refreshKB(document.getElementById('kb-search-input').value.trim()));
-    const kbInput = document.getElementById('kb-search-input');
-    if(kbInput) kbInput.addEventListener('keypress', (e) => { if(e.key==='Enter') refreshKB(kbInput.value.trim()); });
+    // Restaurer question active du jour si elle existe (cherche dans /qa/mine)
+    try {
+      const mine = await qaCall('GET', '/qa/mine');
+      const active = (mine?.questions || []).find(q => ['deepening','qualified','awaiting_djibril','matched','answered'].includes(q.status));
+      if(active){
+        // Pré-remplir field-problem avec la question initiale et lock
+        const fEl = document.getElementById('field-problem');
+        if(fEl && active.initial_question){ fEl.value = active.initial_question; fEl.readOnly = true; }
+        const bEl = document.getElementById('btn-deepen');
+        if(bEl) bEl.classList.add('hidden');
+        // Si répondue → afficher dans le bloc dj-answer
+        if(active.status === 'answered' || active.status === 'matched'){
+          const full = await qaCall('GET', '/qa/get/'+active.id);
+          _activeQuestion = {...full.question, matched_kb: full.kb};
+        } else {
+          _activeQuestion = active;
+        }
+        renderQaActive();
+      } else {
+        renderQaActive();
+      }
+    } catch(e){ console.warn('init qa-mine failed', e); renderQaActive(); }
   }
 
   // ── Save entry ──────────────────────────────────────────
@@ -1729,7 +1778,6 @@ body{
       // Reset shine baseline → ce qui vient d'être sauvé devient le nouveau "déjà acquis"
       savePlateCounts(computePlateCounts(payload));
       updateRecap(data);
-      loadHistory();
       applyLockState(sc);
       const orb = document.getElementById('brain-orb');
       orb.classList.add('strong');
@@ -1839,9 +1887,13 @@ body{
         <td>${pts}</td>
       </tr>`;
     });
-    document.getElementById('history-table').innerHTML = `<table class="history-table">
-      <thead><tr><th>Date</th><th>Heures</th><th>Épan.</th><th>Calls</th><th>CA</th><th>Live</th><th>Pts</th></tr></thead>
-      <tbody>${rows}</tbody></table>`;
+    // V6 : history-table supprimé — cache uniquement pour renderPlate
+    const histEl = document.getElementById('history-table');
+    if(histEl){
+      histEl.innerHTML = `<table class="history-table">
+        <thead><tr><th>Date</th><th>Heures</th><th>Épan.</th><th>Calls</th><th>CA</th><th>Live</th><th>Pts</th></tr></thead>
+        <tbody>${rows}</tbody></table>`;
+    }
   }
 
   // ── Messages ────────────────────────────────────────────
