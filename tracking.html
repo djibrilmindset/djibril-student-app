@@ -46,7 +46,7 @@ body{
 .shell{max-width:640px;margin:0 auto;padding:0 20px 120px}
 
 /* TOPBAR */
-.topbar{display:flex;align-items:center;gap:14px;padding:18px 0;border-bottom:1px solid var(--line);margin-bottom:24px;flex-wrap:wrap}
+.topbar{display:flex;align-items:center;gap:14px;padding:18px 0;border-bottom:1px solid var(--line);margin-bottom:28px;flex-wrap:wrap}
 .topbar a{text-decoration:none;color:var(--ink)}
 .brand-mark{display:flex;align-items:center;gap:8px}
 .brand-mark .pill{width:24px;height:12px;border-radius:999px;background:var(--ember)}
@@ -55,16 +55,12 @@ body{
 .topbar__user .av{width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--paper);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;font-family:var(--mono)}
 
 /* HEADER */
-.page-head{margin-bottom:20px}
-.page-head h1{font-family:var(--serif);font-weight:400;font-size:1.9rem;line-height:1.1;margin-bottom:4px}
-.page-head .meta{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink-mute);text-transform:uppercase}
+.page-head{margin-bottom:22px}
+.page-head h1{font-family:var(--serif);font-weight:400;font-size:2rem;line-height:1.1}
 
-/* STATUS PILLS */
-.status-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:18px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
-.pill-state{padding:4px 12px;border-radius:999px;background:var(--ember-soft);color:var(--ember-deep)}
-.pill-state.done{background:rgba(29,138,111,.12);color:var(--jade)}
-.pill-state.locked{background:rgba(26,22,20,.85);color:var(--paper)}
-.pill-pts{padding:4px 12px;border-radius:999px;background:var(--ink);color:var(--paper)}
+/* STATE NOTICE (post-save uniquement) */
+.state-notice{display:none;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink-mute);margin-bottom:16px}
+.state-notice.is-on{display:block}
 
 /* CARD */
 .card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:22px 20px;margin-bottom:18px}
@@ -74,22 +70,14 @@ body{
 .field{margin-bottom:18px}
 .field:last-child{margin-bottom:0}
 .field label{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--ink-soft);margin-bottom:8px}
-.field input[type=number], .field input[type=text]{width:100%;font-family:var(--mono);font-weight:600;font-size:1.2rem;background:#fff;border:1px solid var(--line);border-radius:6px;padding:10px 12px;color:var(--ink);outline:none;text-align:left}
+.field input[type=number], .field input[type=text]{width:100%;font-family:var(--mono);font-weight:600;font-size:1.2rem;background:#fff;border:1px solid var(--line);border-radius:6px;padding:12px 14px;color:var(--ink);outline:none;text-align:left}
 .field input:focus{border-color:var(--ember)}
-.field textarea{width:100%;font-family:var(--serif);font-size:1rem;line-height:1.5;background:#fff;border:1px solid var(--line);border-radius:6px;padding:12px;color:var(--ink);outline:none;resize:vertical;min-height:90px}
+.field textarea{width:100%;font-family:var(--serif);font-size:1.05rem;line-height:1.5;background:#fff;border:1px solid var(--line);border-radius:6px;padding:14px;color:var(--ink);outline:none;resize:vertical;min-height:120px}
 .field textarea:focus{border-color:var(--ember)}
-.field .hint{font-family:var(--mono);font-size:10px;color:var(--ink-mute);margin-top:6px;letter-spacing:.04em}
-.field .hint a{color:var(--ember);text-decoration:none;border-bottom:1px dotted var(--ember)}
 
 /* GRID 2 col */
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
 .field-row .field{margin-bottom:0}
-
-/* PRESETS */
-.presets{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-.presets button{background:#fff;border:1px solid var(--line);font-family:var(--mono);font-size:10px;padding:5px 10px;border-radius:6px;cursor:pointer;color:var(--ink-soft);font-weight:600}
-.presets button:hover{border-color:var(--ember);color:var(--ember)}
-.presets button.is-on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 
 /* SLIDER */
 .slider-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
@@ -98,14 +86,14 @@ body{
 .range{-webkit-appearance:none;appearance:none;width:100%;height:6px;background:linear-gradient(to right,var(--ember) 0%,var(--ember) var(--val,0%),var(--line) var(--val,0%),var(--line) 100%);border-radius:999px;outline:none;cursor:pointer}
 .range::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;background:var(--ink);border:3px solid var(--card);border-radius:50%;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.2)}
 .range::-moz-range-thumb{width:24px;height:24px;background:var(--ink);border:3px solid var(--card);border-radius:50%;cursor:pointer}
-.tick-row{display:flex;justify-content:space-between;margin-top:8px;font-family:var(--mono);font-size:10px;color:var(--ink-mute)}
-.tick-row button{background:transparent;border:none;color:var(--ink-mute);cursor:pointer;font-family:var(--mono);font-size:10px;padding:3px 6px;border-radius:4px}
+.tick-row{display:flex;justify-content:space-between;margin-top:8px;font-family:var(--mono);font-size:11px;color:var(--ink-mute)}
+.tick-row button{background:transparent;border:none;color:var(--ink-mute);cursor:pointer;font-family:var(--mono);font-size:11px;padding:4px 10px;border-radius:4px}
 .tick-row button:hover{color:var(--ember)}
 .tick-row button.is-on{color:var(--ink);font-weight:700}
 
 /* EMOJI STATE */
 .emoji-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.emoji-btn{font-size:1.6rem;padding:14px 0;background:#fff;border:1px solid var(--line);border-radius:6px;cursor:pointer;line-height:1;transition:border-color .12s}
+.emoji-btn{font-size:1.8rem;padding:16px 0;background:#fff;border:1px solid var(--line);border-radius:6px;cursor:pointer;line-height:1;transition:border-color .12s}
 .emoji-btn:hover{border-color:var(--ember)}
 .emoji-btn.is-on{background:var(--ember-soft);border-color:var(--ember)}
 
@@ -115,37 +103,39 @@ body{
 .toggle-row button{padding:8px 18px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--ink-soft);cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
 .toggle-row button.is-on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
 
+/* DETAILS REPLIABLE */
+.details-card{background:transparent;border:1px dashed var(--line);border-radius:8px;margin-bottom:18px}
+.details-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:transparent;border:none;cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--ink-mute)}
+.details-toggle:hover{color:var(--ember)}
+.details-toggle .chev{transition:transform .2s;font-size:.9em}
+.details-card.is-open .details-toggle .chev{transform:rotate(90deg)}
+.details-body{display:none;padding:0 18px 18px}
+.details-card.is-open .details-body{display:block}
+
 /* BUTTON */
-.btn{font-family:var(--mono);font-weight:600;font-size:12px;letter-spacing:.12em;text-transform:uppercase;background:var(--ink);color:var(--paper);border:1px solid var(--ink);padding:14px 22px;border-radius:6px;cursor:pointer;transition:opacity .12s}
+.btn{font-family:var(--mono);font-weight:600;font-size:12px;letter-spacing:.12em;text-transform:uppercase;background:var(--ink);color:var(--paper);border:1px solid var(--ink);padding:16px 22px;border-radius:6px;cursor:pointer;transition:opacity .12s}
 .btn:hover{opacity:.88}
 .btn:disabled{opacity:.45;pointer-events:none}
 .btn--ember{background:var(--ember-deep);border-color:var(--ember-deep)}
 .btn--full{width:100%;text-align:center}
-.btn--sm{padding:8px 14px;font-size:10px}
 
 /* MSG */
 .msg{padding:12px 14px;border-radius:6px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;margin-bottom:14px}
 .msg--ok{background:rgba(29,138,111,.10);border:1px solid var(--jade);color:var(--jade)}
 .msg--err{background:rgba(199,62,58,.08);border:1px solid var(--crit);color:var(--crit)}
 
-/* LOCK INFO */
-.lock-info{background:rgba(212,149,26,.08);border:1px solid rgba(212,149,26,.4);border-left:3px solid #d4951a;padding:10px 12px;border-radius:6px;font-family:var(--serif);font-size:.92rem;color:var(--ink-soft);margin-bottom:14px}
-
 /* RECAP */
-.recap{margin-top:18px}
+.recap{margin-top:22px}
 .recap h2{margin-bottom:12px}
-.recap-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dotted var(--line);font-size:.95rem}
+.recap-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px dotted var(--line);font-size:.98rem}
 .recap-row:last-child{border-bottom:none}
-.recap-label{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--ink-mute);text-transform:uppercase}
+.recap-label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--ink-mute);text-transform:uppercase}
 .recap-value{font-family:var(--mono);font-weight:600;color:var(--ink)}
-.recap-total{display:flex;justify-content:space-between;align-items:baseline;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
-.recap-total .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--ink-mute);text-transform:uppercase}
-.recap-total .val{font-family:var(--mono);font-weight:600;font-size:1.8rem;color:var(--ember)}
 
 /* MIC */
 .mic-wrap{position:relative}
-.mic-wrap textarea{padding-right:46px!important}
-.mic-btn{position:absolute;top:8px;right:8px;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--ink-soft);padding:0}
+.mic-wrap textarea{padding-right:48px!important}
+.mic-btn{position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--ink-soft);padding:0}
 .mic-btn:hover{border-color:var(--ember);color:var(--ember)}
 .mic-btn.is-recording{background:var(--crit);color:var(--paper);border-color:var(--crit)}
 .mic-btn.is-busy{background:#d4951a;color:var(--paper);border-color:#d4951a;opacity:.7;pointer-events:none}
@@ -159,8 +149,8 @@ body{
   .shell{padding:0 16px 100px}
   .card{padding:18px 16px}
   .field-row{grid-template-columns:1fr}
-  .emoji-btn{font-size:1.4rem;padding:12px 0}
-  .page-head h1{font-size:1.6rem}
+  .emoji-btn{font-size:1.6rem;padding:14px 0}
+  .page-head h1{font-size:1.7rem}
 }
 </style>
 </head>
@@ -173,8 +163,9 @@ body{
   const API = 'https://nbnbsljqtolzzuqnkyae.supabase.co/functions/v1/tracking-app/api';
   const TOKEN_KEY = 'dj_token';
   const USER_KEY = 'dj_user';
+  const DETAILS_OPEN_KEY = 'dj_details_open';
 
-  // ── Auth check ──────────────────────────────────────────
+  // Auth check
   const token = sessionStorage.getItem(TOKEN_KEY);
   const userStr = sessionStorage.getItem(USER_KEY);
   if(!token || !userStr){ window.location.href = 'index.html'; return; }
@@ -185,7 +176,7 @@ body{
 
   const user = JSON.parse(userStr);
 
-  // ── Helpers ─────────────────────────────────────────────
+  // Helpers
   function getTodayStr(){ return new Date().toISOString().slice(0,10); }
   async function api(method, path, body){
     const h = {'Content-Type':'application/json','Authorization':'Bearer '+token};
@@ -202,15 +193,15 @@ body{
     return '✨';
   }
 
-  // ── State ───────────────────────────────────────────────
+  // State
   let _live = false;
   let _saveCount = 0;
 
-  // ── Render UI ───────────────────────────────────────────
+  // Render
   function render(){
     const shell = document.getElementById('shell');
-    const today = getTodayStr();
     const todayFR = new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+    const detailsOpen = localStorage.getItem(DETAILS_OPEN_KEY) === '1';
 
     shell.innerHTML = `
       <div class="topbar">
@@ -225,32 +216,24 @@ body{
 
       <header class="page-head">
         <h1>${todayFR}</h1>
-        <div class="meta">${today}</div>
       </header>
 
-      <div class="status-row">
-        <span class="pill-state" id="state-pill">à remplir</span>
-        <span class="pill-pts"><span id="pts-display">0</span> pts</span>
-      </div>
-
+      <div id="state-notice" class="state-notice"></div>
       <div id="msg-area"></div>
-      <div id="lock-area"></div>
 
-      <!-- BLOC ACTIVITÉ -->
+      <!-- BLOC AUJOURD'HUI -->
       <div class="card">
-        <h2>Activité du jour</h2>
+        <h2>Aujourd'hui</h2>
 
         <div class="field">
           <div class="slider-head">
-            <label style="margin:0">Heures de taff</label>
+            <label style="margin:0">Heures</label>
             <span class="val"><span id="hours-display">0</span><span class="unit">h</span></span>
           </div>
           <input type="range" class="range" id="field-hours" min="0" max="16" step="0.5" value="0">
           <div class="tick-row">
             <button type="button" data-target="field-hours" data-v="0">0</button>
-            <button type="button" data-target="field-hours" data-v="4">4</button>
             <button type="button" data-target="field-hours" data-v="8">8</button>
-            <button type="button" data-target="field-hours" data-v="12">12</button>
             <button type="button" data-target="field-hours" data-v="16">16</button>
           </div>
         </div>
@@ -258,77 +241,67 @@ body{
         <div class="field-row">
           <div class="field">
             <label>Calls</label>
-            <input type="number" id="field-calls" min="0" value="0" inputmode="numeric">
-            <div class="presets" data-target="field-calls">
-              <button type="button" data-v="50">50</button>
-              <button type="button" data-v="100">100</button>
-              <button type="button" data-v="150">150</button>
-              <button type="button" data-v="200">200</button>
-            </div>
+            <input type="number" id="field-calls" min="0" value="0" inputmode="numeric" placeholder="0">
           </div>
           <div class="field">
             <label>CA (€)</label>
-            <input type="number" id="field-ca" min="0" step="0.01" value="0" inputmode="decimal">
-            <div class="presets" data-target="field-ca">
-              <button type="button" data-v="0">0</button>
-              <button type="button" data-v="297">297</button>
-              <button type="button" data-v="497">497</button>
-              <button type="button" data-v="997">997</button>
-              <button type="button" data-v="1997">1997</button>
+            <input type="number" id="field-ca" min="0" step="0.01" value="0" inputmode="decimal" placeholder="0">
+          </div>
+        </div>
+
+        <div class="field" style="margin-bottom:0">
+          <label>État</label>
+          <div class="emoji-row">
+            <button type="button" class="emoji-btn" data-v="2" aria-label="Mauvais">😞</button>
+            <button type="button" class="emoji-btn" data-v="5" aria-label="Moyen">😐</button>
+            <button type="button" class="emoji-btn" data-v="8" aria-label="Bon">🙂</button>
+            <button type="button" class="emoji-btn" data-v="10" aria-label="Excellent">✨</button>
+          </div>
+          <input type="hidden" id="field-fulfillment" value="0">
+        </div>
+      </div>
+
+      <!-- BLOC NOTE -->
+      <div class="card">
+        <h2>Note</h2>
+        <div class="field" style="margin-bottom:0">
+          <textarea id="field-note" maxlength="800" placeholder="Note libre, ou dicte au micro 🎤"></textarea>
+        </div>
+      </div>
+
+      <!-- BLOC DÉTAILS (replié par défaut) -->
+      <div class="details-card${detailsOpen ? ' is-open' : ''}" id="details-card">
+        <button type="button" class="details-toggle" id="details-toggle">
+          <span>+ Détails (optionnel)</span>
+          <span class="chev">›</span>
+        </button>
+        <div class="details-body">
+          <div class="field-row">
+            <div class="field">
+              <label>Vidéos Cold</label>
+              <input type="number" id="field-videos-cold" min="0" max="50" value="0" inputmode="numeric" placeholder="0">
+            </div>
+            <div class="field">
+              <label>Vidéos Closing</label>
+              <input type="number" id="field-videos-closing" min="0" max="50" value="0" inputmode="numeric" placeholder="0">
+            </div>
+          </div>
+          <div class="field" style="margin-bottom:0">
+            <div class="toggle-row">
+              <span class="lbl">Live diffusion</span>
+              <button id="btn-live-no" class="is-on" type="button">Non</button>
+              <button id="btn-live-yes" type="button">Oui</button>
             </div>
           </div>
         </div>
-
-        <div class="field-row">
-          <div class="field">
-            <label>Vidéos Cold vues</label>
-            <input type="number" id="field-videos-cold" min="0" max="50" value="0" inputmode="numeric">
-            <div class="hint">depuis <a href="https://docs.google.com/document/d/1P0x0NSB1GQDdp-ScGlaFgzwDeHKiVdhAbAK4f1RVFjI/edit" target="_blank">Doc Cold V4</a></div>
-          </div>
-          <div class="field">
-            <label>Vidéos Closing vues</label>
-            <input type="number" id="field-videos-closing" min="0" max="50" value="0" inputmode="numeric">
-            <div class="hint">depuis <a href="https://docs.google.com/document/d/1BlwQNznQ9ciEcsLWrXXsD3TTDYmbgaFg8hu10H-p92k/edit" target="_blank">Doc Closing V4</a></div>
-          </div>
-        </div>
-
-        <div class="field" style="margin-bottom:0">
-          <div class="toggle-row">
-            <span class="lbl">Live diffusion</span>
-            <button id="btn-live-no" class="is-on">Non</button>
-            <button id="btn-live-yes">Oui</button>
-          </div>
-        </div>
       </div>
 
-      <!-- BLOC ÉTAT -->
-      <div class="card">
-        <h2>État du jour</h2>
-        <div class="emoji-row">
-          <button type="button" class="emoji-btn" data-v="2" aria-label="Mauvais">😞</button>
-          <button type="button" class="emoji-btn" data-v="5" aria-label="Moyen">😐</button>
-          <button type="button" class="emoji-btn" data-v="8" aria-label="Bon">🙂</button>
-          <button type="button" class="emoji-btn" data-v="10" aria-label="Excellent">✨</button>
-        </div>
-        <input type="hidden" id="field-fulfillment" value="0">
-      </div>
-
-      <!-- BLOC NOTES -->
-      <div class="card">
-        <h2>Notes du jour <span style="font-family:var(--serif);font-size:.78rem;color:var(--ink-mute);text-transform:none;letter-spacing:0;font-weight:400">(optionnel)</span></h2>
-        <div class="field" style="margin-bottom:0">
-          <textarea id="field-note" maxlength="800" placeholder="Tape ce qui te paraît utile : un problème, une victoire, un truc à creuser. Tu peux aussi dicter au micro 🎤."></textarea>
-          <div class="hint" id="note-count">0/800</div>
-        </div>
-      </div>
-
-      <button class="btn btn--ember btn--full" id="btn-save">Enregistrer ma fiche</button>
+      <button class="btn btn--ember btn--full" id="btn-save">Enregistrer</button>
 
       <div class="recap" id="recap-area" style="display:none">
         <div class="card">
-          <h2>Récap du jour</h2>
+          <h2>Récap</h2>
           <div id="recap-rows"></div>
-          <div class="recap-total"><span class="lbl">Total points</span><span class="val" id="recap-pts">0</span></div>
         </div>
       </div>
     `;
@@ -337,12 +310,19 @@ body{
     loadToday();
   }
 
-  // ── Events ──────────────────────────────────────────────
+  // Events
   function bindEvents(){
     document.getElementById('btn-logout').addEventListener('click', logout);
     document.getElementById('btn-save').addEventListener('click', saveEntry);
     document.getElementById('btn-live-yes').addEventListener('click',()=>toggleLive(true));
     document.getElementById('btn-live-no').addEventListener('click',()=>toggleLive(false));
+
+    // Details toggle
+    document.getElementById('details-toggle').addEventListener('click',()=>{
+      const card = document.getElementById('details-card');
+      card.classList.toggle('is-open');
+      localStorage.setItem(DETAILS_OPEN_KEY, card.classList.contains('is-open') ? '1' : '0');
+    });
 
     // Hours slider
     const hoursEl = document.getElementById('field-hours');
@@ -365,42 +345,7 @@ body{
         b.classList.add('is-on');
         document.getElementById('field-fulfillment').value = b.dataset.v;
         if(navigator.vibrate) navigator.vibrate(8);
-        updatePtsPreview();
       });
-    });
-
-    // Number presets
-    document.querySelectorAll('.presets').forEach(group=>{
-      const target = document.getElementById(group.dataset.target);
-      group.querySelectorAll('button').forEach(btn=>{
-        btn.addEventListener('click',()=>{
-          target.value = btn.dataset.v;
-          target.dispatchEvent(new Event('input'));
-          updatePresetActive(group, btn.dataset.v);
-          if(navigator.vibrate) navigator.vibrate(6);
-        });
-      });
-      target.addEventListener('input',()=>{ updatePresetActive(group, target.value); updatePtsPreview(); });
-    });
-
-    // Note counter
-    const noteEl = document.getElementById('field-note');
-    if(noteEl){
-      noteEl.addEventListener('input',()=>{
-        document.getElementById('note-count').textContent = `${noteEl.value.length}/800`;
-      });
-    }
-
-    // Vidéos / autres inputs → preview pts
-    ['field-videos-cold','field-videos-closing'].forEach(id=>{
-      const el = document.getElementById(id);
-      if(el) el.addEventListener('input', updatePtsPreview);
-    });
-  }
-
-  function updatePresetActive(group, val){
-    group.querySelectorAll('button').forEach(b=>{
-      b.classList.toggle('is-on', String(b.dataset.v)===String(val));
     });
   }
 
@@ -411,7 +356,6 @@ body{
     document.querySelectorAll('.tick-row button[data-target="field-hours"]').forEach(b=>{
       b.classList.toggle('is-on', parseFloat(b.dataset.v)===v);
     });
-    updatePtsPreview();
   }
 
   function toggleLive(val){
@@ -419,7 +363,6 @@ body{
     document.getElementById('btn-live-yes').classList.toggle('is-on', val);
     document.getElementById('btn-live-no').classList.toggle('is-on', !val);
     if(navigator.vibrate) navigator.vibrate(6);
-    updatePtsPreview();
   }
 
   function logout(){
@@ -427,51 +370,37 @@ body{
     window.location.href = 'index.html';
   }
 
-  // ── Points (compat backend V5) ──────────────────────────
+  // Points (kept for recap only, backend compat)
   function calcPoints(data){
     const calls = data.calls||0;
     const hrs = parseFloat(data.hours_worked||0);
     const ful = parseInt(data.fulfillment||0);
     return Math.round(hrs*2 + ful*1 + calls*2);
   }
-  function previewData(){
-    return {
-      calls: parseInt(document.getElementById('field-calls').value)||0,
-      hours_worked: parseFloat(document.getElementById('field-hours').value)||0,
-      fulfillment: parseInt(document.getElementById('field-fulfillment').value)||0,
-      live: _live
-    };
-  }
-  function updatePtsPreview(){
-    document.getElementById('pts-display').textContent = calcPoints(previewData());
-  }
 
-  // ── Lock state ──────────────────────────────────────────
+  // Lock state
   function applyLockState(saveCount){
     _saveCount = saveCount;
-    const pill = document.getElementById('state-pill');
-    const lockArea = document.getElementById('lock-area');
+    const notice = document.getElementById('state-notice');
     const saveBtn = document.getElementById('btn-save');
 
-    pill.classList.remove('done','locked');
+    notice.classList.remove('is-on');
+    notice.textContent = '';
+
     if(saveCount === 0){
-      pill.textContent = 'à remplir';
-      lockArea.innerHTML = '';
-      saveBtn.textContent = 'Enregistrer ma fiche';
+      saveBtn.textContent = 'Enregistrer';
       saveBtn.disabled = false;
     } else if(saveCount === 1){
-      pill.textContent = 'enregistrée';
-      pill.classList.add('done');
-      lockArea.innerHTML = '<div class="lock-info">Fiche enregistrée. Tu peux la modifier <b>1 dernière fois</b> aujourd\'hui.</div>';
-      saveBtn.textContent = 'Modifier (dernière fois)';
+      notice.textContent = 'Enregistrée, modifiable encore 1 fois';
+      notice.classList.add('is-on');
+      saveBtn.textContent = 'Mettre à jour';
       saveBtn.disabled = false;
     } else {
-      pill.textContent = 'verrouillée';
-      pill.classList.add('locked');
-      lockArea.innerHTML = '<div class="lock-info">Fiche <b>verrouillée</b> pour aujourd\'hui. Reviens demain.</div>';
-      saveBtn.textContent = 'Verrouillée';
+      notice.textContent = 'Fiche du jour terminée, à demain';
+      notice.classList.add('is-on');
+      saveBtn.textContent = 'Terminé';
       saveBtn.disabled = true;
-      document.querySelectorAll('.card input, .card textarea, .card button, #btn-live-yes, #btn-live-no, .emoji-btn, .tick-row button, .presets button').forEach(el=>{
+      document.querySelectorAll('.card input, .card textarea, .card button, #btn-live-yes, #btn-live-no, .emoji-btn, .tick-row button, .details-toggle').forEach(el=>{
         el.disabled = true;
         el.style.pointerEvents = 'none';
         el.style.opacity = '0.6';
@@ -479,7 +408,7 @@ body{
     }
   }
 
-  // ── Load today ──────────────────────────────────────────
+  // Load today
   async function loadToday(){
     const data = await api('GET', '/me/today');
     if(!data) return;
@@ -488,7 +417,7 @@ body{
     document.getElementById('field-hours').value = data.hours_worked || 0;
     document.getElementById('field-fulfillment').value = data.fulfillment || 0;
 
-    // Parse free_note marker V5/V7
+    // Parse marker V5/V7
     let note = data.free_note || '';
     let videosCold = 0, videosClosing = 0;
     const markerIdx = note.indexOf('__V5__');
@@ -505,7 +434,11 @@ body{
     document.getElementById('field-note').value = note;
     document.getElementById('field-videos-cold').value = videosCold;
     document.getElementById('field-videos-closing').value = videosClosing;
-    document.getElementById('note-count').textContent = `${note.length}/800`;
+
+    // Auto-open details if filled
+    if(videosCold > 0 || videosClosing > 0 || data.live){
+      document.getElementById('details-card').classList.add('is-open');
+    }
 
     // Emoji state
     const ful = parseInt(data.fulfillment||0);
@@ -517,18 +450,11 @@ body{
 
     toggleLive(data.live || false);
     updateHoursUI();
-
-    // Presets active
-    document.querySelectorAll('.presets').forEach(g=>{
-      const t = document.getElementById(g.dataset.target);
-      updatePresetActive(g, t.value);
-    });
-
     applyLockState(data.save_count || 0);
     if((data.save_count || 0) > 0) updateRecap(data);
   }
 
-  // ── Save ────────────────────────────────────────────────
+  // Save
   async function saveEntry(){
     const btn = document.getElementById('btn-save');
     btn.disabled = true;
@@ -542,7 +468,7 @@ body{
     const videos_cold = parseInt(document.getElementById('field-videos-cold').value)||0;
     const videos_closing = parseInt(document.getElementById('field-videos-closing').value)||0;
 
-    // Marker V5 conservé pour rester compat avec le backend / outils coach
+    // Marker V5 conservé pour compat backend / outils coach
     const v5Data = {
       problem: note,
       videos_cold,
@@ -563,14 +489,14 @@ body{
     btn.disabled = false;
     if(data && !data.error){
       const sc = data.save_count || 0;
-      if(sc === 1) showMsg('ok','Fiche enregistrée. Tu peux encore la modifier 1 fois.');
-      else if(sc === 2) showMsg('ok','Modification enregistrée. Fiche verrouillée pour aujourd\'hui.');
-      else showMsg('ok','Fiche enregistrée.');
+      if(sc === 1) showMsg('ok','Enregistré, modifiable encore 1 fois');
+      else if(sc === 2) showMsg('ok','Mise à jour enregistrée, fiche du jour terminée');
+      else showMsg('ok','Enregistré');
       applyLockState(sc);
       updateRecap(data);
       if(navigator.vibrate) navigator.vibrate([15,30,15]);
     } else {
-      btn.textContent = 'Enregistrer ma fiche';
+      btn.textContent = 'Enregistrer';
       const errMsg = (data&&data.error) || 'Erreur réseau';
       if(data && data.locked){ showMsg('err', errMsg); applyLockState(2); }
       else showMsg('err', errMsg);
@@ -580,17 +506,17 @@ body{
   function updateRecap(data){
     const recapArea = document.getElementById('recap-area');
     const rowsEl = document.getElementById('recap-rows');
-    const ptsEl = document.getElementById('recap-pts');
     const hrs = parseFloat(data.hours_worked||0);
     const ful = parseInt(data.fulfillment||0);
+    const pts = calcPoints(data);
     rowsEl.innerHTML = `
       <div class="recap-row"><span class="recap-label">Heures</span><span class="recap-value">${hrs}h</span></div>
-      <div class="recap-row"><span class="recap-label">État</span><span class="recap-value">${fulEmoji(ful)} ${ful}/10</span></div>
       <div class="recap-row"><span class="recap-label">Calls</span><span class="recap-value">${data.calls||0}</span></div>
-      <div class="recap-row"><span class="recap-label">CA</span><span class="recap-value">${(data.ca_eur||0).toFixed(0)}€</span></div>
-      <div class="recap-row"><span class="recap-label">Live</span><span class="recap-value">${data.live?'Oui':'—'}</span></div>
+      <div class="recap-row"><span class="recap-label">CA</span><span class="recap-value">${(data.ca_eur||0).toFixed(0)} €</span></div>
+      <div class="recap-row"><span class="recap-label">État</span><span class="recap-value">${fulEmoji(ful)} ${ful}/10</span></div>
+      ${data.live ? '<div class="recap-row"><span class="recap-label">Live</span><span class="recap-value">Oui</span></div>' : ''}
+      <div class="recap-row"><span class="recap-label">Points</span><span class="recap-value">${pts}</span></div>
     `;
-    ptsEl.textContent = calcPoints(data);
     recapArea.style.display = '';
   }
 
@@ -600,7 +526,7 @@ body{
     setTimeout(()=>{area.innerHTML='';}, 4000);
   }
 
-  // ── ASR micro on note field ─────────────────────────────
+  // ASR micro sur la note
   const ASR_API = 'https://nbnbsljqtolzzuqnkyae.supabase.co/functions/v1/asr-transcribe';
   let _micActive = null;
 
@@ -669,7 +595,7 @@ body{
       rec.startedAt = Date.now();
       mr.start();
       rec.btn.classList.add('is-recording');
-      _setMicHint(rec.hint, 'J\'écoute... relâche pour valider', 'ok');
+      _setMicHint(rec.hint, 'J\'écoute, relâche pour valider', 'ok');
       _micActive = rec;
     } catch(e){
       _setMicHint(rec.hint, 'Micro refusé', 'err');
@@ -714,7 +640,7 @@ body{
     el.dataset.micAttached = '1';
   }
 
-  // ── Start ───────────────────────────────────────────────
+  // Start
   render();
   setTimeout(()=>attachMic('field-note'), 200);
 })();
