@@ -55,14 +55,8 @@ body{
 .topbar__user .av{width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--paper);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;font-family:var(--mono)}
 
 /* HEADER */
-.page-head{margin-bottom:18px}
+.page-head{margin-bottom:22px}
 .page-head h1{font-family:var(--serif);font-weight:400;font-size:2rem;line-height:1.1}
-
-/* DAILY QUOTE */
-.quote-card{background:transparent;border-left:3px solid var(--ember);padding:14px 18px;margin-bottom:22px}
-.quote-card .q-text{font-family:var(--serif);font-style:italic;font-size:1.15rem;line-height:1.4;color:var(--ink-soft)}
-.quote-card .q-meta{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);margin-top:8px}
-.quote-card .q-meta .q-author{color:var(--ink-soft);font-weight:600}
 
 /* STATE NOTICE (post-save uniquement) */
 .state-notice{display:none;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink-mute);margin-bottom:16px}
@@ -70,8 +64,7 @@ body{
 
 /* CARD */
 .card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:22px 20px;margin-bottom:18px}
-.card h2{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--ink-soft);margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.card h2 .req{font-size:9px;background:var(--ember-deep);color:var(--paper);padding:2px 6px;border-radius:3px;letter-spacing:.08em}
+.card h2{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--ink-soft);margin-bottom:14px}
 
 /* FIELD */
 .field{margin-bottom:18px}
@@ -81,11 +74,6 @@ body{
 .field input:focus{border-color:var(--ember)}
 .field textarea{width:100%;font-family:var(--serif);font-size:1.05rem;line-height:1.5;background:#fff;border:1px solid var(--line);border-radius:6px;padding:14px;color:var(--ink);outline:none;resize:vertical;min-height:120px}
 .field textarea:focus{border-color:var(--ember)}
-
-/* TEXTAREA COUNTER */
-.txt-count{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--ink-mute);text-align:right;margin-top:6px}
-.txt-count.is-short{color:var(--ember-deep)}
-.txt-count.is-ok{color:var(--jade)}
 
 /* GRID 2 col */
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
@@ -108,14 +96,6 @@ body{
 .emoji-btn{font-size:1.8rem;padding:16px 0;background:#fff;border:1px solid var(--line);border-radius:6px;cursor:pointer;line-height:1;transition:border-color .12s}
 .emoji-btn:hover{border-color:var(--ember)}
 .emoji-btn.is-on{background:var(--ember-soft);border-color:var(--ember)}
-
-/* PULSE Y/N */
-.pulse-block{margin-top:18px;padding-top:18px;border-top:1px dotted var(--line)}
-.pulse-q{font-family:var(--serif);font-size:1.05rem;line-height:1.4;color:var(--ink);margin-bottom:12px}
-.pulse-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.pulse-btn{font-family:var(--mono);font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:14px 0;background:#fff;border:1px solid var(--line);border-radius:6px;cursor:pointer;color:var(--ink-soft);transition:all .12s}
-.pulse-btn:hover{border-color:var(--ember);color:var(--ember)}
-.pulse-btn.is-on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
 
 /* LIVE TOGGLE */
 .toggle-row{display:flex;gap:8px;align-items:center}
@@ -171,7 +151,6 @@ body{
   .field-row{grid-template-columns:1fr}
   .emoji-btn{font-size:1.6rem;padding:14px 0}
   .page-head h1{font-size:1.7rem}
-  .quote-card .q-text{font-size:1.05rem}
 }
 </style>
 </head>
@@ -185,80 +164,20 @@ body{
   const TOKEN_KEY = 'dj_token';
   const USER_KEY = 'dj_user';
   const DETAILS_OPEN_KEY = 'dj_details_open';
-  const MIN_PROBLEM_CHARS = 30;
-
-  // ───── DAILY QUOTE POOL (références bibliothèque Reset Ultra) ─────
-  const QUOTE_POOL = [
-    {t:"L'argent suit l'attention. Tout ce sur quoi tu focalises devient plus grand.", a:"Alex Hormozi", b:"100M$ Offers"},
-    {t:"Tes prix bas ne sont pas un cadeau pour ton client, ils sont une insulte à ta valeur.", a:"Alex Hormozi", b:"100M$ Offers"},
-    {t:"Le pire ennemi du closer, c'est le closer qui veut faire ami-ami avant de vendre.", a:"Jim Camp", b:"Commencez par Non"},
-    {t:"Tu n'as pas besoin d'être prêt. Tu as besoin de commencer.", a:"Frank Bettger", b:"How I Raised Myself From Failure"},
-    {t:"Les gens achètent sur l'émotion et justifient avec la logique. Vends à l'émotion.", a:"Zig Ziglar", b:"Secrets of Closing the Sale"},
-    {t:"Ne coupe jamais la poire en deux. Trouve le 'non' caché derrière le 'oui' poli.", a:"Chris Voss", b:"Ne coupez jamais la poire"},
-    {t:"Si tu n'es pas en train de vendre, quelqu'un d'autre est en train de te vendre.", a:"Grant Cardone", b:"Sell or Be Sold"},
-    {t:"Tu ne montes pas au niveau de tes objectifs. Tu redescends au niveau de tes systèmes.", a:"James Clear", b:"Atomic Habits"},
-    {t:"Le ciment de l'habitude se prend en 66 jours. Ce que tu fais aujourd'hui se grave.", a:"James Clear", b:"Atomic Habits"},
-    {t:"Ton entourage est ton plafond. Si personne autour de toi ne fait 10k, c'est une info.", a:"Charles Duhigg", b:"Le pouvoir des habitudes"},
-    {t:"Le succès est un mauvais professeur. Il te fait croire que tu es invincible.", a:"Robert Kiyosaki", b:"Père riche, père pauvre"},
-    {t:"La meilleure machine de vente, c'est la répétition d'un seul angle qui marche.", a:"Chet Holmes", b:"La Machine de Vente Ultime"},
-    {t:"3% du marché est prêt à acheter maintenant. Ton job, c'est de viser les 97% restants avec patience.", a:"Chet Holmes", b:"La Machine de Vente Ultime"},
-    {t:"Forcer son destin, ce n'est pas attendre que la vague vienne. C'est sauter dedans avant qu'elle se forme.", a:"Anthony Bourbon", b:"Forcez votre destin"},
-    {t:"Tu ne peux pas vendre ce que tu n'as pas acheté toi-même : ta propre vision.", a:"Russell Brunson", b:"DotCom Secrets"},
-    {t:"Une offre irrésistible, c'est une offre que ton client serait stupide de refuser.", a:"Alex Hormozi", b:"100M$ Offers"},
-    {t:"Le marketing, ce n'est pas convaincre. C'est trouver les gens qui croient déjà ce que tu crois.", a:"Seth Godin", b:"C'est ça le marketing"},
-    {t:"Les gens ne se souviennent pas de ce que tu as dit. Ils se souviennent de comment tu les as fait sentir.", a:"Dale Carnegie", b:"Comment se faire des amis"},
-    {t:"Tu n'as pas peur de ton objectif. Tu as peur de la personne que tu vas devenir pour l'atteindre.", a:"Lise Bourbeau", b:"Les 5 blessures"},
-    {t:"Ton cerveau ne distingue pas action réelle et action imaginée. Visualise ton 10k chaque matin.", a:"Boris Aberkane", b:"Comment utiliser notre cerveau"},
-    {t:"L'émotion est l'argument décisif. Ton intelligence émotionnelle est ton vrai prix de vente.", a:"Daniel Goleman", b:"L'intelligence émotionnelle"},
-    {t:"Le doute coûte plus cher que l'échec. Au moins l'échec t'apprend quelque chose.", a:"Frank Bettger", b:"How I Raised Myself From Failure"},
-    {t:"Ce qui se mesure s'améliore. Ce qui ne se mesure pas reste un fantasme.", a:"Ray Dalio", b:"Principles"},
-    {t:"Une douleur claire vaut mille espoirs flous. Nomme ta vraie problématique.", a:"Ray Dalio", b:"Principles"},
-    {t:"Si tu vises 10k et que tu agis comme à 1k, c'est ton identité qui freine, pas le marché.", a:"James Clear", b:"Atomic Habits"},
-    {t:"Le prix premium n'est pas un montant. C'est une promesse tenue plus haut que celle des autres.", a:"Eugene Schwartz", b:"Breakthrough Advertising"},
-    {t:"L'audience la plus chaude n'a pas besoin d'arguments. Elle a besoin d'autorisation.", a:"Eugene Schwartz", b:"Breakthrough Advertising"},
-    {t:"Vendre, c'est aider quelqu'un à faire ce qu'il a déjà décidé de faire.", a:"Harry Browne", b:"Le Secret pour Vendre"},
-    {t:"Ton plus grand client est celui que tu n'oses pas appeler. Appelle-le aujourd'hui.", a:"Sabri Suby", b:"Sell Like Crazy"},
-    {t:"Le silence après une question fermée vaut de l'or. N'aie pas peur d'attendre.", a:"Neil Rackham", b:"SPIN Selling"}
-  ];
-
-  // ───── DAILY PULSE POOL (12 questions Reset Ultra avatar) ─────
-  // positive = la réponse "saine" pour un état mental d'attaquant
-  const PULSE_POOL = [
-    {slug:"courage_action",  q:"T'as fait au moins 1 truc qui te faisait peur aujourd'hui ?", positive:"yes"},
-    {slug:"identite_voix",   q:"T'as nommé ton objectif 5–10k à voix haute ou par écrit aujourd'hui ?", positive:"yes"},
-    {slug:"parole_tenue",    q:"T'as tenu ta parole envers toi sur ce que t'avais prévu aujourd'hui ?", positive:"yes"},
-    {slug:"doute_report",    q:"Le doute t'a fait reporter ou stopper une action concrète aujourd'hui ?", positive:"no"},
-    {slug:"scroll_fuite",    q:"T'as scrollé plus de 30 min sans but aujourd'hui ?", positive:"no"},
-    {slug:"entourage_bas",   q:"Quelqu'un de ton entourage a essayé de te tirer vers le bas aujourd'hui ?", positive:"no"},
-    {slug:"vraie_conv",      q:"T'as eu au moins 1 vraie conversation business (call, vocal long, RDV) ?", positive:"yes"},
-    {slug:"agir_avant_pret", q:"T'as agi avant de te sentir prêt sur un truc important aujourd'hui ?", positive:"yes"},
-    {slug:"imposteur",       q:"T'as ressenti la honte ou le syndrome de l'imposteur aujourd'hui ?", positive:"no"},
-    {slug:"comparaison_bas", q:"T'as comparé tes résultats à ceux des autres et ça t'a démotivé ?", positive:"no"},
-    {slug:"prix_assume",     q:"T'as annoncé clairement un prix qui te fait un peu peur à un prospect ?", positive:"yes"},
-    {slug:"fierte_concrete", q:"T'es fier d'au moins 1 truc concret que t'as fait aujourd'hui ?", positive:"yes"}
-  ];
 
   // Auth check
   const token = sessionStorage.getItem(TOKEN_KEY);
   const userStr = sessionStorage.getItem(USER_KEY);
   if(!token || !userStr){ window.location.href = 'index.html'; return; }
-  let user;
-  try { user = JSON.parse(userStr); }
-  catch(_) { sessionStorage.clear(); window.location.href = 'index.html'; return; }
   try {
     const check = await fetch(API + '/me/today', { headers: {'Authorization':'Bearer '+token} });
     if(!check.ok){ sessionStorage.clear(); window.location.href = 'index.html'; return; }
   } catch(e){}
 
+  const user = JSON.parse(userStr);
+
   // Helpers
-  // Date locale Paris (fix bug timezone: toISOString() est UTC → fausse date à 01h Paris)
-  function getTodayStr(){
-    const d = new Date();
-    const y = d.getFullYear();
-    const m = String(d.getMonth()+1).padStart(2,'0');
-    const day = String(d.getDate()).padStart(2,'0');
-    return y+'-'+m+'-'+day;
-  }
+  function getTodayStr(){ return new Date().toISOString().slice(0,10); }
   async function api(method, path, body){
     const h = {'Content-Type':'application/json','Authorization':'Bearer '+token};
     const opts = {method, headers:h};
@@ -273,33 +192,16 @@ body{
     if(f<=8) return '🙂';
     return '✨';
   }
-  // Seed déterministe sur la date (FNV-1a)
-  function seedFromString(s){
-    let h=2166136261;
-    for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0}
-    return h;
-  }
-  function pickDaily(arr, seed){
-    return arr[seed % arr.length];
-  }
 
   // State
   let _live = false;
   let _saveCount = 0;
-  let _pulseAnswer = null;   // "yes" | "no" | null
-  let _pulseToday = null;    // ref vers la question du jour
 
   // Render
   function render(){
     const shell = document.getElementById('shell');
     const todayFR = new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
     const detailsOpen = localStorage.getItem(DETAILS_OPEN_KEY) === '1';
-
-    // Daily picks
-    const todayKey = getTodayStr();
-    const seed = seedFromString(todayKey);
-    const dailyQuote = pickDaily(QUOTE_POOL, seed);
-    _pulseToday = pickDaily(PULSE_POOL, seed >>> 3);
 
     shell.innerHTML = `
       <div class="topbar">
@@ -315,12 +217,6 @@ body{
       <header class="page-head">
         <h1>${todayFR}</h1>
       </header>
-
-      <!-- DAILY QUOTE -->
-      <div class="quote-card" id="quote-card">
-        <div class="q-text">« ${dailyQuote.t} »</div>
-        <div class="q-meta">— <span class="q-author">${dailyQuote.a}</span> · ${dailyQuote.b}</div>
-      </div>
 
       <div id="state-notice" class="state-notice"></div>
       <div id="msg-area"></div>
@@ -365,20 +261,11 @@ body{
         </div>
       </div>
 
-      <!-- BLOC PROBLEMATIQUE OBLIGATOIRE + PULSE Y/N -->
+      <!-- BLOC NOTE -->
       <div class="card">
-        <h2>Problématique du jour <span class="req">obligatoire</span></h2>
+        <h2>Note</h2>
         <div class="field" style="margin-bottom:0">
-          <textarea id="field-note" maxlength="800" placeholder="Ex : « 30 calls, 0 RDV — je récite mon ouverture, j'ai peur d'annoncer le prix. » Dicte au micro 🎤 si tu préfères."></textarea>
-          <div class="txt-count is-short" id="problem-count">0 / 800 · min ${MIN_PROBLEM_CHARS} caractères</div>
-        </div>
-
-        <div class="pulse-block">
-          <div class="pulse-q" id="pulse-q-text">${_pulseToday.q}</div>
-          <div class="pulse-row">
-            <button type="button" class="pulse-btn" data-v="yes">Oui</button>
-            <button type="button" class="pulse-btn" data-v="no">Non</button>
-          </div>
+          <textarea id="field-note" maxlength="800" placeholder="Note libre, ou dicte au micro 🎤"></textarea>
         </div>
       </div>
 
@@ -460,32 +347,6 @@ body{
         if(navigator.vibrate) navigator.vibrate(8);
       });
     });
-
-    // Pulse Y/N
-    document.querySelectorAll('.pulse-btn').forEach(b=>{
-      b.addEventListener('click',()=>{
-        document.querySelectorAll('.pulse-btn').forEach(x=>x.classList.remove('is-on'));
-        b.classList.add('is-on');
-        _pulseAnswer = b.dataset.v;
-        if(navigator.vibrate) navigator.vibrate(8);
-      });
-    });
-
-    // Problème counter
-    const noteEl = document.getElementById('field-note');
-    noteEl.addEventListener('input', updateProblemCount);
-    updateProblemCount();
-  }
-
-  function updateProblemCount(){
-    const el = document.getElementById('field-note');
-    const c = document.getElementById('problem-count');
-    if(!el || !c) return;
-    const v = (el.value||'').trim();
-    const n = v.length;
-    c.textContent = n + ' / 800 · min ' + MIN_PROBLEM_CHARS + ' caractères';
-    c.classList.toggle('is-short', n < MIN_PROBLEM_CHARS);
-    c.classList.toggle('is-ok', n >= MIN_PROBLEM_CHARS);
   }
 
   function updateHoursUI(){
@@ -539,7 +400,7 @@ body{
       notice.classList.add('is-on');
       saveBtn.textContent = 'Terminé';
       saveBtn.disabled = true;
-      document.querySelectorAll('.card input, .card textarea, .card button, #btn-live-yes, #btn-live-no, .emoji-btn, .tick-row button, .details-toggle, .pulse-btn').forEach(el=>{
+      document.querySelectorAll('.card input, .card textarea, .card button, #btn-live-yes, #btn-live-no, .emoji-btn, .tick-row button, .details-toggle').forEach(el=>{
         el.disabled = true;
         el.style.pointerEvents = 'none';
         el.style.opacity = '0.6';
@@ -556,10 +417,9 @@ body{
     document.getElementById('field-hours').value = data.hours_worked || 0;
     document.getElementById('field-fulfillment').value = data.fulfillment || 0;
 
-    // Parse marker V5/V7/V8
+    // Parse marker V5/V7
     let note = data.free_note || '';
     let videosCold = 0, videosClosing = 0;
-    let pulseSlug = null, pulseAnswer = null;
     const markerIdx = note.indexOf('__V5__');
     if(markerIdx >= 0){
       try {
@@ -567,31 +427,13 @@ body{
         note = (v5.problem || '').trim();
         videosCold = v5.videos_cold || 0;
         videosClosing = v5.videos_closing || 0;
-        if(v5.pulse){
-          pulseSlug = v5.pulse.slug || null;
-          pulseAnswer = v5.pulse.answer || null;
-        }
       } catch(_){
         note = note.slice(0, markerIdx).trim();
       }
     }
-    // Fallback: wellbeing_answers stocke aussi la réponse
-    if(!pulseAnswer && data.wellbeing_answers && _pulseToday){
-      const w = data.wellbeing_answers[_pulseToday.slug];
-      if(w === 'yes' || w === 'no') pulseAnswer = w;
-    }
     document.getElementById('field-note').value = note;
     document.getElementById('field-videos-cold').value = videosCold;
     document.getElementById('field-videos-closing').value = videosClosing;
-    updateProblemCount();
-
-    // Restaure pulse réponse si même question (sinon ignore — c'est une autre journée)
-    if(pulseAnswer && (!pulseSlug || pulseSlug === _pulseToday.slug)){
-      _pulseAnswer = pulseAnswer;
-      document.querySelectorAll('.pulse-btn').forEach(b=>{
-        b.classList.toggle('is-on', b.dataset.v === pulseAnswer);
-      });
-    }
 
     // Auto-open details if filled
     if(videosCold > 0 || videosClosing > 0 || data.live){
@@ -614,22 +456,6 @@ body{
 
   // Save
   async function saveEntry(){
-    const note = (document.getElementById('field-note').value||'').slice(0,800).trim();
-
-    // Validations obligatoires
-    if(note.length < MIN_PROBLEM_CHARS){
-      showMsg('err', 'Décris ta problématique en au moins ' + MIN_PROBLEM_CHARS + ' caractères concrets');
-      const el = document.getElementById('field-note');
-      if(el) el.focus();
-      return;
-    }
-    if(!_pulseAnswer){
-      showMsg('err', 'Réponds Oui ou Non à la question du jour');
-      const pb = document.querySelector('.pulse-btn');
-      if(pb && pb.scrollIntoView) pb.scrollIntoView({behavior:'smooth', block:'center'});
-      return;
-    }
-
     const btn = document.getElementById('btn-save');
     btn.disabled = true;
     btn.textContent = 'Enregistrement...';
@@ -638,27 +464,24 @@ body{
     const ca = parseFloat(document.getElementById('field-ca').value)||0;
     const hours_worked = parseFloat(document.getElementById('field-hours').value)||0;
     const fulfillment = parseInt(document.getElementById('field-fulfillment').value)||0;
+    const note = (document.getElementById('field-note').value||'').slice(0,800).trim();
     const videos_cold = parseInt(document.getElementById('field-videos-cold').value)||0;
     const videos_closing = parseInt(document.getElementById('field-videos-closing').value)||0;
 
-    // Marker V5+ étendu (compat backend / outils coach)
+    // Marker V5 conservé pour compat backend / outils coach
     const v5Data = {
       problem: note,
       videos_cold,
       videos_closing,
-      pulse: { slug: _pulseToday.slug, question: _pulseToday.q, answer: _pulseAnswer, positive: _pulseToday.positive },
       qualif: { weekly_calls:0, weekly_ca:0, milestone:'' },
       revelation: { title:'', acknowledged:false }
     };
     const free_note = note + '\n\n__V5__' + JSON.stringify(v5Data);
 
-    const wellbeing_answers = {};
-    wellbeing_answers[_pulseToday.slug] = _pulseAnswer;
-
     const payload = {
       calls, ca_eur: ca, live:_live,
       hours_worked, fulfillment,
-      wellbeing_answers,
+      wellbeing_answers: {},
       free_note
     };
 
@@ -686,15 +509,11 @@ body{
     const hrs = parseFloat(data.hours_worked||0);
     const ful = parseInt(data.fulfillment||0);
     const pts = calcPoints(data);
-    const pulseLine = (_pulseToday && _pulseAnswer)
-      ? `<div class="recap-row"><span class="recap-label">${_pulseToday.slug.replace(/_/g,' ')}</span><span class="recap-value">${_pulseAnswer === 'yes' ? 'Oui' : 'Non'}</span></div>`
-      : '';
     rowsEl.innerHTML = `
       <div class="recap-row"><span class="recap-label">Heures</span><span class="recap-value">${hrs}h</span></div>
       <div class="recap-row"><span class="recap-label">Calls</span><span class="recap-value">${data.calls||0}</span></div>
       <div class="recap-row"><span class="recap-label">CA</span><span class="recap-value">${(data.ca_eur||0).toFixed(0)} €</span></div>
       <div class="recap-row"><span class="recap-label">État</span><span class="recap-value">${fulEmoji(ful)} ${ful}/10</span></div>
-      ${pulseLine}
       ${data.live ? '<div class="recap-row"><span class="recap-label">Live</span><span class="recap-value">Oui</span></div>' : ''}
       <div class="recap-row"><span class="recap-label">Points</span><span class="recap-value">${pts}</span></div>
     `;
