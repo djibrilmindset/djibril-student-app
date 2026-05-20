@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
 <title>Tracking · Pardin Djibril</title>
 <meta name="theme-color" content="#e85d2c">
-<!-- VERSION: V6-restored · 2026-05-20 · DESIGN-LOCK -->
+<!-- VERSION: V6.1 · 2026-05-20 · PULSE-POOL-30 + ANTI-RECURRENCE 7j · DESIGN-LOCK -->
 <!-- DESIGN-LOCK : ne PAS toucher au CSS/structure sans validation explicite user. -->
 <!-- Si modif demandée : snapshot backup-pre-<feature>-<TS> avant tout edit. -->
-<meta name="dj-version" content="V6-RESTORED-2026-05-20">
+<meta name="dj-version" content="V6.1-PULSE30-2026-05-20">
 
 <!-- Open Graph / Social Preview -->
 <meta property="og:title" content="Djibril · Ma fiche">
@@ -433,20 +433,92 @@ body{
   // - Free note libre → problématique du jour OBLIGATOIRE
   // - Ajout: vidéos cold/closing, qualif semaine, révélation Socratic
   // ───────────────────────────────────────────────────────
+  // PULSE_POOL — 30 questions Y/N couvrant 6 dimensions mentales avatar Reset Ultra
+  // (courage, doute, discipline, business, identité, environnement)
+  // Anti-récurrence : ne ré-affiche pas une question vue dans les 7 derniers jours
   const PULSE_POOL = [
-    {slug:"energie",label:"T'as eu l'énergie d'attaquer fort aujourd'hui ?",positive:"yes"},
-    {slug:"fierte",label:"Tu peux nommer 1 truc dont t'es fier aujourd'hui ?",positive:"yes"},
-    {slug:"doute",label:"Le doute t'a fait stopper aujourd'hui ?",positive:"no"},
-    {slug:"focus",label:"T'as tenu 1 bloc 60 min focus pur (sans tel/scroll) ?",positive:"yes"}
+    // Courage & action
+    {slug:"courage_action",label:"T'as fait au moins 1 truc qui te faisait peur aujourd'hui ?",positive:"yes"},
+    {slug:"agir_avant_pret",label:"T'as agi avant de te sentir prêt sur un truc important ?",positive:"yes"},
+    {slug:"parole_tenue",label:"T'as tenu ta parole envers toi sur ce que t'avais prévu ?",positive:"yes"},
+    {slug:"dire_non",label:"T'as dit non à une distraction qui te ramenait en arrière ?",positive:"yes"},
+    {slug:"risque_concret",label:"T'as pris 1 risque concret aujourd'hui (financier, social, créatif) ?",positive:"yes"},
+    // Doute & émotions négatives
+    {slug:"doute_report",label:"Le doute t'a fait reporter ou stopper une action concrète ?",positive:"no"},
+    {slug:"imposteur",label:"T'as ressenti la honte ou le syndrome de l'imposteur aujourd'hui ?",positive:"no"},
+    {slug:"comparaison_bas",label:"T'as comparé tes résultats à ceux des autres et ça t'a démotivé ?",positive:"no"},
+    {slug:"peur_argent",label:"T'as eu peur de demander l'argent (peur de manquer, peur de gêner) ?",positive:"no"},
+    {slug:"rumination",label:"T'as nourri une rancune ou rumination plus de 10 min aujourd'hui ?",positive:"no"},
+    // Discipline & habits
+    {slug:"scroll_fuite",label:"T'as scrollé plus de 30 min sans but aujourd'hui ?",positive:"no"},
+    {slug:"focus_60",label:"T'as tenu 1 bloc 60 min focus pur (sans tel/scroll) ?",positive:"yes"},
+    {slug:"lever_tot",label:"T'as commencé ta journée avant 8h aujourd'hui ?",positive:"yes"},
+    {slug:"routine_matin",label:"T'as fait ta routine du matin sans la sauter ?",positive:"yes"},
+    {slug:"dormir_horaire",label:"T'as dormi avant minuit hier soir ?",positive:"yes"},
+    // Business action
+    {slug:"vraie_conv",label:"T'as eu au moins 1 vraie conversation business (call, vocal long, RDV) ?",positive:"yes"},
+    {slug:"prix_assume",label:"T'as annoncé clairement un prix qui te fait un peu peur à un prospect ?",positive:"yes"},
+    {slug:"proposer_offer",label:"T'as proposé une offre concrète à au moins 1 prospect aujourd'hui ?",positive:"yes"},
+    {slug:"relance_morte",label:"T'as relancé 1 prospect que tu pensais perdu aujourd'hui ?",positive:"yes"},
+    {slug:"closing_tente",label:"T'as tenté un closing direct sur 1 deal aujourd'hui ?",positive:"yes"},
+    // Identité & mental state
+    {slug:"identite_voix",label:"T'as nommé ton objectif 5–10k à voix haute ou par écrit aujourd'hui ?",positive:"yes"},
+    {slug:"visualisation",label:"T'as visualisé ta réussite 5+ min aujourd'hui ?",positive:"yes"},
+    {slug:"fierte_concrete",label:"T'es fier d'au moins 1 truc concret que t'as fait aujourd'hui ?",positive:"yes"},
+    {slug:"moi_demain",label:"Tu te sens plus proche de ton « moi de demain » qu'hier ?",positive:"yes"},
+    {slug:"energie_jour",label:"Tu finis la journée avec plus d'énergie qu'au réveil ?",positive:"yes"},
+    // Environnement & relation
+    {slug:"entourage_bas",label:"Quelqu'un de ton entourage a essayé de te tirer vers le bas ?",positive:"no"},
+    {slug:"aide_donnee",label:"T'as aidé quelqu'un sans rien attendre en retour aujourd'hui ?",positive:"yes"},
+    {slug:"demande_aide",label:"T'as demandé de l'aide à quelqu'un sans honte aujourd'hui ?",positive:"yes"},
+    {slug:"mentor_message",label:"T'as envoyé un message à 1 mentor ou référence aujourd'hui ?",positive:"yes"},
+    {slug:"famille_temps",label:"T'as donné du vrai temps qualitatif à ta famille ou tes proches ?",positive:"yes"}
   ];
   const WB_POOL = PULSE_POOL; // backward-compat (calcPoints, plate)
+  const PULSE_HISTORY_KEY = 'dj_pulse_history_v2'; // [{slug, date}]
+  const PULSE_AVOID_DAYS = 7; // ne ré-affiche pas une question vue dans les 7 derniers jours
+
+  function readPulseHistory(){
+    try {
+      const raw = localStorage.getItem(PULSE_HISTORY_KEY);
+      if(!raw) return [];
+      const arr = JSON.parse(raw);
+      return Array.isArray(arr) ? arr : [];
+    } catch(_) { return []; }
+  }
+
+  function recentSeenSlugs(){
+    const today = new Date();
+    const cutoff = new Date(today.getFullYear(), today.getMonth(), today.getDate() - PULSE_AVOID_DAYS);
+    const cutoffStr = cutoff.toISOString().slice(0,10);
+    return new Set(readPulseHistory().filter(e => e.date && e.date >= cutoffStr).map(e => e.slug));
+  }
 
   function pickDailyQuestions(seed){
-    const arr=[...PULSE_POOL];
+    // FNV-1a hash for deterministic seed per (user + date)
     let h=2166136261;
     for(let i=0;i<seed.length;i++){h^=seed.charCodeAt(i);h=Math.imul(h,16777619)>>>0}
     const rand=()=>{h+=0x6D2B79F5;let t=h;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296};
-    return [arr[Math.floor(rand() * arr.length)]];
+    // Filter out questions vues dans les 7 derniers jours
+    const recent = recentSeenSlugs();
+    let pool = PULSE_POOL.filter(q => !recent.has(q.slug));
+    if(pool.length === 0) pool = [...PULSE_POOL]; // fallback si toutes vues
+    const pick = pool[Math.floor(rand() * pool.length)];
+    // Enregistre dans l'historique pour ne pas la ré-afficher avant 7 jours
+    try {
+      const hist = readPulseHistory();
+      const today = new Date().toISOString().slice(0,10);
+      // Évite doublon même date+slug
+      if(!hist.some(e => e.date === today && e.slug === pick.slug)){
+        hist.push({slug: pick.slug, date: today});
+        // Garde max 60 jours d'historique
+        const cutoff = new Date(); cutoff.setDate(cutoff.getDate()-60);
+        const cutoffStr = cutoff.toISOString().slice(0,10);
+        const trimmed = hist.filter(e => e.date >= cutoffStr);
+        localStorage.setItem(PULSE_HISTORY_KEY, JSON.stringify(trimmed));
+      }
+    } catch(_) {}
+    return [pick];
   }
 
   // ── Révélations Socratic — 1 / jour rotation, oblige checkbox ──
