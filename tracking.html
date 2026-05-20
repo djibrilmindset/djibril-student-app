@@ -3,37 +3,41 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
-<title>Ma fiche · Djibril</title>
+<title>Tracking · Pardin Djibril</title>
 <meta name="theme-color" content="#e85d2c">
-<!-- VERSION: V8 · 2026-05-20 · main-restored · DESIGN-LOCK -->
-<meta name="dj-version" content="V8-2026-05-20">
+<!-- VERSION: V6-restored · 2026-05-20 · DESIGN-LOCK -->
+<!-- DESIGN-LOCK : ne PAS toucher au CSS/structure sans validation explicite user. -->
+<!-- Si modif demandée : snapshot backup-pre-<feature>-<TS> avant tout edit. -->
+<meta name="dj-version" content="V6-RESTORED-2026-05-20">
 
-<!-- Open Graph -->
+<!-- Open Graph / Social Preview -->
 <meta property="og:title" content="Djibril · Ma fiche">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://djibrilmindset.github.io/djibril-student-app/tracking.html">
 <meta property="og:image" content="https://djibrilmindset.github.io/djibril-student-app/og-preview.jpg">
+<meta property="og:image:secure_url" content="https://djibrilmindset.github.io/djibril-student-app/og-preview.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Djibril · Ma fiche">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:site_name" content="Djibril">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Djibril · Ma fiche">
+<meta name="twitter:image" content="https://djibrilmindset.github.io/djibril-student-app/og-preview.jpg">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Playfair+Display:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --paper:#f5efe4;
-  --card:#fffaf0;
-  --ink:#1a1614;
-  --ink-soft:#3a322c;
-  --ink-mute:#6e645a;
-  --line:rgba(26,22,20,.15);
-  --ember:#e85d2c;
-  --ember-deep:#c73e1a;
-  --ember-soft:rgba(232,93,44,.10);
-  --jade:#1d8a6f;
-  --crit:#c73e3a;
+  --paper:#f3ecdf; --paper-2:#e9e0cf; --paper-3:#f8f4eb;
+  --ink:#1a1614; --ink-soft:#3a322c; --ink-mute:#6e645a;
+  --ember:#e85d2c; --ember-deep:#c73e1a; --ember-soft:rgba(232,93,44,.12);
+  --plum:#6b3a4f; --magenta:#d4145a; --indigo:#4a3c8c; --jade:#1d8a6f; --gold:#d4951a;
+  --crit:#c73e3a; --warn:#d4951a;
   --serif:'Instrument Serif',Georgia,serif;
+  --display:'Playfair Display',Georgia,serif;
   --mono:'JetBrains Mono',ui-monospace,monospace;
 }
 *{margin:0;padding:0;box-sizing:border-box}
@@ -41,146 +45,452 @@ html,body{max-width:100vw;overflow-x:hidden}
 body{
   font-family:var(--serif);background:var(--paper);color:var(--ink);
   min-height:100vh;-webkit-tap-highlight-color:transparent;
-  font-size:17px;line-height:1.45;
 }
 
+/* COSMOS BACKGROUND */
+.cosmos{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.cosmos__cap{position:absolute;border-radius:999px;border:1.5px solid rgba(26,22,20,.5);mix-blend-mode:multiply;opacity:.4;filter:saturate(1.3)}
+.cosmos__cap::after{content:"";position:absolute;inset:12% 18%;border-radius:999px;background-image:radial-gradient(circle,rgba(255,255,255,.3) 1px,transparent 1.5px);background-size:5px 5px;mix-blend-mode:screen}
+.cosmos__cap.c1{background:#C73E3A;width:130px;height:260px;top:8%;left:6%;animation:f1 38s ease-in-out infinite}
+.cosmos__cap.c2{background:#4B3F72;width:90px;height:180px;top:18%;right:8%;animation:f2 44s ease-in-out infinite -6s}
+.cosmos__cap.c3{background:#C8A951;width:80px;height:160px;bottom:18%;left:12%;animation:f3 36s ease-in-out infinite -12s}
+.cosmos__cap.c4{background:#5E8B7E;width:130px;height:260px;bottom:8%;right:6%;animation:f1 42s ease-in-out infinite -3s}
+.cosmos__cap.c5{background:#722F37;width:60px;height:120px;top:48%;left:38%;animation:f2 30s ease-in-out infinite -14s}
+.cosmos__cap.c6{background:#1B6E8C;width:70px;height:140px;top:62%;left:72%;animation:f3 40s ease-in-out infinite -8s}
+@keyframes f1{0%,100%{transform:translate3d(0,0,0) rotate(-15deg)}50%{transform:translate3d(40px,-60px,0) rotate(8deg)}}
+@keyframes f2{0%,100%{transform:translate3d(0,0,0) rotate(25deg)}50%{transform:translate3d(-50px,70px,0) rotate(-18deg)}}
+@keyframes f3{0%,100%{transform:translate3d(0,0,0) rotate(38deg)}50%{transform:translate3d(60px,-40px,0) rotate(-22deg)}}
+.cosmos__stars{position:absolute;inset:0;font-family:var(--serif);font-style:italic;color:rgba(26,22,20,.12);letter-spacing:.4em;line-height:2.6;font-size:13px;padding:40px;white-space:pre-wrap;animation:tw 8s steps(8) infinite}
+@keyframes tw{0%,100%{opacity:1}50%{opacity:.4}}
+.cosmos__noise{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.085 0 0 0 0 0.08 0 0 0 0.45 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:280px 280px;opacity:.12;mix-blend-mode:multiply}
+.cosmos__veil{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(243,236,223,.35) 0%,rgba(243,236,223,.7) 100%)}
+
 /* SHELL */
-.shell{max-width:640px;margin:0 auto;padding:0 20px 120px}
+.shell{position:relative;z-index:2;max-width:680px;margin:0 auto;padding:0 24px 120px}
 
 /* TOPBAR */
-.topbar{display:flex;align-items:center;gap:14px;padding:18px 0;border-bottom:1px solid var(--line);margin-bottom:28px;flex-wrap:wrap}
+.topbar{display:flex;align-items:center;gap:14px;padding:18px 0;border-bottom:1.5px solid rgba(26,22,20,.15);margin-bottom:24px;flex-wrap:wrap}
 .topbar a{text-decoration:none;color:var(--ink)}
 .brand-mark{display:flex;align-items:center;gap:8px}
-.brand-mark .pill{width:24px;height:12px;border-radius:999px;background:var(--ember)}
-.brand-mark .label{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
-.topbar__user{margin-left:auto;display:flex;align-items:center;gap:8px;cursor:pointer;padding:6px 12px;border-radius:999px;background:var(--ember-soft);border:1px solid var(--line);font-family:var(--mono);font-size:11px}
-.topbar__user .av{width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--paper);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;font-family:var(--mono)}
+.brand-mark .pill{width:28px;height:14px;border-radius:999px;background:linear-gradient(90deg,#C73E3A,#e85d2c,#C8A951);box-shadow:inset 0 -2px 3px rgba(0,0,0,.3)}
+.brand-mark .label{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+.topbar__user{margin-left:auto;display:flex;align-items:center;gap:8px;cursor:pointer;padding:6px 12px;border-radius:999px;background:var(--ember-soft);border:none;font-family:var(--serif)}
+.topbar__user .av{width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--paper);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:900;font-size:.8rem}
+.crumb{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--ink-mute);display:flex;gap:6px}
+.crumb a{color:var(--ink-mute)}
+.crumb .sep{color:rgba(26,22,20,.25)}
 
 /* HEADER */
-.page-head{margin-bottom:22px}
-.page-head h1{font-family:var(--serif);font-weight:400;font-size:2rem;line-height:1.1}
+.page-head{margin-bottom:28px}
+.page-head h1{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(2rem,5vw,2.8rem);line-height:1.08;margin-bottom:6px}
+.page-head h1 .accent{font-family:var(--display);font-style:normal;font-weight:900;color:var(--magenta)}
+.page-head .lede{font-family:var(--serif);font-style:italic;color:var(--ink-soft);font-size:1rem}
+.page-head .lede .pop{font-family:var(--mono);font-style:normal;font-weight:600;font-size:.8em;letter-spacing:.1em;text-transform:uppercase;color:var(--ember)}
 
-/* STATE NOTICE (post-save uniquement) */
-.state-notice{display:none;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink-mute);margin-bottom:16px}
-.state-notice.is-on{display:block}
+/* BRAIN ORB */
+.brain-stage{position:relative;display:flex;align-items:center;justify-content:center;margin:0 0 8px}
+.brain-orb{position:relative;width:160px;height:160px;transition:width .6s,height .6s}
+.brain-orb__halo{position:absolute;inset:-20%;background:radial-gradient(circle at 50% 50%,rgba(199,62,58,.4) 0%,rgba(232,93,44,.25) 30%,rgba(74,60,140,.15) 55%,transparent 70%);filter:blur(30px);border-radius:50%;animation:brain-pulse 4s ease-in-out infinite;z-index:0}
+.brain-orb__capsule{position:absolute;inset:18%;z-index:2;background:linear-gradient(135deg,#C73E3A,#e85d2c,#C8A951);border-radius:999px;box-shadow:0 0 40px rgba(199,62,58,.35),0 0 80px rgba(74,60,140,.15);transition:width .6s,height .6s,margin .6s}
+.brain-orb__wires{position:absolute;inset:0;z-index:1;pointer-events:none;animation:brain-rotate 30s linear infinite}
+.brain-orb__wires::before{content:'';position:absolute;inset:5%;border:2px dashed rgba(232,93,44,.25);border-radius:50%}
+.brain-orb__wires::after{content:'';position:absolute;inset:15%;border:1.5px dotted rgba(212,149,26,.2);border-radius:50%}
+.brain-orb__pts{position:absolute;z-index:4;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--display);font-size:28px;font-weight:800;color:var(--ember);text-align:center;transition:font-size .6s}
+.brain-orb__pts small{display:block;font-size:9px;font-weight:500;color:var(--ink-mute);letter-spacing:1px;text-transform:uppercase}
+.brain-orb.strong{width:220px;height:220px}
+.brain-orb.strong .brain-orb__pts{font-size:40px;color:var(--indigo)}
+@keyframes brain-pulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
+@keyframes brain-rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 
-/* CARD */
-.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:22px 20px;margin-bottom:18px}
-.card h2{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--ink-soft);margin-bottom:14px}
+/* TODAY CARD */
+.card-today{background:rgba(255,252,245,.92);border:2px solid var(--ember);box-shadow:6px 6px 0 var(--ember-deep);padding:32px;margin-bottom:32px}
+.badge-pulse{display:inline-flex;align-items:center;gap:6px;background:var(--ember-soft);color:var(--ember);padding:4px 12px;border-radius:999px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;font-weight:600;margin-bottom:20px;text-transform:uppercase}
+.badge-pulse::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--ember);animation:pulse-dot 1.5s ease-in-out infinite}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.3}}
+.card-today h2{font-family:var(--display);font-weight:900;font-size:1.3rem;color:var(--ink);margin-bottom:24px}
+.card-today .date-display{font-family:var(--serif);font-style:italic;font-size:1.1rem;color:var(--ink-soft);margin-bottom:20px}
 
-/* FIELD */
-.field{margin-bottom:18px}
-.field:last-child{margin-bottom:0}
-.field label{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--ink-soft);margin-bottom:8px}
-.field input[type=number], .field input[type=text]{width:100%;font-family:var(--mono);font-weight:600;font-size:1.2rem;background:#fff;border:1px solid var(--line);border-radius:6px;padding:12px 14px;color:var(--ink);outline:none;text-align:left}
-.field input:focus{border-color:var(--ember)}
-.field textarea{width:100%;font-family:var(--serif);font-size:1.05rem;line-height:1.5;background:#fff;border:1px solid var(--line);border-radius:6px;padding:14px;color:var(--ink);outline:none;resize:vertical;min-height:120px}
-.field textarea:focus{border-color:var(--ember)}
+/* SLIDER GROUPS (heures + épanouissement) */
+.slider-group{margin-bottom:28px;padding-bottom:24px;border-bottom:1px dotted rgba(26,22,20,.15)}
+.slider-group:last-of-type{border-bottom:none}
+.slider-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:12px}
+.slider-label{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--ink-soft)}
+.slider-value{font-family:var(--mono);font-weight:600;font-size:1.6rem;color:var(--ember);letter-spacing:-.02em;line-height:1;display:flex;align-items:baseline;gap:4px}
+.slider-value .unit{font-size:.7rem;color:var(--ink-mute);font-weight:500;letter-spacing:.1em}
+.slider-value .emoji{font-size:1.4rem;margin-right:6px;line-height:1}
 
-/* GRID 2 col */
-.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
-.field-row .field{margin-bottom:0}
+/* Custom range slider */
+.range-wrap{position:relative;padding:8px 0}
+.range{-webkit-appearance:none;appearance:none;width:100%;height:8px;background:linear-gradient(to right,var(--ember-deep) 0%,var(--ember) var(--val,0%),rgba(26,22,20,.15) var(--val,0%),rgba(26,22,20,.15) 100%);border-radius:999px;outline:none;cursor:pointer;transition:height .15s}
+.range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:28px;height:28px;background:var(--ink);border:3px solid var(--paper);border-radius:50%;cursor:grab;box-shadow:0 2px 8px rgba(0,0,0,.3),0 0 0 0 var(--ember-soft);transition:box-shadow .2s,transform .15s}
+.range::-webkit-slider-thumb:hover{box-shadow:0 2px 8px rgba(0,0,0,.3),0 0 0 8px var(--ember-soft);transform:scale(1.08)}
+.range::-webkit-slider-thumb:active{cursor:grabbing;background:var(--ember-deep);transform:scale(.95)}
+.range::-moz-range-thumb{width:28px;height:28px;background:var(--ink);border:3px solid var(--paper);border-radius:50%;cursor:grab;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.range:focus::-webkit-slider-thumb{outline:2px solid var(--ember);outline-offset:2px}
 
-/* SLIDER */
-.slider-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
-.slider-head .val{font-family:var(--mono);font-weight:600;font-size:1.4rem;color:var(--ember)}
-.slider-head .val .unit{font-size:.7rem;color:var(--ink-mute);margin-left:4px}
-.range{-webkit-appearance:none;appearance:none;width:100%;height:6px;background:linear-gradient(to right,var(--ember) 0%,var(--ember) var(--val,0%),var(--line) var(--val,0%),var(--line) 100%);border-radius:999px;outline:none;cursor:pointer}
-.range::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;background:var(--ink);border:3px solid var(--card);border-radius:50%;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.2)}
-.range::-moz-range-thumb{width:24px;height:24px;background:var(--ink);border:3px solid var(--card);border-radius:50%;cursor:pointer}
-.tick-row{display:flex;justify-content:space-between;margin-top:8px;font-family:var(--mono);font-size:11px;color:var(--ink-mute)}
-.tick-row button{background:transparent;border:none;color:var(--ink-mute);cursor:pointer;font-family:var(--mono);font-size:11px;padding:4px 10px;border-radius:4px}
-.tick-row button:hover{color:var(--ember)}
-.tick-row button.is-on{color:var(--ink);font-weight:700}
+/* Suggestions ticks under slider */
+.range-ticks{display:flex;justify-content:space-between;margin-top:8px;padding:0 4px}
+.range-ticks .tick{position:relative;font-family:var(--mono);font-size:9px;color:var(--ink-mute);letter-spacing:.05em;cursor:pointer;padding:4px 6px;border:1px solid transparent;border-radius:6px;transition:all .15s;background:transparent;font-weight:500}
+.range-ticks .tick:hover{border-color:var(--ember);color:var(--ember);background:var(--ember-soft)}
+.range-ticks .tick.is-active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.range-ticks .tick--hint{font-style:italic;color:rgba(110,100,90,.7)}
 
-/* EMOJI STATE */
-.emoji-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.emoji-btn{font-size:1.8rem;padding:16px 0;background:#fff;border:1px solid var(--line);border-radius:6px;cursor:pointer;line-height:1;transition:border-color .12s}
-.emoji-btn:hover{border-color:var(--ember)}
-.emoji-btn.is-on{background:var(--ember-soft);border-color:var(--ember)}
+/* Hours emoji helper */
+.hours-mood{font-family:var(--serif);font-style:italic;font-size:.9rem;color:var(--ink-mute);margin-top:6px;min-height:1.2em;transition:color .25s}
 
-/* LIVE TOGGLE */
-.toggle-row{display:flex;gap:8px;align-items:center}
-.toggle-row .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--ink-soft);margin-right:auto}
-.toggle-row button{padding:8px 18px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--ink-soft);cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
-.toggle-row button.is-on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+/* Compact field row (calls / ca / live) */
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--ink-soft)}
+.field input{font-family:var(--mono);font-weight:600;font-size:1.4rem;background:rgba(255,252,245,.6);border:none;border-bottom:1.5px solid var(--ink);padding:10px 4px;color:var(--ink);outline:none;text-align:center;transition:border-color .15s,background .15s}
+.field input:focus{border-bottom-color:var(--ember-deep);background:rgba(255,252,245,.95)}
+.field .input-suggest{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.field .input-suggest button{background:transparent;border:1px solid rgba(26,22,20,.15);font-family:var(--mono);font-size:9px;letter-spacing:.05em;padding:4px 8px;border-radius:6px;cursor:pointer;color:var(--ink-mute);transition:all .15s;font-weight:500}
+.field .input-suggest button:hover{border-color:var(--ember);color:var(--ember);background:var(--ember-soft)}
+.field .input-suggest button.is-active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 
-/* DETAILS REPLIABLE */
-.details-card{background:transparent;border:1px dashed var(--line);border-radius:8px;margin-bottom:18px}
-.details-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:transparent;border:none;cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--ink-mute)}
-.details-toggle:hover{color:var(--ember)}
-.details-toggle .chev{transition:transform .2s;font-size:.9em}
-.details-card.is-open .details-toggle .chev{transform:rotate(90deg)}
-.details-body{display:none;padding:0 18px 18px}
-.details-card.is-open .details-body{display:block}
+/* Live toggle */
+.live-toggle{display:flex;align-items:center;gap:10px;margin:0 0 24px}
+.live-toggle span{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--ink-soft)}
+.live-toggle button{padding:8px 20px;border-radius:999px;border:1.5px solid rgba(26,22,20,.2);background:rgba(255,252,245,.6);color:var(--ink-soft);cursor:pointer;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;transition:all .15s}
+.live-toggle button.is-on{background:var(--ember-deep);border-color:var(--ember-deep);color:var(--paper)}
 
-/* BUTTON */
-.btn{font-family:var(--mono);font-weight:600;font-size:12px;letter-spacing:.12em;text-transform:uppercase;background:var(--ink);color:var(--paper);border:1px solid var(--ink);padding:16px 22px;border-radius:6px;cursor:pointer;transition:opacity .12s}
-.btn:hover{opacity:.88}
-.btn:disabled{opacity:.45;pointer-events:none}
+/* MENTAL CHECK — qualification approfondie */
+.mental-check{margin-bottom:24px;padding:22px 20px;background:linear-gradient(155deg,rgba(29,138,111,.05) 0%,rgba(232,93,44,.04) 60%,rgba(74,60,140,.05) 100%);border:1.5px solid rgba(29,138,111,.2);border-radius:4px;box-shadow:inset 3px 3px 0 rgba(29,138,111,.06),0 1px 0 rgba(26,22,20,.05)}
+.mental-check h3{font-family:var(--display);font-weight:900;font-size:1.18rem;color:var(--jade);margin-bottom:6px;letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
+.mental-check h3::before{content:"⚡";color:var(--ember);font-family:var(--serif);font-style:italic;font-weight:400;font-size:1.3em;line-height:.8}
+.mental-check p.sub{font-family:var(--serif);font-style:italic;color:var(--plum);font-size:.92rem;margin-bottom:18px;letter-spacing:.01em;line-height:1.4}
+.mental-row{margin-bottom:18px}
+.mental-row:last-child{margin-bottom:0}
+.mental-row label{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--ink-soft);display:block;margin-bottom:6px}
+.mental-row .mini-val{display:inline-block;font-family:var(--mono);font-weight:700;color:var(--ember);font-size:1.1rem;margin-left:8px}
+.mental-row textarea{width:100%;min-height:50px;padding:10px;font-family:var(--serif);font-style:italic;font-size:.95rem;line-height:1.45;background:rgba(255,252,245,.85);border:1.5px solid rgba(26,22,20,.18);border-radius:4px;color:var(--ink);outline:none;resize:vertical;transition:border-color .15s,background .15s}
+.mental-row textarea:focus{border-color:var(--jade);background:rgba(255,252,245,1)}
+.mental-row input[type=text]{width:100%;padding:10px;font-family:var(--display);font-weight:700;font-size:1rem;background:rgba(255,252,245,.85);border:1.5px solid rgba(26,22,20,.18);border-radius:4px;color:var(--ink);outline:none}
+.mental-row input[type=text]:focus{border-color:var(--jade);background:rgba(255,252,245,1)}
+
+/* WELLBEING QUESTIONS — sophistiqué niche 3.0 */
+.wellbeing{margin-bottom:28px;padding:26px 22px 22px;background:linear-gradient(155deg,rgba(74,60,140,.05) 0%,rgba(232,93,44,.04) 60%,rgba(107,58,79,.05) 100%);border:1.5px solid rgba(74,60,140,.18);border-radius:4px;box-shadow:inset 3px 3px 0 rgba(74,60,140,.06),0 1px 0 rgba(26,22,20,.05)}
+.wellbeing h3{font-family:var(--display);font-weight:900;font-size:1.18rem;color:var(--indigo);margin-bottom:6px;letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
+.wellbeing h3::before{content:"✦";color:var(--ember);font-family:var(--serif);font-style:italic;font-weight:400;font-size:1.3em;line-height:.8}
+.wellbeing p.sub{font-family:var(--serif);font-style:italic;color:var(--plum);font-size:.92rem;margin-bottom:22px;letter-spacing:.01em;line-height:1.4}
+.wb-q{margin-bottom:18px;padding:12px 14px 14px 18px;background:rgba(255,252,245,.7);border-left:3px solid var(--ember);border-radius:0 4px 4px 0;animation:fieldIn .35s ease;box-shadow:1px 1px 0 rgba(232,93,44,.08)}
+.wb-q:last-child{margin-bottom:0}
+.wb-q .wb-label{font-family:var(--display);font-weight:700;font-size:1.08rem;color:var(--ink);margin-bottom:12px;line-height:1.35;letter-spacing:-.005em}
+.wb-toggles{display:flex;gap:10px}
+.wb-toggles button{flex:1;padding:13px 16px;border-radius:999px;border:1.5px solid rgba(26,22,20,.22);background:rgba(255,252,245,.85);color:var(--ink);cursor:pointer;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;transition:all .18s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden}
+.wb-toggles button:hover{transform:translateY(-1px);border-color:var(--ink);box-shadow:0 2px 6px rgba(26,22,20,.15)}
+.wb-toggles button.is-on{background:var(--ink);color:var(--paper);border-color:var(--ink);transform:translateY(-1px);box-shadow:3px 3px 0 var(--ember-deep)}
+.wb-toggles button.is-on.positive{background:var(--jade);border-color:var(--jade);box-shadow:3px 3px 0 rgba(29,138,111,.5)}
+.wb-toggles button.is-on.negative{background:var(--crit);border-color:var(--crit);box-shadow:3px 3px 0 rgba(199,62,58,.5)}
+
+/* LOCK BADGES */
+.lock-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin-left:10px}
+.lock-badge--first{background:rgba(29,138,111,.15);color:var(--jade);border:1px solid var(--jade)}
+.lock-badge--mod{background:rgba(212,149,26,.15);color:var(--gold);border:1px solid var(--gold)}
+.lock-badge--locked{background:rgba(26,22,20,.85);color:var(--paper);border:1px solid var(--ink)}
+.lock-warn{margin-top:14px;padding:10px 14px;background:rgba(212,149,26,.1);border-left:3px solid var(--gold);font-family:var(--serif);font-style:italic;color:var(--ink-soft);font-size:.92rem;line-height:1.4;border-radius:0 4px 4px 0}
+.btn:disabled.is-locked{background:rgba(26,22,20,.4);border-color:rgba(26,22,20,.4);color:var(--paper);cursor:not-allowed}
+
+/* STATE EMOJIS (V5 — remplace slider 0-10) */
+.state-emojis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:8px 0 4px}
+.state-emojis .state-btn{font-size:1.8rem;padding:14px 0;background:rgba(255,252,245,.85);border:1.5px solid rgba(26,22,20,.22);border-radius:8px;cursor:pointer;transition:all .15s;line-height:1}
+.state-emojis .state-btn:hover{transform:translateY(-2px);border-color:var(--ember)}
+.state-emojis .state-btn.is-on{background:var(--ember-soft);border-color:var(--ember);box-shadow:3px 3px 0 var(--ember-deep)}
+
+/* VIDEO ROW (cold + closing) */
+.video-row .field label{color:var(--indigo)}
+.video-hint{font-family:var(--mono);font-size:9px;color:var(--ink-mute);margin-top:2px;letter-spacing:.04em}
+.video-hint a{color:var(--ember);text-decoration:none;border-bottom:1px dotted var(--ember)}
+
+/* TEXTAREA (V5: problème) */
+.note-textarea{width:100%;min-height:80px;padding:12px;font-family:var(--serif);font-style:italic;font-size:.98rem;line-height:1.5;background:rgba(255,252,245,.85);border:1.5px solid rgba(26,22,20,.18);border-radius:4px;color:var(--ink);outline:none;resize:vertical;transition:border-color .15s,background .15s}
+.note-textarea:focus{border-color:var(--ember);background:rgba(255,252,245,1)}
+.note-count{display:flex;justify-content:flex-end;font-family:var(--mono);font-size:9px;color:var(--ink-mute);letter-spacing:.05em;margin-top:4px}
+.note-count.is-near{color:var(--warn)}
+.note-count.is-full{color:var(--crit);font-weight:700}
+.note-count.is-short{color:var(--crit);font-weight:700}
+
+/* MANDATORY BLOCKS (V5: problème + qualif) */
+.block-mandatory{margin:24px 0;padding:20px 18px 18px;background:rgba(199,62,58,.04);border:1.5px solid rgba(199,62,58,.22);border-radius:6px}
+.block-mandatory h3{font-family:var(--display);font-weight:900;font-size:1.05rem;color:var(--ink);margin-bottom:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.block-mandatory h3 .req{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;background:var(--crit);color:var(--paper);padding:3px 8px;border-radius:999px}
+.block-mandatory .sub{font-family:var(--serif);font-style:italic;color:var(--ink-soft);font-size:.92rem;margin-bottom:12px}
+.qualif-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px}
+.qualif-grid .field input{font-size:1.2rem}
+.qualif-grid .qualif-milestone{grid-column:1/-1}
+.qualif-grid .qualif-milestone input{font-size:1rem;text-align:left;font-style:italic}
+
+/* REVELATION BLOCK (V5: tu ne savais pas que...) */
+.block-revelation{margin:24px 0;padding:22px 20px;background:linear-gradient(155deg,rgba(74,60,140,.08) 0%,rgba(212,149,26,.08) 100%);border:1.5px solid rgba(74,60,140,.3);border-radius:6px;box-shadow:inset 2px 2px 0 rgba(74,60,140,.06)}
+.block-revelation .rev-tag{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--indigo);background:rgba(74,60,140,.12);padding:4px 10px;border-radius:999px;margin-bottom:10px}
+.block-revelation h3{font-family:var(--display);font-weight:900;font-size:1.18rem;color:var(--ink);margin-bottom:10px;line-height:1.25}
+.block-revelation p{font-family:var(--serif);font-style:italic;color:var(--ink-soft);font-size:1rem;line-height:1.5;margin-bottom:16px}
+.block-revelation p b{font-style:normal;font-weight:700;color:var(--ember-deep)}
+.rev-check{display:flex;align-items:center;gap:10px;cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink);background:rgba(255,252,245,.7);padding:12px 14px;border-radius:6px;border:1.5px solid rgba(26,22,20,.18);transition:all .15s}
+.rev-check:hover{border-color:var(--indigo);background:rgba(255,252,245,.95)}
+.rev-check input[type=checkbox]{width:20px;height:20px;cursor:pointer;accent-color:var(--indigo);margin:0}
+.rev-check.is-on{background:rgba(29,138,111,.1);border-color:var(--jade);color:var(--jade);font-weight:600}
+
+/* MISSING CHECKLIST */
+.missing-list{margin:12px 0;padding:12px 14px;background:rgba(212,149,26,.1);border-left:3px solid var(--gold);font-family:var(--mono);font-size:10px;letter-spacing:.04em;color:var(--ink-soft);border-radius:0 4px 4px 0}
+.missing-list ul{margin:6px 0 0 18px;padding:0}
+.missing-list li{margin:3px 0}
+
+/* CREUSAGE INLINE (problématique LIA) */
+.hidden{display:none!important}
+#btn-deepen{margin-top:10px;display:inline-flex;align-items:center;gap:6px}
+#btn-deepen:disabled{opacity:.4;cursor:not-allowed}
+.dig-flow{margin-top:14px;animation:fieldIn .3s ease}
+.dig-thread{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.dig-msg{padding:11px 14px;border-radius:10px;font-size:.96rem;line-height:1.45;max-width:92%}
+.dig-msg--ia{background:rgba(74,60,140,.08);border:1px solid rgba(74,60,140,.2);color:var(--ink);align-self:flex-start;font-family:var(--display);font-weight:500}
+.dig-msg--ia::before{content:'LIA  ';font-family:var(--mono);font-size:8px;letter-spacing:.18em;font-weight:700;color:var(--indigo);display:block;margin-bottom:3px;text-transform:uppercase}
+.dig-msg--user{background:rgba(232,93,44,.08);border:1px solid rgba(232,93,44,.25);color:var(--ink);align-self:flex-end;font-style:italic}
+.dig-input-row{display:flex;flex-direction:column;gap:8px}
+.dig-input-row textarea{width:100%;min-height:60px;padding:10px 12px;font-family:var(--serif);font-size:.96rem;background:rgba(255,252,245,.95);border:1.5px solid rgba(26,22,20,.18);border-radius:6px;color:var(--ink);outline:none;resize:vertical}
+.dig-input-row textarea:focus{border-color:var(--indigo);background:rgba(255,252,245,1)}
+.dig-input-row .dig-actions{display:flex;gap:8px}
+.dig-status{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:var(--ink-mute);margin-top:8px;font-weight:600;text-transform:uppercase;line-height:1.4}
+.dig-status.ok{color:var(--jade)}
+.dig-status.err{color:var(--crit)}
+.dig-status.busy{color:var(--gold)}
+
+/* RÉPONSE DJIBRIL */
+.dj-answer-card{background:linear-gradient(155deg,rgba(29,138,111,.07) 0%,rgba(212,149,26,.07) 100%);border:1.5px solid rgba(29,138,111,.3);border-radius:8px;padding:18px 16px;animation:fieldIn .4s ease}
+.dj-answer-card .dj-tag{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--jade);background:rgba(29,138,111,.13);padding:4px 10px;border-radius:999px;margin-bottom:10px}
+.dj-answer-card .dj-body{font-family:var(--serif);font-size:1.02rem;line-height:1.55;color:var(--ink);white-space:pre-wrap}
+.dj-answer-card .dj-meta{font-family:var(--mono);font-size:9px;letter-spacing:.05em;color:var(--ink-mute);margin-top:12px;border-top:1px dotted rgba(26,22,20,.15);padding-top:8px}
+
+.btn{font-family:var(--mono);font-weight:600;font-size:11px;letter-spacing:.18em;text-transform:uppercase;background:var(--ink);color:var(--paper);border:1.5px solid var(--ink);padding:14px 24px;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ember-deep)}
+.btn:active{transform:translate(1px,1px);box-shadow:none}
+.btn:disabled{opacity:.5;pointer-events:none}
 .btn--ember{background:var(--ember-deep);border-color:var(--ember-deep)}
-.btn--full{width:100%;text-align:center}
+.btn--full{width:100%;justify-content:center;text-align:center}
+.btn--sm{padding:10px 16px;font-size:10px}
 
-/* MSG */
-.msg{padding:12px 14px;border-radius:6px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;margin-bottom:14px}
-.msg--ok{background:rgba(29,138,111,.10);border:1px solid var(--jade);color:var(--jade)}
-.msg--err{background:rgba(199,62,58,.08);border:1px solid var(--crit);color:var(--crit)}
+.msg{text-align:center;padding:14px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;margin-bottom:18px;animation:fieldIn .35s ease}
+.msg--ok{background:rgba(29,138,111,.12);border:1px solid var(--jade);color:var(--jade)}
+.msg--err{background:rgba(212,20,90,.1);border:1px solid var(--magenta);color:var(--magenta)}
 
 /* RECAP */
-.recap{margin-top:22px}
-.recap h2{margin-bottom:12px}
-.recap-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px dotted var(--line);font-size:.98rem}
-.recap-row:last-child{border-bottom:none}
-.recap-label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--ink-mute);text-transform:uppercase}
-.recap-value{font-family:var(--mono);font-weight:600;color:var(--ink)}
+.recap{margin-top:20px}
+.recap h3{font-family:var(--display);font-weight:900;font-size:1.1rem;color:var(--ink);margin-bottom:16px}
+.recap-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px dotted rgba(26,22,20,.15)}
+.recap-label{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--ink-mute);text-transform:uppercase}
+.recap-value{font-family:var(--display);font-weight:800;font-size:1.05rem;color:var(--ink)}
+.recap-points{margin-top:16px;text-align:right;font-family:var(--display);font-size:2.5rem;font-weight:800;color:var(--ember);line-height:1}
 
-/* MIC */
-.mic-wrap{position:relative}
-.mic-wrap textarea{padding-right:48px!important}
-.mic-btn{position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--ink-soft);padding:0}
-.mic-btn:hover{border-color:var(--ember);color:var(--ember)}
-.mic-btn.is-recording{background:var(--crit);color:var(--paper);border-color:var(--crit)}
-.mic-btn.is-busy{background:#d4951a;color:var(--paper);border-color:#d4951a;opacity:.7;pointer-events:none}
-.mic-hint{font-family:var(--mono);font-size:10px;color:var(--ink-mute);margin-top:6px;min-height:1em;letter-spacing:.04em}
-.mic-hint.err{color:var(--crit)}
-.mic-hint.ok{color:var(--jade)}
-.mic-hint.busy{color:#d4951a}
+/* HISTORY — removed V6, kept cache _history7Cache uniquement pour renderPlate */
+
+@keyframes fieldIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+
+/* Q&A SECTION — élève */
+/* .qa-section + .qa-intro — supprimés V6 (creusage maintenant inline dans block-problem) */
+.qa-input-area{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.qa-textarea{width:100%;min-height:90px;padding:12px;font-family:var(--serif);font-style:italic;font-size:1rem;line-height:1.5;background:rgba(255,252,245,.85);border:1.5px solid rgba(74,60,140,.25);border-radius:4px;color:var(--ink);outline:none;resize:vertical;transition:border-color .15s,background .15s}
+.qa-textarea:focus{border-color:var(--ember);background:rgba(255,252,245,1)}
+.qa-textarea:disabled{opacity:.55;cursor:not-allowed}
+.qa-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.qa-thread{margin-top:18px;padding-top:18px;border-top:1px dotted rgba(26,22,20,.15)}
+.qa-msg{padding:10px 14px;margin-bottom:10px;border-radius:6px;font-size:.95rem;line-height:1.4;animation:fieldIn .3s ease}
+.qa-msg--student{background:rgba(232,93,44,.08);border-left:3px solid var(--ember);font-style:italic}
+.qa-msg--llm{background:rgba(74,60,140,.08);border-left:3px solid var(--indigo);font-family:var(--display);font-weight:600}
+.qa-msg__role{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:4px;font-weight:600}
+.qa-status{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute);margin-top:12px;text-align:center;font-weight:600}
+.qa-status.deepening{color:var(--indigo)}
+.qa-status.qualified{color:var(--jade)}
+.qa-status.matched{color:var(--ember-deep)}
+.qa-status.awaiting{color:var(--plum)}
+.qa-status.answered{color:var(--jade);font-weight:800}
+.qa-status::before{content:"✦ "}
+.qa-match-card{margin-top:14px;padding:16px;background:rgba(29,138,111,.08);border:1.5px solid var(--jade);border-radius:4px}
+.qa-match-card h4{font-family:var(--display);font-weight:800;font-size:1rem;color:var(--jade);margin-bottom:6px}
+.qa-match-card__score{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--ink-mute);text-transform:uppercase;margin-bottom:10px}
+.qa-match-card__q{font-style:italic;font-family:var(--serif);font-size:.98rem;color:var(--ink-soft);margin-bottom:8px}
+.qa-match-card__a{font-size:.95rem;margin-bottom:12px;white-space:pre-wrap;line-height:1.5}
+.qa-answer-card{margin-top:14px;padding:18px;background:rgba(255,252,245,.92);border:2px solid var(--jade);box-shadow:4px 4px 0 rgba(29,138,111,.4)}
+.qa-answer-card h4{font-family:var(--display);font-weight:900;font-size:1.05rem;color:var(--jade);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.qa-answer-card__score{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--ink-mute);text-transform:uppercase;margin-bottom:12px}
+.qa-answer-card__body{font-size:1rem;line-height:1.55;white-space:pre-wrap}
+/* Reformulation chirurgicale — validation/édition avant envoi */
+.qa-reformulation{margin-top:16px;padding:18px 18px 14px;background:rgba(255,252,245,.95);border:2px solid var(--ember);box-shadow:5px 5px 0 var(--ember-deep)}
+.qa-reformulation__head h5{font-family:var(--display);font-weight:900;font-size:1.05rem;color:var(--ember-deep);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.qa-reformulation__sub{font-family:var(--serif);font-style:italic;color:var(--ink-soft);font-size:.92rem;line-height:1.4;margin-bottom:14px}
+.qa-reformulation__sub strong{font-style:normal;color:var(--ember-deep);font-weight:700}
+.qa-reformulation__text{width:100%;padding:14px;font-family:var(--serif);font-size:1rem;line-height:1.55;background:rgba(243,236,223,.6);border:1.5px solid rgba(26,22,20,.18);border-radius:4px;color:var(--ink);outline:none;resize:vertical;font-style:italic}
+.qa-reformulation__text:focus{border-color:var(--ember);background:#fff}
+/* .qa-mine-* — supprimé V6 (questions précédentes plus listées côté élève) */
+
+/* .kb-* — supprimé V6 (browse KB cohorte retiré côté élève, admin only via coach.html) */
+
+/* PLATE METAPHOR v2 — assiette figurative 3D du jour */
+.plate-stage{display:flex;flex-direction:column;align-items:center;margin:6px 0 28px;position:relative;z-index:2}
+.plate-stage__caption{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--ink-mute);margin-bottom:10px}
+.plate-svg{width:min(320px,90vw);height:auto;display:block}
+/* 3D plate layers */
+.plate-shadow-ground{fill:rgba(26,22,20,.18)}
+.plate-base{fill:#9c8c70}
+.plate-base-shadow{fill:rgba(26,22,20,.25)}
+.plate-rim{fill:url(#gPlateRim);stroke:rgba(70,55,30,.35);stroke-width:1.2}
+.plate-inner{fill:url(#gPlate);stroke:rgba(26,22,20,.1);stroke-width:.6}
+.plate-inner-shadow{fill:rgba(0,0,0,.05)}
+.plate-inner-light{fill:rgba(255,250,235,.18)}
+/* foods */
+.food{transition:opacity .35s cubic-bezier(.22,1,.36,1)}
+.food--shine{animation:foodShine 1.6s ease-in-out infinite}
+@keyframes foodShine{
+  0%,100%{filter:drop-shadow(0 0 0 rgba(212,149,26,0)) brightness(1)}
+  50%{filter:drop-shadow(0 0 6px rgba(212,149,26,.95)) brightness(1.18)}
+}
+/* sauce gold */
+.plate-sauce{transition:stroke-width .5s,opacity .5s,stroke-dasharray .5s}
+/* halo growth */
+.plate-halo{fill:none;stroke-width:1.5;stroke-linecap:round;opacity:0;transition:opacity .4s}
+.plate-halo.is-on{opacity:.55}
+.plate-halo--pos{stroke:var(--jade);stroke-dasharray:5 6;animation:plate-halo-rotate 60s linear infinite}
+.plate-halo--neg{stroke:var(--crit);stroke-dasharray:2 4;opacity:.45!important}
+@keyframes plate-halo-rotate{from{stroke-dashoffset:0}to{stroke-dashoffset:-220}}
+/* cracks (assiette vide) */
+.plate-cracks{opacity:0;transition:opacity .4s}
+.plate-cracks.is-on{opacity:.65}
+.plate-cracks path{fill:none;stroke:rgba(26,22,20,.22);stroke-width:1;stroke-dasharray:2 3;stroke-linecap:round}
+/* growth label */
+.plate-growth{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute);margin-top:14px;font-weight:600;min-height:1.2em;text-align:center}
+.plate-growth.pos{color:var(--jade)}
+.plate-growth.neg{color:var(--crit)}
+.plate-growth.empty{color:var(--ink-mute);font-style:italic;font-family:var(--serif);text-transform:none;letter-spacing:0;font-size:.95rem;font-weight:400}
+/* legend */
+.plate-legend{display:flex;flex-wrap:wrap;gap:8px 14px;justify-content:center;margin-top:14px;padding:0 8px;max-width:380px}
+.plate-legend .leg-item{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;color:var(--ink-soft);display:inline-flex;align-items:center;gap:5px;text-transform:uppercase;font-weight:500}
+.plate-legend .leg-item .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;box-shadow:0 0 0 1.5px rgba(255,252,245,.9),0 0 0 2.5px currentColor;opacity:.85}
+.plate-legend .leg-item b{font-family:var(--display);font-weight:800;font-style:normal;color:var(--ink);margin-left:2px;letter-spacing:0;text-transform:none;font-size:11px}
+/* shine hint */
+.plate-shine-hint{font-family:var(--serif);font-style:italic;font-size:.85rem;color:var(--gold);margin-top:4px;text-align:center;animation:plate-hint-fade 4s ease infinite}
+@keyframes plate-hint-fade{0%,100%{opacity:.6}50%{opacity:1}}
+
+@media (prefers-reduced-motion:reduce){
+  .food--shine,.plate-halo--pos,.plate-shine-hint{animation:none!important}
+  .food{transition:none!important}
+}
+
+/* PLATE STICKY — toujours visible quand on scrolle */
+.plate-stage-sentinel{height:1px;width:1px;margin-top:-1px}
+.plate-stage.is-sticky{position:fixed;top:0;left:50%;transform:translateX(-50%) scale(.42);transform-origin:top center;z-index:50;margin:0;background:rgba(243,236,223,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:14px 18px;border-radius:0 0 12px 12px;box-shadow:0 6px 20px rgba(26,22,20,.18);border:1.5px solid rgba(26,22,20,.12);border-top:none;animation:plate-dock-in .35s cubic-bezier(.22,1,.36,1)}
+.plate-stage.is-sticky .plate-stage__caption{display:none}
+.plate-stage.is-sticky .plate-svg{width:min(280px,60vw)}
+.plate-stage.is-sticky .plate-growth{font-size:9px;margin-top:8px}
+.plate-stage.is-sticky .plate-legend{display:none}
+.plate-stage.is-sticky .plate-shine-hint{display:none}
+@keyframes plate-dock-in{from{transform:translateX(-50%) scale(.2);opacity:0}to{transform:translateX(-50%) scale(.42);opacity:1}}
+.plate-placeholder{display:none;height:120px;width:100%}
+.plate-placeholder.is-active{display:block}
 
 @media (max-width:500px){
-  body{font-size:16px}
-  .shell{padding:0 16px 100px}
-  .card{padding:18px 16px}
+  .plate-stage.is-sticky{transform:translateX(-50%) scale(.38);padding:10px 14px;border-radius:0 0 8px 8px}
+  .plate-stage.is-sticky .plate-svg{width:min(220px,50vw)}
+  .plate-placeholder{height:90px}
+}
+
+@media (max-width:500px){
+  .card-today{padding:24px 20px;box-shadow:4px 4px 0 var(--ember-deep)}
   .field-row{grid-template-columns:1fr}
-  .emoji-btn{font-size:1.6rem;padding:14px 0}
-  .page-head h1{font-size:1.7rem}
+  .brain-orb{width:130px;height:130px}
+  .brain-orb.strong{width:180px;height:180px}
+  .slider-value{font-size:1.4rem}
+  .range::-webkit-slider-thumb{width:32px;height:32px}
+  .wb-toggles button{padding:14px 12px;font-size:10px}
+}
+@media (prefers-reduced-motion:reduce){
+  .cosmos__cap,.cosmos__stars,.brain-orb__halo,.brain-orb__wires{animation:none!important}
 }
 </style>
 </head>
 <body>
 
+<div class="cosmos" aria-hidden="true">
+  <div class="cosmos__stars">✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆
+✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆
+✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆   ✦   ·   ✧   ⋆</div>
+  <div class="cosmos__cap c1"></div><div class="cosmos__cap c2"></div><div class="cosmos__cap c3"></div>
+  <div class="cosmos__cap c4"></div><div class="cosmos__cap c5"></div><div class="cosmos__cap c6"></div>
+  <div class="cosmos__noise"></div><div class="cosmos__veil"></div>
+</div>
+
 <div class="shell" id="shell"></div>
 
 <script>
 (async function(){
-  // Version sentinel — visible dans DevTools console (Cmd+Opt+I)
-  console.log('%c Djibril Tracking · V8 · 2026-05-20 · DESIGN-LOCK ', 'background:#e85d2c;color:#fff;font-weight:bold;padding:4px 8px;border-radius:4px');
   const API = 'https://nbnbsljqtolzzuqnkyae.supabase.co/functions/v1/tracking-app/api';
   const TOKEN_KEY = 'dj_token';
   const USER_KEY = 'dj_user';
-  const DETAILS_OPEN_KEY = 'dj_details_open';
 
-  // Auth check
+  // ─── V5 REFONTE 2026-05-16 ──────────────────────────────
+  // Moins d'infos, plus de clarté.
+  // - 15 WB questions → 1 pulse rotative (énergie/fierté/doute/focus)
+  // - Slider 0-10 épanouissement → 4 emojis état du jour
+  // - Free note libre → problématique du jour OBLIGATOIRE
+  // - Ajout: vidéos cold/closing, qualif semaine, révélation Socratic
+  // ───────────────────────────────────────────────────────
+  const PULSE_POOL = [
+    {slug:"energie",label:"T'as eu l'énergie d'attaquer fort aujourd'hui ?",positive:"yes"},
+    {slug:"fierte",label:"Tu peux nommer 1 truc dont t'es fier aujourd'hui ?",positive:"yes"},
+    {slug:"doute",label:"Le doute t'a fait stopper aujourd'hui ?",positive:"no"},
+    {slug:"focus",label:"T'as tenu 1 bloc 60 min focus pur (sans tel/scroll) ?",positive:"yes"}
+  ];
+  const WB_POOL = PULSE_POOL; // backward-compat (calcPoints, plate)
+
+  function pickDailyQuestions(seed){
+    const arr=[...PULSE_POOL];
+    let h=2166136261;
+    for(let i=0;i<seed.length;i++){h^=seed.charCodeAt(i);h=Math.imul(h,16777619)>>>0}
+    const rand=()=>{h+=0x6D2B79F5;let t=h;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296};
+    return [arr[Math.floor(rand() * arr.length)]];
+  }
+
+  // ── Révélations Socratic — 1 / jour rotation, oblige checkbox ──
+  const REVELATIONS = [
+    {title:"Tu écoutes pas avant de pitcher",body:"La méthode CELIA (Pelabère) commence par <b>Connecter</b> — pas Écouter. Sans rapport humain, ton écoute paraît tactique. Ton job dans les 30 premières sec : 1 point commun réel."},
+    {title:"Les objections n'existent pas",body:"Voss (Never Split) : ce que tu prends pour une objection est un <b>besoin non-dit</b>. \"C'est cher\" = peur de regretter. Reformule la peur cachée avant de défendre le prix."},
+    {title:"Tu vends à la mauvaise personne",body:"80% des refus en B2B = mauvais ICP (profil cible). Avant d'améliorer ton script, vérifie : ton prospect a le <b>budget + le pouvoir de décision</b>. Sinon t'es chronométré pour rien."},
+    {title:"Le silence vaut 1000 mots",body:"3 secondes de silence après une objection forcent le prospect à se justifier. Tes calls les plus mauvais : tu parles trop. Compte mentalement \"1-2-3\" après chaque question."},
+    {title:"Le \"non\" est ton vrai feedback",body:"Jim Camp (\"Commencez par Non\") : un \"oui\" rapide = signe danger (faux engagement). Un \"non\" franc te donne <b>la vraie info</b> pour pivoter. Cherche les \"non\", pas les \"oui\"."},
+    {title:"Ton script tue ton authenticité",body:"Les top closers ne récitent pas. Ils ont 5 questions ouvertes en tête + écoutent. Ton script doit faire 1 page max — le reste, c'est ta présence."},
+    {title:"Pré-suasion > Persuasion",body:"Cialdini : ce que tu dis dans les 10 premières sec <b>cadre tout le reste</b>. Pré-frame avec un compliment sincère ou une question forte → +30% conversion."},
+    {title:"L'urgence fake est sentie",body:"\"Offre limitée 24h\" sans raison → le prospect sent le bluff. Crée une vraie raison (calendrier saturé, prix bientôt à 1500€, fin d'année fiscale). Sinon ferme la bouche."},
+    {title:"Tu abandonnes trop tôt après un « non »",body:"Sur 10 prospects qui finissent par signer, <b>6 disent oui entre le 4ème et le 6ème contact</b>. La plupart des vendeurs s'arrêtent au 2ème. Si tu laisses tomber après 1 ou 2 essais, tu rates 60% de tes ventes possibles.<br><br>Plan de relance simple sur 14 jours pour chaque prospect tiède :<br>• <b>J+1</b> — petit message vocal court (« Hier on parlait de X, j'ai pensé à toi pour ça »)<br>• <b>J+3</b> — audio + 1 lien utile (étude de cas, vidéo, capture)<br>• <b>J+7</b> — appel direct (« T'en es où ? »)<br>• <b>J+14</b> — dernière relance (« Je ferme ton dossier sauf si tu veux qu'on en reparle »)"},
+    {title:"Le prix est presque jamais le problème",body:"Si le prospect dit \"c'est cher\", il dit en fait <b>\"je vois pas la valeur\"</b>. Re-cadre la valeur 3× avant de toucher au prix. Le prix se discute en dernier."},
+    {title:"Tu confonds activité et progrès",body:"100 calls sans qualif = 0 progrès. 30 calls sur des ICP qualifiés = 5 RDV. Ton métrique vrai : <b>qualité de la liste</b>, pas volume de calls."},
+    {title:"Le rapport est ton seul actif",body:"Personne n'achète au 1er call sauf rapport instantané. Concentre-toi sur le <b>ton de voix + le mirroring</b> bien plus que le contenu de tes phrases."},
+    {title:"Le \"closing\" est un mythe",body:"Tu ne \"closes\" pas — tu confirmes l'évidence d'une décision déjà prise par le prospect. Si tu sens que tu pousses, t'as raté l'étape 2 (Écouter)."},
+    {title:"L'argent ne stresse pas les pros",body:"Un closer avec 10 leads en pipe ne stresse pas pour 1 vente. Tu stresses = ton funnel est sec. Solution : 30 calls/jour minimum cette semaine."},
+    {title:"Tes peurs sont visibles à la voix",body:"Le prospect entend ta nervosité avant ton offre. Avant chaque call : 4×4 respiration (4s in, 4s hold, 4s out) → calibre ton ton à \"docteur qui annonce\" — calme + autorité."}
+  ];
+
+  function pickDailyRevelation(seed){
+    let h=2166136261;
+    for(let i=0;i<seed.length;i++){h^=seed.charCodeAt(i);h=Math.imul(h,16777619)>>>0}
+    const rand=()=>{h+=0x6D2B79F5;let t=h;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296};
+    return REVELATIONS[Math.floor(rand() * REVELATIONS.length)];
+  }
+
+  // Check auth
+  // Check auth — sessionStorage (effacé à la fermeture de l'onglet)
   const token = sessionStorage.getItem(TOKEN_KEY);
   const userStr = sessionStorage.getItem(USER_KEY);
   if(!token || !userStr){ window.location.href = 'index.html'; return; }
+
+  // Vérifier que le token est encore valide avant d'afficher
   try {
     const check = await fetch(API + '/me/today', { headers: {'Authorization':'Bearer '+token} });
     if(!check.ok){ sessionStorage.clear(); window.location.href = 'index.html'; return; }
-  } catch(e){}
+  } catch(e){ /* réseau HS — on laisse passer */ }
 
   const user = JSON.parse(userStr);
+  const liveDefault = false;
 
-  // Helpers
+  // ── API helpers ─────────────────────────────────────────
   function getTodayStr(){ return new Date().toISOString().slice(0,10); }
   async function api(method, path, body){
     const h = {'Content-Type':'application/json','Authorization':'Bearer '+token};
@@ -190,28 +500,608 @@ body{
     if(res.status === 401){ sessionStorage.clear(); window.location.href='index.html'; return null; }
     return res.json();
   }
-  function fulEmoji(f){
-    if(f<=2) return '😞';
+
+  // ── Daily Qs (5 stable per student per day) ─────────────
+  const dailyQs = pickDailyQuestions(getTodayStr() + (user.id || user.email || ''));
+
+  // ── Hours mood label (1 per range, 0–16h) ───────────────
+  function hoursMood(h){
+    if(h<=0) return '— pas de travail';
+    if(h<2) return 'mise en route douce';
+    if(h<4) return 'matinée tranquille';
+    if(h<6) return 'session correcte';
+    if(h<8) return 'belle journée pleine';
+    if(h<10) return 'gros bloc, beau focus';
+    if(h<12) return 'marathon — respire bien';
+    if(h<14) return 'mode warrior — tiens le rythme';
+    if(h<16) return 'machine — surveille ton sommeil';
+    return 'extrême — repos obligatoire demain';
+  }
+
+  // ── Fulfillment emoji (0-10) ───────────────────────────
+  function fulfillmentEmoji(f){
+    if(f<=1) return '😞';
+    if(f<=3) return '😕';
     if(f<=5) return '😐';
-    if(f<=8) return '🙂';
+    if(f<=7) return '🙂';
+    if(f<=9) return '😊';
     return '✨';
   }
 
-  // State
-  let _live = false;
-  let _saveCount = 0;
+  // ── Plate metaphor (assiette du jour) ──────────────────
+  // Cache des 7 derniers jours (hors aujourd'hui) pour la comparaison
+  let _history7Cache = [];
 
-  // Render
-  function render(){
+  function wbPositiveCount(wb){
+    if(!wb || typeof wb!=='object') return 0;
+    let n=0;
+    Object.keys(wb).forEach(slug=>{
+      const def = WB_POOL.find(q=>q.slug===slug);
+      if(def && wb[slug] === def.positive) n++;
+    });
+    return n;
+  }
+
+  function plateGrowthPct(currentPts, history7){
+    if(!history7 || !history7.length) return null;
+    const avg = history7.reduce((s,e)=>s+calcPoints(e),0) / history7.length;
+    if(avg <= 0) return null;
+    return ((currentPts - avg) / avg) * 100;
+  }
+
+  // ── PLATE v2 figurative ────────────────────────────────
+  // Granularité fine : 1 aliment par tranche (24 salades max, 30 grains max, 10 tomates, 5 herbes, 1 viande)
+  // Style 3D figuratif via SVG path détaillés + dégradés radiaux + ombres
+  // Animation shine sur derniers éléments ajoutés depuis dernier save (diff via localStorage)
+
+  const PLATE_VIEWBOX = {w:300, h:240, cx:150, cy:130, rx:100, ry:42};
+
+  // Stable PRNG (seed string → reproducible position)
+  function platePRNG(seed){
+    let h = 2166136261;
+    for(let i=0;i<seed.length;i++){h^=seed.charCodeAt(i);h=Math.imul(h,16777619)>>>0}
+    return ()=>{h+=0x6D2B79F5;let t=h;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296};
+  }
+
+  // Generate N positions in a zone (angle range in deg, distance ratio range)
+  function plateZone(seed, count, angleMin, angleMax, distMin, distMax){
+    const r = platePRNG(seed);
+    const out = [];
+    const {cx, cy, rx, ry} = PLATE_VIEWBOX;
+    for(let i=0;i<count;i++){
+      const angle = (angleMin + r() * (angleMax - angleMin)) * Math.PI / 180;
+      const dist = distMin + r() * (distMax - distMin);
+      const x = cx + Math.cos(angle) * rx * dist;
+      const y = cy + Math.sin(angle) * ry * dist * 0.9;  // flatten Y slightly for 3D
+      const rot = r() * 360;
+      const sc = 0.85 + r() * 0.4;
+      out.push({x, y, rot, sc});
+    }
+    return out;
+  }
+
+  // SVG path snippets for each food type
+  const FOOD_SHAPES = {
+    salad: `
+      <path d="M0,-9 Q5.5,-7 6.5,0 Q4,8 0,9 Q-4,8 -6.5,0 Q-5.5,-7 0,-9 Z" fill="url(#gSalad)" stroke="rgba(20,60,30,.3)" stroke-width=".3"/>
+      <path d="M0,-7 L0,7" stroke="rgba(20,80,30,.4)" stroke-width=".5" fill="none"/>
+      <path d="M0,-3 L-3,-1" stroke="rgba(20,80,30,.3)" stroke-width=".35" fill="none"/>
+      <path d="M0,1 L3,3" stroke="rgba(20,80,30,.3)" stroke-width=".35" fill="none"/>
+      <ellipse cx="-2" cy="-3" rx="1.8" ry="2.6" fill="rgba(255,255,255,.35)"/>`,
+    grain: `
+      <ellipse cx=".5" cy=".5" rx="2.6" ry="4" fill="rgba(0,0,0,.22)"/>
+      <ellipse cx="0" cy="0" rx="2.4" ry="3.8" fill="url(#gGrain)"/>
+      <path d="M0,-3.2 L0,3" stroke="rgba(120,75,20,.5)" stroke-width=".4" fill="none"/>
+      <ellipse cx="-.7" cy="-1.3" rx=".7" ry="1.2" fill="rgba(255,255,255,.45)"/>`,
+    tomato: `
+      <circle cx=".8" cy=".8" r="4.8" fill="rgba(0,0,0,.25)"/>
+      <circle cx="0" cy="0" r="4.5" fill="url(#gTomato)"/>
+      <path d="M-1.6,-3.6 L-.6,-4.8 L0,-4 L.6,-4.8 L1.6,-3.6 L0,-3 Z" fill="#1d8a6f"/>
+      <ellipse cx="-1.6" cy="-1.3" rx="1.5" ry="1" fill="rgba(255,255,255,.55)"/>`,
+    herb: `
+      <path d="M0,-7 L-2.5,-2 L-1,-1.5 L-2.2,2 L0,1.2 L2.2,2 L1,-1.5 L2.5,-2 Z" fill="url(#gHerb)" stroke="rgba(50,30,80,.35)" stroke-width=".3"/>
+      <line x1="0" y1="-7" x2="0" y2="3.5" stroke="rgba(70,40,90,.6)" stroke-width=".5"/>
+      <ellipse cx="-.8" cy="-3.5" rx=".7" ry="1.2" fill="rgba(255,255,255,.4)"/>`,
+    meat: `
+      <ellipse cx="3" cy="4" rx="26" ry="14" fill="rgba(0,0,0,.4)"/>
+      <ellipse cx="0" cy="0" rx="26" ry="14" fill="url(#gMeat)"/>
+      <path d="M-18,-5 Q0,-4 18,-5" stroke="rgba(45,12,5,.6)" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+      <path d="M-22,0 Q0,1 22,0" stroke="rgba(45,12,5,.6)" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+      <path d="M-18,5 Q0,6 18,5" stroke="rgba(45,12,5,.6)" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+      <ellipse cx="-9" cy="-6" rx="8" ry="2.5" fill="rgba(255,215,160,.5)"/>
+      <ellipse cx="0" cy="0" rx="26" ry="14" fill="none" stroke="rgba(70,30,15,.5)" stroke-width=".8"/>`
+  };
+
+  // Render group of foods of one type
+  function renderFoods(type, positions, newCount){
+    const total = positions.length;
+    return positions.map((p, i) => {
+      const isNew = i >= (total - newCount);
+      const cls = `food food--${type}${isNew?' food--shine':''}`;
+      return `<g class="${cls}" transform="translate(${p.x.toFixed(1)} ${p.y.toFixed(1)}) rotate(${p.rot.toFixed(0)}) scale(${p.sc.toFixed(2)})">${FOOD_SHAPES[type]}</g>`;
+    }).join('');
+  }
+
+  // Read/write last saved counts (for shine diff) — date-scoped
+  function getLastPlateCounts(){
+    try {
+      const obj = JSON.parse(localStorage.getItem('dj_plate_last') || '{}');
+      // New day = reset baseline (tout brille à nouveau)
+      if (obj.date !== getTodayStr()) return {};
+      return obj;
+    } catch(e){ return {}; }
+  }
+  function savePlateCounts(counts){
+    try {
+      localStorage.setItem('dj_plate_last', JSON.stringify({...counts, date: getTodayStr()}));
+    } catch(e){}
+  }
+  // Compute plate counts from a saved entry payload
+  function computePlateCounts(data){
+    return {
+      salads:   Math.min(24, Math.floor((parseFloat(data.hours_worked||0)) * 1.5)), // 0→16h max 24
+      grains:   Math.min(30, Math.floor((parseInt(data.calls||0))/5)),
+      tomatoes: Math.min(10, parseInt(data.fulfillment||0)),
+      herbs:    Math.min(5, wbPositiveCount(data.wellbeing_answers||{})),
+      meat:     data.live ? 1 : 0
+    };
+  }
+
+  function renderPlate(){
+    const stage = document.getElementById('plate-stage');
+    if(!stage) return;
+
+    // ── Read live form values ──
+    const hours = parseFloat(document.getElementById('field-hours').value)||0;
+    const ful   = parseInt(document.getElementById('field-fulfillment').value)||0;
+    const calls = parseInt(document.getElementById('field-calls').value)||0;
+    const ca    = parseFloat(document.getElementById('field-ca').value)||0;
+    const live  = _live ? 1 : 0;
+    const wbPos = wbPositiveCount(_wb);
+    const wbTot = Math.max(5, Object.keys(_wb).length || 5);
+
+    // ── Compute food counts ──
+    const nSalads   = Math.min(24, Math.floor(hours * 1.5)); // 1 salade par 40min, cap 24 (atteint à 16h)
+    const nGrains   = Math.min(30, Math.floor(calls/5)); // 1 grain par 5 calls (cap 30)
+    const nTomatoes = Math.min(10, ful);                 // 1 tomate par point épanouissement
+    const nHerbs    = Math.min(5, wbPos);                // 1 herbe par BE positif
+    const hasMeat   = live === 1;
+
+    const currentCounts = {salads:nSalads, grains:nGrains, tomatoes:nTomatoes, herbs:nHerbs, meat:hasMeat?1:0, ca};
+    const last = getLastPlateCounts();
+    const newCounts = {
+      salads:   Math.max(0, nSalads   - (last.salads||0)),
+      grains:   Math.max(0, nGrains   - (last.grains||0)),
+      tomatoes: Math.max(0, nTomatoes - (last.tomatoes||0)),
+      herbs:    Math.max(0, nHerbs    - (last.herbs||0)),
+      meat:     (hasMeat && !last.meat) ? 1 : 0
+    };
+    const anyNew = newCounts.salads+newCounts.grains+newCounts.tomatoes+newCounts.herbs+newCounts.meat > 0;
+
+    // ── Positions (zones autour de l'ovale) ──
+    // Angles: 0=droite, 90=bas (vers spectateur en 3D), 180=gauche, 270=haut
+    const saladPos   = plateZone('salad_v2',   nSalads,   210, 340, 0.40, 0.85);  // arrière gauche-haut
+    const grainPos   = plateZone('grain_v2',   nGrains,   -45,  60, 0.45, 0.85);  // droite
+    const tomatoPos  = plateZone('tomato_v2',  nTomatoes,  60, 130, 0.40, 0.78);  // avant
+    const herbPos    = plateZone('herb_v2',    nHerbs,      0, 360, 0.55, 0.92);  // sprinkled
+
+    const saladsSVG   = renderFoods('salad',   saladPos,   newCounts.salads);
+    const grainsSVG   = renderFoods('grain',   grainPos,   newCounts.grains);
+    const tomatoesSVG = renderFoods('tomato',  tomatoPos,  newCounts.tomatoes);
+    const herbsSVG    = renderFoods('herb',    herbPos,    newCounts.herbs);
+    const meatSVG     = hasMeat
+      ? `<g class="food food--meat${newCounts.meat?' food--shine':''}" transform="translate(${PLATE_VIEWBOX.cx} ${PLATE_VIEWBOX.cy})">${FOOD_SHAPES.meat}</g>`
+      : '';
+
+    // ── Gold sauce (CA) ──
+    let sauceSVG = '';
+    if(ca > 0){
+      const sw = Math.min(9, 1.5 + ca/200);
+      const dashLen = Math.min(30, Math.max(3, ca/50));
+      sauceSVG = `<ellipse class="plate-sauce" cx="${PLATE_VIEWBOX.cx}" cy="${PLATE_VIEWBOX.cy+2}" rx="${PLATE_VIEWBOX.rx-4}" ry="${PLATE_VIEWBOX.ry+3}" fill="none" stroke="url(#gGoldSauce)" stroke-width="${sw.toFixed(1)}" stroke-dasharray="${dashLen.toFixed(0)} 4" opacity=".88" stroke-linecap="round"/>`;
+    }
+
+    // ── Growth halo + label ──
+    const currentPts = calcPoints({calls, live:_live, hours_worked:hours, fulfillment:ful, wellbeing_answers:_wb});
+    const growth = plateGrowthPct(currentPts, _history7Cache);
+    const isEmpty = hours===0 && ful===0 && calls===0 && wbPos===0 && !live;
+    let haloHTML = `<ellipse class="plate-halo" cx="${PLATE_VIEWBOX.cx}" cy="${PLATE_VIEWBOX.cy}" rx="${PLATE_VIEWBOX.rx+18}" ry="${PLATE_VIEWBOX.ry+24}" />`;
+    let growthLabelHTML = '<div class="plate-growth empty">à remplir — commence par 1 portion</div>';
+    if(!isEmpty){
+      if(growth === null){
+        growthLabelHTML = '<div class="plate-growth empty">première assiette · pas encore de moyenne 7j</div>';
+      } else if(growth >= 5){
+        haloHTML = `<ellipse class="plate-halo plate-halo--pos is-on" cx="${PLATE_VIEWBOX.cx}" cy="${PLATE_VIEWBOX.cy}" rx="${PLATE_VIEWBOX.rx+18}" ry="${PLATE_VIEWBOX.ry+24}" />`;
+        growthLabelHTML = `<div class="plate-growth pos">↑ +${Math.round(growth)}% vs 7 derniers jours</div>`;
+      } else if(growth <= -5){
+        haloHTML = `<ellipse class="plate-halo plate-halo--neg is-on" cx="${PLATE_VIEWBOX.cx}" cy="${PLATE_VIEWBOX.cy}" rx="${PLATE_VIEWBOX.rx+18}" ry="${PLATE_VIEWBOX.ry+24}" />`;
+        growthLabelHTML = `<div class="plate-growth neg">↓ ${Math.round(growth)}% vs 7 derniers jours</div>`;
+      } else {
+        growthLabelHTML = `<div class="plate-growth empty">~ stable vs 7 derniers jours (${growth>=0?'+':''}${Math.round(growth)}%)</div>`;
+      }
+    }
+
+    // ── Cracks (assiette vide) ──
+    const cracksHTML = isEmpty ? `
+      <g class="plate-cracks is-on">
+        <path d="M85 122 Q120 135 150 140 Q180 142 215 138" />
+        <path d="M125 110 Q132 130 148 148" />
+        <path d="M175 112 Q175 132 168 150" />
+      </g>` : '';
+
+    // ── Legend ──
+    const legendHTML = `
+      <span class="leg-item" style="color:var(--jade)"><span class="dot" style="background:var(--jade)"></span>Heures <b>${hours}h</b> · ${nSalads} 🥬</span>
+      <span class="leg-item" style="color:var(--gold)"><span class="dot" style="background:var(--gold)"></span>Calls <b>${calls}</b> · ${nGrains} 🌾</span>
+      <span class="leg-item" style="color:var(--ember)"><span class="dot" style="background:var(--ember)"></span>Épan. <b>${ful}/10</b> · ${nTomatoes} 🍅</span>
+      <span class="leg-item" style="color:var(--indigo)"><span class="dot" style="background:var(--indigo)"></span>B-être <b>${wbPos}/${wbTot}</b> · ${nHerbs} 🪻</span>
+      <span class="leg-item" style="color:var(--plum)"><span class="dot" style="background:var(--plum)"></span>Live <b>${live?'oui':'non'}</b></span>
+    `;
+    const shineHintHTML = anyNew && !isEmpty
+      ? '<div class="plate-shine-hint">✦ les éléments dorés brillent — c\'est ta progression depuis ton dernier enregistrement</div>'
+      : '';
+
+    // ── Full SVG ──
+    const svg = `
+      <svg class="plate-svg" viewBox="0 0 ${PLATE_VIEWBOX.w} ${PLATE_VIEWBOX.h}" role="img" aria-label="Ton assiette du jour">
+        <defs>
+          <radialGradient id="gPlate" cx="50%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#fbf5e7"/>
+            <stop offset="70%" stop-color="#ece1ca"/>
+            <stop offset="100%" stop-color="#c8b88a"/>
+          </radialGradient>
+          <radialGradient id="gPlateRim" cx="50%" cy="40%" r="55%">
+            <stop offset="60%" stop-color="#fefaef"/>
+            <stop offset="100%" stop-color="#b8a677"/>
+          </radialGradient>
+          <radialGradient id="gSalad" cx="30%" cy="25%" r="80%">
+            <stop offset="0%" stop-color="#8de0a8"/>
+            <stop offset="55%" stop-color="#2d8a4f"/>
+            <stop offset="100%" stop-color="#15431f"/>
+          </radialGradient>
+          <radialGradient id="gGrain" cx="30%" cy="25%" r="70%">
+            <stop offset="0%" stop-color="#f5d889"/>
+            <stop offset="60%" stop-color="#c79830"/>
+            <stop offset="100%" stop-color="#7a5212"/>
+          </radialGradient>
+          <radialGradient id="gTomato" cx="28%" cy="22%" r="72%">
+            <stop offset="0%" stop-color="#ff9477"/>
+            <stop offset="55%" stop-color="#d94a2c"/>
+            <stop offset="100%" stop-color="#771f10"/>
+          </radialGradient>
+          <radialGradient id="gHerb" cx="35%" cy="28%" r="75%">
+            <stop offset="0%" stop-color="#a98ad8"/>
+            <stop offset="55%" stop-color="#5a4ba3"/>
+            <stop offset="100%" stop-color="#2d2562"/>
+          </radialGradient>
+          <radialGradient id="gMeat" cx="32%" cy="22%" r="78%">
+            <stop offset="0%" stop-color="#d09572"/>
+            <stop offset="45%" stop-color="#8a4218"/>
+            <stop offset="100%" stop-color="#3a1408"/>
+          </radialGradient>
+          <linearGradient id="gGoldSauce" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#f7da7e"/>
+            <stop offset="50%" stop-color="#d4951a"/>
+            <stop offset="100%" stop-color="#a06b0a"/>
+          </linearGradient>
+        </defs>
+
+        ${haloHTML}
+
+        <!-- 3D plate layers (back to front) -->
+        <ellipse class="plate-shadow-ground" cx="${PLATE_VIEWBOX.cx+3}" cy="${PLATE_VIEWBOX.cy+58}" rx="${PLATE_VIEWBOX.rx+12}" ry="9"/>
+        <ellipse class="plate-base-shadow" cx="${PLATE_VIEWBOX.cx}" cy="${PLATE_VIEWBOX.cy+12}" rx="${PLATE_VIEWBOX.rx+15}" ry="${PLATE_VIEWBOX.ry+4}"/>
+        <ellipse class="plate-base" cx="${PLATE_VIEWBOX.cx}" cy="${PLATE_VIEWBOX.cy+8}" rx="${PLATE_VIEWBOX.rx+13}" ry="${PLATE_VIEWBOX.ry+2}"/>
+        <ellipse class="plate-rim" cx="${PLATE_VIEWBOX.cx}" cy="${PLATE_VIEWBOX.cy}" rx="${PLATE_VIEWBOX.rx+13}" ry="${PLATE_VIEWBOX.ry+2}"/>
+        <ellipse class="plate-inner" cx="${PLATE_VIEWBOX.cx}" cy="${PLATE_VIEWBOX.cy}" rx="${PLATE_VIEWBOX.rx}" ry="${PLATE_VIEWBOX.ry}"/>
+        <ellipse class="plate-inner-shadow" cx="${PLATE_VIEWBOX.cx}" cy="${PLATE_VIEWBOX.cy+3}" rx="${PLATE_VIEWBOX.rx-4}" ry="${PLATE_VIEWBOX.ry-3}"/>
+        <ellipse class="plate-inner-light" cx="${PLATE_VIEWBOX.cx-15}" cy="${PLATE_VIEWBOX.cy-15}" rx="${PLATE_VIEWBOX.rx*0.45}" ry="${PLATE_VIEWBOX.ry*0.35}"/>
+
+        ${sauceSVG}
+        ${cracksHTML}
+
+        <!-- Foods, layered back→front for 3D depth -->
+        ${saladsSVG}
+        ${grainsSVG}
+        ${meatSVG}
+        ${tomatoesSVG}
+        ${herbsSVG}
+      </svg>
+    `;
+
+    stage.innerHTML = `
+      <div class="plate-stage__caption">✦ Ton assiette du jour</div>
+      ${svg}
+      ${growthLabelHTML}
+      ${shineHintHTML}
+      <div class="plate-legend">${legendHTML}</div>
+    `;
+  }
+
+  // ── Q&A SYSTEM ──────────────────────────────────────────
+  let _activeQuestion = null; // {id, status, thread, ...}
+  let _qaPollTimer = null;
+
+  async function qaApi(method, path, body){
+    return await api(method, '/qa' + path, body);  // existing api() prefix is /api
+  }
+
+  // Le edge function qa-handler est sur un autre path. On overide.
+  async function qaCall(method, path, body){
+    const url = 'https://nbnbsljqtolzzuqnkyae.supabase.co/functions/v1/qa-handler' + path;
+    const opts = {
+      method,
+      headers: {'Content-Type':'application/json','Authorization':'Bearer '+token},
+    };
+    if(body) opts.body = JSON.stringify(body);
+    try {
+      const res = await fetch(url, opts);
+      if(res.status === 401){ return {error:'auth'}; }
+      return await res.json();
+    } catch(e){ return {error: e.message||'network'}; }
+  }
+
+  function qaStatusLabel(s){
+    return ({deepening:'en train de creuser', qualified:'qualifiée, en route', matched:'réponse similaire trouvée', awaiting_djibril:'en attente de Djibril', answered:'répondue par Djibril'})[s] || s;
+  }
+
+  function renderQaActive(){
+    const area = document.getElementById('qa-active-area');
+    if(!area) return;
+    if(!_activeQuestion){
+      // V6 : pas de textarea ici — le textarea principal est #field-problem dans block-problem
+      // qa-active-area reste vide tant qu'aucune question active
+      area.innerHTML = '';
+      return;
+    }
+    const q = _activeQuestion;
+    const threadHTML = (q.thread||[]).map(m => {
+      const role = m.role === 'student' ? user.first_name || 'Toi' : 'Mentor IA';
+      const cls = m.role === 'student' ? 'qa-msg--student' : 'qa-msg--llm';
+      return `<div class="qa-msg ${cls}"><div class="qa-msg__role">${role}</div>${m.text}</div>`;
+    }).join('');
+
+    let inputHTML = '';
+    if(q.status === 'deepening'){
+      const turn = (q.thread||[]).filter(m=>m.role==='student').length + 1;
+      const totalTurns = q.target_turns || 3;
+      const conscience = q.consciousness_level || 1;
+      inputHTML = `
+        <div style="margin-top:10px;padding:10px 14px;background:rgba(74,60,140,.08);border:1px solid rgba(74,60,140,.25);border-radius:4px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--indigo);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
+          <span>✦ Tour ${turn}/${totalTurns}</span>
+          <span>Niveau de conscience : ${conscience}/5</span>
+          <span>Encore ${Math.max(0,totalTurns-turn)} relance(s)</span>
+        </div>
+        <div class="qa-input-area" style="margin-top:14px">
+          <textarea class="qa-textarea" id="qa-answer-input" placeholder="Sois précis. Plus tu creuses, plus la réponse sera utile."></textarea>
+          <div class="qa-actions">
+            <button class="btn btn--ember" id="qa-answer-btn">Continuer le creusage</button>
+            <button class="btn btn--sm" id="qa-force-btn" title="J'ai compris, envoie tel quel à Djibril">J’ai mon vrai problème ✦ synthétiser</button>
+          </div>
+        </div>
+      `;
+    } else if(q.status === 'qualified'){
+      // Reformulation chirurgicale en BLOCS — éditable avant envoi
+      const synth = q.synthesis || {};
+      const vraieProb   = (synth.vraie_problematique || q.qualified_question || '').toString();
+      const vraiBesoin  = (synth.vrai_besoin || '').toString();
+      const blocage     = (synth.blocage_emotionnel || '').toString();
+      const action      = (synth.action_concrete_proposee || '').toString();
+      const conscience  = synth.niveau_conscience || q.consciousness_level || null;
+      const tags        = Array.isArray(synth.tags) ? synth.tags : [];
+      inputHTML = `
+        <div class="qa-reformulation">
+          <div class="qa-reformulation__head">
+            <h5>✦ Synthèse de ta vraie question</h5>
+            <p class="qa-reformulation__sub">
+              Le mentor IA a creusé avec toi. ${conscience ? `<strong>Niveau de conscience : ${conscience}/5</strong>. ` : ''}<strong>Relis et édite</strong> ce qui ne te ressemble pas.
+              ${tags.length ? `<br><span style="font-family:var(--mono);font-size:10px;letter-spacing:.1em">tags : ${tags.slice(0,5).join(' · ')}</span>` : ''}
+            </p>
+          </div>
+          <div style="margin-bottom:14px">
+            <label style="font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--ember-deep);display:block;margin-bottom:6px">✦ Ta vraie problématique</label>
+            <textarea class="qa-reformulation__text" id="qa-reformulation-text" rows="4" placeholder="Le vrai problème en 1-2 phrases">${vraieProb}</textarea>
+          </div>
+          ${vraiBesoin ? `
+          <div style="margin-bottom:14px">
+            <label style="font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--jade);display:block;margin-bottom:6px">→ Ton vrai besoin</label>
+            <textarea class="qa-reformulation__text" id="qa-reformulation-need" rows="2">${vraiBesoin}</textarea>
+          </div>` : ''}
+          ${blocage ? `
+          <div style="margin-bottom:14px">
+            <label style="font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--indigo);display:block;margin-bottom:6px">⚠ Blocage émotionnel détecté</label>
+            <textarea class="qa-reformulation__text" id="qa-reformulation-blocage" rows="2">${blocage}</textarea>
+          </div>` : ''}
+          ${action ? `
+          <div style="margin-bottom:14px">
+            <label style="font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--gold);display:block;margin-bottom:6px">▸ Action concrète proposée</label>
+            <textarea class="qa-reformulation__text" id="qa-reformulation-action" rows="2">${action}</textarea>
+          </div>` : ''}
+          <div class="qa-actions" style="margin-top:12px">
+            <button class="btn btn--ember" id="qa-finalize-btn">C’est ma vraie question ✦ envoyer</button>
+            <button class="btn btn--sm" id="qa-reroll-btn" title="Régénérer une autre reformulation">↻ Reformuler autrement</button>
+          </div>
+        </div>
+      `;
+    } else if(q.status === 'matched' && q.matched_kb){
+      const kb = q.matched_kb;
+      inputHTML = `
+        <div class="qa-match-card">
+          <h4>✦ Une question proche a déjà été répondue</h4>
+          <div class="qa-match-card__score">Pertinence : ${kb.pertinence_score}/100 · Note Djibril</div>
+          <div class="qa-match-card__q">${kb.question_summary || kb.question}</div>
+          <div class="qa-match-card__a">${kb.answer}</div>
+          <div class="qa-actions">
+            <button class="btn btn--sm btn--ember" id="qa-accept-match">Ça me suffit, merci</button>
+            <button class="btn btn--sm" id="qa-reject-match">Non, c'est pas mon cas → Djibril</button>
+          </div>
+        </div>
+      `;
+    } else if(q.status === 'awaiting_djibril'){
+      inputHTML = `<div class="qa-status awaiting">Ta question attend Djibril ✦ tu recevras un mail dès qu'il répond</div>`;
+    } else if(q.status === 'answered' && q.matched_kb){
+      const kb = q.matched_kb;
+      inputHTML = `
+        <div class="qa-answer-card">
+          <h4>Réponse de Djibril ✦</h4>
+          <div class="qa-answer-card__score">Note pertinence : ${kb.pertinence_score}/100</div>
+          <div class="qa-answer-card__body">${kb.answer}</div>
+        </div>
+      `;
+    }
+
+    area.innerHTML = `
+      <div class="qa-thread">${threadHTML}</div>
+      <div class="qa-status ${q.status === 'awaiting_djibril' ? 'awaiting' : q.status}">${qaStatusLabel(q.status)}</div>
+      ${inputHTML}
+      <div style="margin-top:14px"><button class="btn btn--sm" id="qa-new-btn" style="background:transparent;color:var(--ink-mute);border-color:rgba(26,22,20,.2)">↻ Nouvelle question</button></div>
+    `;
+
+    document.getElementById('qa-answer-btn')?.addEventListener('click', () => sendAnswer(false));
+    document.getElementById('qa-force-btn')?.addEventListener('click', () => sendAnswer(true));
+    document.getElementById('qa-finalize-btn')?.addEventListener('click', finalizeQuestion);
+    document.getElementById('qa-reroll-btn')?.addEventListener('click', rerollReformulation);
+    document.getElementById('qa-accept-match')?.addEventListener('click', () => matchResponse(true));
+    document.getElementById('qa-reject-match')?.addEventListener('click', () => matchResponse(false));
+    document.getElementById('qa-new-btn')?.addEventListener('click', resetQa);
+    // V6 : recalcule mandatory checklist à chaque changement statut
+    if(typeof updateMissing === 'function') try { updateMissing(); } catch(e){}
+  }
+
+  async function rerollReformulation(){
+    if(!_activeQuestion) return;
+    const btn = document.getElementById('qa-reroll-btn');
+    if(btn){ btn.disabled = true; btn.textContent = '…'; }
+    const r = await qaCall('POST', '/qa/reformulate/'+_activeQuestion.id, {});
+    if(r.error){ alert('Erreur: ' + r.error); if(btn){btn.disabled=false;btn.textContent='↻ Reformuler autrement';} return; }
+    _activeQuestion = r.question;
+    renderQaActive();
+  }
+
+  async function submitNewQuestion(){
+    // V6 : lit field-problem (bloc problématique) au lieu de qa-initial
+    const fEl = document.getElementById('field-problem');
+    const bEl = document.getElementById('btn-deepen');
+    const txt = (fEl?.value || '').trim();
+    if(txt.length < 30){ showMsg('err', 'Décris ta problématique en au moins 30 caractères concrets'); return; }
+    if(bEl){ bEl.disabled = true; bEl.textContent = '🧠 LIA réfléchit…'; }
+    const r = await qaCall('POST', '/qa/submit', {initial_question: txt});
+    if(r.error){
+      showMsg('err', 'Erreur LIA : ' + r.error);
+      if(bEl){ bEl.disabled = false; bEl.textContent = '🧠 Creuser avec LIA'; }
+      return;
+    }
+    _activeQuestion = r.question;
+    // Cache le bouton, le textarea reste visible (en lecture seule mentale)
+    if(bEl) bEl.classList.add('hidden');
+    if(fEl) fEl.readOnly = true;
+    renderQaActive();
+    updateMissing();
+  }
+
+  async function sendAnswer(forceQualify){
+    if(!_activeQuestion) return;
+    const ans = document.getElementById('qa-answer-input').value.trim();
+    if(!forceQualify && ans.length < 3){ alert('Réponse trop courte'); return; }
+    const btn = document.getElementById('qa-answer-btn');
+    if(btn){ btn.disabled = true; btn.textContent = 'En cours…'; }
+    const r = await qaCall('POST', '/qa/answer/'+_activeQuestion.id, {answer_text: ans, force_qualify: !!forceQualify});
+    if(r.error){ alert('Erreur: ' + r.error); if(btn){btn.disabled=false;btn.textContent='Continuer le creusage';} return; }
+    _activeQuestion = r.question;
+    renderQaActive();
+  }
+
+  async function finalizeQuestion(){
+    if(!_activeQuestion) return;
+    const btn = document.getElementById('qa-finalize-btn');
+    if(btn){ btn.disabled = true; btn.textContent = 'Recherche en cours…'; }
+    // Récupère la version potentiellement éditée par l'élève (4 blocs)
+    const edited = (document.getElementById('qa-reformulation-text')||{}).value?.trim() || null;
+    const editedSynthesis = {
+      vraie_problematique:       edited,
+      vrai_besoin:               (document.getElementById('qa-reformulation-need')||{}).value?.trim() || null,
+      blocage_emotionnel:        (document.getElementById('qa-reformulation-blocage')||{}).value?.trim() || null,
+      action_concrete_proposee:  (document.getElementById('qa-reformulation-action')||{}).value?.trim() || null
+    };
+    const payload = edited ? { edited_question: edited, edited_synthesis: editedSynthesis } : {};
+    const r = await qaCall('POST', '/qa/finalize/'+_activeQuestion.id, payload);
+    if(r.error){ alert('Erreur: ' + r.error); if(btn){btn.disabled=false;btn.textContent='C\'est ma vraie question ✦ envoyer';} return; }
+    // Reload full question with matched_kb
+    const full = await qaCall('GET', '/qa/get/'+_activeQuestion.id, null);
+    if(full && full.question){
+      _activeQuestion = {...full.question, matched_kb: full.kb};
+      renderQaActive();
+    }
+  }
+
+  async function matchResponse(accept){
+    if(!_activeQuestion) return;
+    const r = await qaCall('POST', '/qa/match-response/'+_activeQuestion.id, {accept});
+    if(r.error){ alert('Erreur: ' + r.error); return; }
+    const full = await qaCall('GET', '/qa/get/'+_activeQuestion.id, null);
+    if(full && full.question){
+      _activeQuestion = {...full.question, matched_kb: full.kb};
+      renderQaActive();
+    }
+  }
+
+  function resetQa(){
+    _activeQuestion = null;
+    // V6 : re-débloquer textarea problème + bouton creuser
+    const fEl = document.getElementById('field-problem');
+    if(fEl){ fEl.readOnly = false; fEl.value = ''; fEl.focus(); }
+    const bEl = document.getElementById('btn-deepen');
+    if(bEl){ bEl.classList.remove('hidden'); bEl.disabled = true; bEl.textContent = '🧠 Creuser avec LIA'; }
+    const pc = document.getElementById('problem-count');
+    if(pc) pc.textContent = '0/400 · min 30 caractères';
+    renderQaActive();
+    if(typeof updateMissing === 'function') try { updateMissing(); } catch(e){}
+  }
+
+  // V6 : refreshMineList + refreshKB supprimés (DOM cibles retirés, KB admin only via coach.html)
+
+  // ── Sticky plate observer ──
+  function initStickyPlate(){
+    const sentinel = document.getElementById('plate-sentinel');
+    const stage = document.getElementById('plate-stage');
+    const placeholder = document.getElementById('plate-placeholder');
+    if(!sentinel || !stage || !('IntersectionObserver' in window)) return;
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(!entry.isIntersecting){
+          stage.classList.add('is-sticky');
+          placeholder.classList.add('is-active');
+        } else {
+          stage.classList.remove('is-sticky');
+          placeholder.classList.remove('is-active');
+        }
+      });
+    }, { rootMargin: "-1px 0px 0px 0px", threshold: 0 });
+    obs.observe(sentinel);
+  }
+
+  // ── Render ──────────────────────────────────────────────
+  async function render(){
     const shell = document.getElementById('shell');
+    const today = getTodayStr();
     const todayFR = new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
-    const detailsOpen = localStorage.getItem(DETAILS_OPEN_KEY) === '1';
+
+    const wbQuestionsHTML = dailyQs.map((q,i)=>`
+      <div class="wb-q" data-slug="${q.slug}">
+        <div class="wb-label">${q.label}</div>
+        <div class="wb-toggles">
+          <button type="button" class="wb-btn" data-q="${q.slug}" data-v="yes" data-positive="${q.positive==='yes'?'positive':'negative'}">Oui</button>
+          <button type="button" class="wb-btn" data-q="${q.slug}" data-v="no" data-positive="${q.positive==='no'?'positive':'negative'}">Non</button>
+        </div>
+      </div>
+    `).join('');
 
     shell.innerHTML = `
       <div class="topbar">
         <a class="brand-mark" href="index.html">
-          <div class="pill"></div><div class="label">Ma fiche</div>
+          <div class="pill"></div><div class="label">Djibril · Tracking</div>
         </a>
+        <nav class="crumb"><a href="index.html">accueil</a><span class="sep">/</span><span>Ma fiche</span></nav>
         <button class="topbar__user" id="btn-logout" title="Se déconnecter">
           <div class="av">${(user.first_name||'?').slice(0,1).toUpperCase()}</div>
           <span>${user.first_name||'Élève'}</span>
@@ -219,154 +1109,375 @@ body{
       </div>
 
       <header class="page-head">
-        <h1>${todayFR}</h1>
+        <h1>Ma <span class="accent">fiche</span>.</h1>
+        <p class="lede">Remplis ta <span class="pop">journée</span>. Les points grimpent tout seuls.</p>
       </header>
 
-      <div id="state-notice" class="state-notice"></div>
+      <div class="brain-stage" id="brain-stage"><div class="brain-orb" id="brain-orb">
+        <div class="brain-orb__halo"></div>
+        <div class="brain-orb__wires"></div>
+        <div class="brain-orb__capsule"></div>
+        <div class="brain-orb__pts"><span id="brain-pts">0</span><small>pts</small></div>
+      </div></div>
+
+      <div class="plate-stage" id="plate-stage" aria-label="Ton assiette du jour">
+        <div class="plate-stage__caption">✦ Ton assiette du jour</div>
+      </div>
+      <div class="plate-stage-sentinel" id="plate-sentinel"></div>
+      <div class="plate-placeholder" id="plate-placeholder"></div>
+
       <div id="msg-area"></div>
 
-      <!-- BLOC AUJOURD'HUI -->
-      <div class="card">
-        <h2>Aujourd'hui</h2>
+      <div class="card-today">
+        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:8px">
+          <div class="badge-pulse" id="state-badge">à remplir</div>
+          <span id="lock-badge"></span>
+        </div>
+        <h2>${todayFR}</h2>
+        <div class="date-display">${today}</div>
 
-        <div class="field">
+        <!-- HEURES TRAVAILLÉES -->
+        <div class="slider-group">
           <div class="slider-head">
-            <label style="margin:0">Heures</label>
-            <span class="val"><span id="hours-display">0</span><span class="unit">h</span></span>
+            <span class="slider-label">Heures de taff</span>
+            <span class="slider-value"><span id="hours-display">0</span><span class="unit">h</span></span>
           </div>
-          <input type="range" class="range" id="field-hours" min="0" max="16" step="0.5" value="0">
-          <div class="tick-row">
-            <button type="button" data-target="field-hours" data-v="0">0</button>
-            <button type="button" data-target="field-hours" data-v="8">8</button>
-            <button type="button" data-target="field-hours" data-v="16">16</button>
+          <div class="range-wrap">
+            <input type="range" class="range" id="field-hours" min="0" max="16" step="0.5" value="0" aria-label="Heures de taff">
           </div>
+          <div class="range-ticks">
+            <button type="button" class="tick" data-target="field-hours" data-v="0">0h</button>
+            <button type="button" class="tick" data-target="field-hours" data-v="4">4h</button>
+            <button type="button" class="tick" data-target="field-hours" data-v="8">8h</button>
+            <button type="button" class="tick" data-target="field-hours" data-v="10">10h</button>
+            <button type="button" class="tick" data-target="field-hours" data-v="12">12h</button>
+            <button type="button" class="tick" data-target="field-hours" data-v="14">14h</button>
+            <button type="button" class="tick" data-target="field-hours" data-v="16">16h</button>
+          </div>
+          <div class="hours-mood" id="hours-mood">— pas encore</div>
         </div>
 
-        <div class="field-row">
-          <div class="field">
-            <label>Calls</label>
-            <input type="number" id="field-calls" min="0" value="0" inputmode="numeric" placeholder="0">
+        <!-- ÉPANOUISSEMENT -->
+        <div class="slider-group">
+          <div class="slider-head">
+            <span class="slider-label">État du jour</span>
+            <span class="slider-value"><span class="emoji" id="ful-emoji">😐</span></span>
           </div>
-          <div class="field">
-            <label>CA (€)</label>
-            <input type="number" id="field-ca" min="0" step="0.01" value="0" inputmode="decimal" placeholder="0">
-          </div>
-        </div>
-
-        <div class="field" style="margin-bottom:0">
-          <label>État</label>
-          <div class="emoji-row">
-            <button type="button" class="emoji-btn" data-v="2" aria-label="Mauvais">😞</button>
-            <button type="button" class="emoji-btn" data-v="5" aria-label="Moyen">😐</button>
-            <button type="button" class="emoji-btn" data-v="8" aria-label="Bon">🙂</button>
-            <button type="button" class="emoji-btn" data-v="10" aria-label="Excellent">✨</button>
+          <div class="state-emojis" role="radiogroup" aria-label="État du jour">
+            <button type="button" class="state-btn" data-v="2" aria-label="Mauvais">😞</button>
+            <button type="button" class="state-btn" data-v="5" aria-label="Moyen">😐</button>
+            <button type="button" class="state-btn" data-v="8" aria-label="Bon">😊</button>
+            <button type="button" class="state-btn" data-v="10" aria-label="Excellent">✨</button>
           </div>
           <input type="hidden" id="field-fulfillment" value="0">
         </div>
-      </div>
 
-      <!-- BLOC NOTE -->
-      <div class="card">
-        <h2>Note</h2>
-        <div class="field" style="margin-bottom:0">
-          <textarea id="field-note" maxlength="800" placeholder="Note libre, ou dicte au micro 🎤"></textarea>
+        <!-- PULSE — 1 seule question (rotation 4 essentielles) -->
+        <div class="wellbeing">
+          <h3>Pulse</h3>
+          <p class="sub">1 question. Réponds franc.</p>
+          ${wbQuestionsHTML}
         </div>
-      </div>
 
-      <!-- BLOC DÉTAILS (replié par défaut) -->
-      <div class="details-card${detailsOpen ? ' is-open' : ''}" id="details-card">
-        <button type="button" class="details-toggle" id="details-toggle">
-          <span>+ Détails (optionnel)</span>
-          <span class="chev">›</span>
-        </button>
-        <div class="details-body">
-          <div class="field-row">
-            <div class="field">
-              <label>Vidéos Cold</label>
-              <input type="number" id="field-videos-cold" min="0" max="50" value="0" inputmode="numeric" placeholder="0">
-            </div>
-            <div class="field">
-              <label>Vidéos Closing</label>
-              <input type="number" id="field-videos-closing" min="0" max="50" value="0" inputmode="numeric" placeholder="0">
+        <!-- COMPACT: Calls + CA -->
+        <div class="field-row">
+          <div class="field">
+            <label>Calls passés</label>
+            <input type="number" id="field-calls" min="0" value="0" inputmode="numeric">
+            <div class="input-suggest" data-target="field-calls">
+              <button type="button" data-v="50">50</button>
+              <button type="button" data-v="100">100</button>
+              <button type="button" data-v="150">150</button>
+              <button type="button" data-v="200">200</button>
             </div>
           </div>
-          <div class="field" style="margin-bottom:0">
-            <div class="toggle-row">
-              <span class="lbl">Live diffusion</span>
-              <button id="btn-live-no" class="is-on" type="button">Non</button>
-              <button id="btn-live-yes" type="button">Oui</button>
+          <div class="field">
+            <label>CA (€)</label>
+            <input type="number" id="field-ca" min="0" step="0.01" value="0" inputmode="decimal">
+            <div class="input-suggest" data-target="field-ca">
+              <button type="button" data-v="0">0</button>
+              <button type="button" data-v="297">297</button>
+              <button type="button" data-v="497">497</button>
+              <button type="button" data-v="997">997</button>
+              <button type="button" data-v="1997">1997</button>
             </div>
           </div>
         </div>
-      </div>
 
-      <button class="btn btn--ember btn--full" id="btn-save">Enregistrer</button>
-
-      <div class="recap" id="recap-area" style="display:none">
-        <div class="card">
-          <h2>Récap</h2>
-          <div id="recap-rows"></div>
+        <!-- VIDÉOS RÉFÉRENCE (cold call + closing) -->
+        <div class="field-row video-row">
+          <div class="field">
+            <label>Vidéos Cold Call vues 🎯</label>
+            <input type="number" id="field-videos-cold" min="0" max="50" value="0" inputmode="numeric">
+            <div class="video-hint">depuis <a href="https://docs.google.com/document/d/1P0x0NSB1GQDdp-ScGlaFgzwDeHKiVdhAbAK4f1RVFjI/edit" target="_blank">Doc Cold V4</a></div>
+          </div>
+          <div class="field">
+            <label>Vidéos Closing vues 💎</label>
+            <input type="number" id="field-videos-closing" min="0" max="50" value="0" inputmode="numeric">
+            <div class="video-hint">depuis <a href="https://docs.google.com/document/d/1BlwQNznQ9ciEcsLWrXXsD3TTDYmbgaFg8hu10H-p92k/edit" target="_blank">Doc Closing V4</a></div>
+          </div>
         </div>
+
+        <!-- LIVE -->
+        <div class="live-toggle">
+          <span>Live diffusion</span>
+          <button id="btn-live-no" class="is-on" aria-label="Pas de live diffusion aujourd'hui">Non</button>
+          <button id="btn-live-yes" aria-label="J'ai fait une live diffusion aujourd'hui">Oui</button>
+        </div>
+
+        <!-- PROBLÉMATIQUE DU JOUR — CREUSAGE INLINE OBLIGATOIRE -->
+        <div class="block-mandatory" id="block-problem">
+          <h3>Ta problématique du jour <span class="req">obligatoire</span></h3>
+          <p class="sub">1 vraie difficulté concrète. LIA te pose 1-2 questions pour creuser, puis Djibril te répond.</p>
+
+          <!-- Étape 1 — saisie initiale problème -->
+          <div id="prob-step-write">
+            <textarea class="note-textarea" id="field-problem" maxlength="400" placeholder="Ex : « 30 calls, 0 RDV — je pense que mon ouverture est nulle, je récite. »"></textarea>
+            <div class="note-count" id="problem-count">0/400 · min 30 caractères</div>
+            <button class="btn btn--sm btn--ember" id="btn-deepen" disabled style="margin-top:10px" aria-label="Lancer le creusage de la problématique par LIA">🧠 Creuser avec LIA</button>
+          </div>
+
+          <!-- Étape 2 — creusage IA + réponse Djibril (réutilise qa-active-area existant) -->
+          <div id="qa-active-area" class="dig-flow"></div>
+        </div>
+
+        <!-- QUALIFICATION SITUATION (forcée) -->
+        <div class="block-mandatory" id="block-qualif">
+          <h3>Ta situation cette semaine <span class="req">obligatoire</span></h3>
+          <p class="sub">3 chiffres précis. Si tu sais pas exact → estime, mais réponds.</p>
+          <div class="qualif-grid">
+            <div class="field">
+              <label>Appels cumulés cette semaine</label>
+              <input type="number" id="qualif-weekly-calls" min="0" value="0" inputmode="numeric">
+            </div>
+            <div class="field">
+              <label>CA encaissé cette semaine (€)</label>
+              <input type="number" id="qualif-weekly-ca" min="0" step="0.01" value="0" inputmode="decimal">
+            </div>
+            <div class="field qualif-milestone">
+              <label>Prochain milestone précis + date</label>
+              <input type="text" id="qualif-milestone" maxlength="120" placeholder="Ex : « 5 RDV pris d'ici vendredi 22 mai »">
+            </div>
+          </div>
+        </div>
+
+        <!-- RÉVÉLATION DU JOUR — OBLIGATOIRE checkbox -->
+        <div class="block-revelation" id="block-revelation">
+          <div class="rev-tag">Tu ne savais pas que…</div>
+          <h3 id="rev-title">—</h3>
+          <p id="rev-body">—</p>
+          <label class="rev-check">
+            <input type="checkbox" id="rev-acknowledge">
+            <span>✓ J'ai pigé. Je vais l'appliquer aujourd'hui ou demain.</span>
+          </label>
+        </div>
+
+        <div id="lock-warn-area"></div>
+        <div id="missing-area" aria-live="polite"></div>
+        <button class="btn btn--full btn--ember" id="btn-save" aria-label="Enregistrer ma fiche du jour">Enregistrer ma fiche</button>
       </div>
+
+      <div class="recap" id="recap-area"></div>
+
+      <!-- Styles micro intégrés — bouton 🎤 sur chaque champ texte -->
+      <style>
+        .mic-wrap{position:relative}
+        .mic-wrap textarea, .mic-wrap input[type="text"]{padding-right:48px!important}
+        .mic-btn{position:absolute;top:6px;right:6px;width:36px;height:36px;border-radius:50%;border:1.5px solid rgba(26,22,20,.18);background:rgba(255,252,245,.95);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--ink-soft);transition:all .15s;padding:0;z-index:3;user-select:none;-webkit-user-select:none;touch-action:none}
+        .mic-btn:hover{border-color:var(--ember);color:var(--ember);background:var(--ember-soft);transform:scale(1.05)}
+        .mic-btn.is-recording{background:var(--crit);color:var(--paper);border-color:var(--crit);animation:mic-pulse 1s ease-in-out infinite}
+        .mic-btn.is-busy{opacity:.6;pointer-events:none;background:var(--gold);color:var(--paper);border-color:var(--gold)}
+        @keyframes mic-pulse{0%,100%{box-shadow:0 0 0 0 rgba(199,62,58,.6)}50%{box-shadow:0 0 0 10px rgba(199,62,58,0)}}
+        .mic-hint{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:var(--ink-mute);margin-top:6px;font-weight:600;text-transform:uppercase;min-height:1em;line-height:1.4}
+        .mic-hint.err{color:var(--crit)}
+        .mic-hint.ok{color:var(--jade)}
+        .mic-hint.busy{color:var(--gold)}
+      </style>
+
     `;
 
+    // Injecter révélation du jour (rotation stable / jour / élève)
+    _dailyRev = pickDailyRevelation(today + (user.id || user.email || ''));
+    const revTitle = document.getElementById('rev-title');
+    const revBody = document.getElementById('rev-body');
+    if(revTitle && _dailyRev) revTitle.textContent = _dailyRev.title;
+    if(revBody && _dailyRev) revBody.innerHTML = _dailyRev.body;
+
     bindEvents();
-    loadToday();
+    await loadToday();
+    updateMissing();
   }
 
-  // Events
+  // ── State for wellbeing answers ─────────────────────────
+  let _wb = {}; // { slug: 'yes' | 'no' }
+  let _dailyRev = null; // révélation du jour
+
+  // ── Events ───────────────────────────────────────────────
   function bindEvents(){
     document.getElementById('btn-logout').addEventListener('click', logout);
     document.getElementById('btn-save').addEventListener('click', saveEntry);
     document.getElementById('btn-live-yes').addEventListener('click',()=>toggleLive(true));
     document.getElementById('btn-live-no').addEventListener('click',()=>toggleLive(false));
 
-    // Details toggle
-    document.getElementById('details-toggle').addEventListener('click',()=>{
-      const card = document.getElementById('details-card');
-      card.classList.toggle('is-open');
-      localStorage.setItem(DETAILS_OPEN_KEY, card.classList.contains('is-open') ? '1' : '0');
-    });
-
-    // Hours slider
+    // Hours slider only (fulfillment is now state-btn)
     const hoursEl = document.getElementById('field-hours');
     hoursEl.addEventListener('input', updateHoursUI);
 
-    // Hours ticks
-    document.querySelectorAll('.tick-row button').forEach(b=>{
-      b.addEventListener('click',()=>{
-        const t = document.getElementById(b.dataset.target);
-        t.value = b.dataset.v;
-        t.dispatchEvent(new Event('input'));
-        if(navigator.vibrate) navigator.vibrate(6);
+    // Tick buttons (hours slider)
+    document.querySelectorAll('.range-ticks .tick').forEach(t=>{
+      t.addEventListener('click',()=>{
+        const target = document.getElementById(t.dataset.target);
+        target.value = t.dataset.v;
+        target.dispatchEvent(new Event('input'));
+        if(navigator.vibrate) navigator.vibrate(8);
       });
     });
 
-    // Emoji state
-    document.querySelectorAll('.emoji-btn').forEach(b=>{
+    // State emojis (4 buttons → fulfillment 0-10 mapping)
+    document.querySelectorAll('.state-btn').forEach(b=>{
       b.addEventListener('click',()=>{
-        document.querySelectorAll('.emoji-btn').forEach(x=>x.classList.remove('is-on'));
+        document.querySelectorAll('.state-btn').forEach(x=>x.classList.remove('is-on'));
         b.classList.add('is-on');
-        document.getElementById('field-fulfillment').value = b.dataset.v;
-        if(navigator.vibrate) navigator.vibrate(8);
+        const v = parseInt(b.dataset.v);
+        document.getElementById('field-fulfillment').value = v;
+        document.getElementById('ful-emoji').textContent = b.textContent;
+        if(navigator.vibrate) navigator.vibrate(10);
+        updateBrainPreview();
+        updateMissing();
       });
+    });
+
+    // Number input suggestions
+    document.querySelectorAll('.input-suggest').forEach(group=>{
+      const target = document.getElementById(group.dataset.target);
+      group.querySelectorAll('button').forEach(btn=>{
+        btn.addEventListener('click',()=>{
+          target.value = btn.dataset.v;
+          target.dispatchEvent(new Event('input'));
+          updateSuggestActive(group, btn.dataset.v);
+          updateBrainPreview();
+          if(navigator.vibrate) navigator.vibrate(8);
+        });
+      });
+      target.addEventListener('input',()=>{updateSuggestActive(group, target.value); updateBrainPreview(); updateMissing();});
+    });
+
+    // Pulse toggle (1 WB question)
+    document.querySelectorAll('.wb-btn').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const q = btn.dataset.q;
+        const v = btn.dataset.v;
+        _wb = {}; _wb[q] = v;
+        document.querySelectorAll(`.wb-btn[data-q="${q}"]`).forEach(b=>b.classList.remove('is-on','positive','negative'));
+        btn.classList.add('is-on', btn.dataset.positive);
+        if(navigator.vibrate) navigator.vibrate(10);
+        updateBrainPreview();
+        updateMissing();
+      });
+    });
+
+    // Problème textarea (mandatory min 30 chars + enable bouton creuser)
+    const probEl = document.getElementById('field-problem');
+    const probCount = document.getElementById('problem-count');
+    const deepenBtn = document.getElementById('btn-deepen');
+    if(probEl && probCount){
+      probEl.addEventListener('input',()=>{
+        const len = probEl.value.trim().length;
+        const short = len < 30;
+        probCount.textContent = short ? `${len}/400 · min 30 caractères` : `${len}/400 ✓ prêt à creuser`;
+        probCount.className = 'note-count' + (short?' is-short':'') + (len>380?' is-near':'') + (len>=400?' is-full':'');
+        if(deepenBtn) deepenBtn.disabled = short || !!_activeQuestion;
+        updateMissing();
+      });
+    }
+    if(deepenBtn) deepenBtn.addEventListener('click', submitNewQuestion);
+
+    // Qualif + videos inputs → trigger mandatory check
+    ['qualif-weekly-calls','qualif-weekly-ca','qualif-milestone','field-videos-cold','field-videos-closing']
+      .forEach(id=>{
+        const el = document.getElementById(id);
+        if(el) el.addEventListener('input', updateMissing);
+      });
+
+    // Revelation acknowledge checkbox
+    const revCk = document.getElementById('rev-acknowledge');
+    if(revCk){
+      revCk.addEventListener('change',()=>{
+        revCk.parentElement.classList.toggle('is-on', revCk.checked);
+        updateMissing();
+      });
+    }
+  }
+
+  // ── Mandatory checklist (V6) ────────────────────────────
+  function updateMissing(){
+    const probEl = document.getElementById('field-problem');
+    const revCk = document.getElementById('rev-acknowledge');
+    const milestone = document.getElementById('qualif-milestone');
+    const calls = parseInt(document.getElementById('field-calls').value)||0;
+    const hours = parseFloat(document.getElementById('field-hours').value)||0;
+    const ful = parseInt(document.getElementById('field-fulfillment').value)||0;
+    const probLen = probEl ? probEl.value.trim().length : 0;
+    const missEl = document.getElementById('missing-area');
+    const saveBtn = document.getElementById('btn-save');
+    const qStatus = _activeQuestion?.status;
+
+    const missing = [];
+    if(hours <= 0 && calls <= 0) missing.push('Au moins 1 chiffre d\'activité (heures ou calls)');
+    if(ful <= 0) missing.push('État du jour (1 emoji)');
+    if(probLen < 30) missing.push(`Problématique du jour (encore ${Math.max(0, 30-probLen)} caractères)`);
+    else if(!_activeQuestion) missing.push('Cliquer « Creuser avec LIA » sur ta problématique');
+    else if(qStatus === 'deepening') missing.push('Répondre à la question de LIA pour terminer le creusage');
+    else if(qStatus === 'qualified') missing.push('Cliquer « Envoyer à Djibril » pour finaliser la question');
+    if(milestone && !milestone.value.trim()) missing.push('Prochain milestone précis + date');
+    if(revCk && !revCk.checked) missing.push('Cocher « j\'ai pigé » sur la révélation');
+
+    if(missing.length && missEl){
+      missEl.innerHTML = `<div class="missing-list">Avant d'enregistrer, il manque :<ul>${missing.map(m=>`<li>· ${m}</li>`).join('')}</ul></div>`;
+      if(saveBtn && !saveBtn.classList.contains('is-locked')) saveBtn.disabled = true;
+    } else {
+      if(missEl) missEl.innerHTML = '';
+      if(saveBtn && !saveBtn.classList.contains('is-locked')) saveBtn.disabled = false;
+    }
+  }
+
+  function updateSuggestActive(group, val){
+    group.querySelectorAll('button').forEach(b=>{
+      b.classList.toggle('is-active', String(b.dataset.v)===String(val));
     });
   }
 
   function updateHoursUI(){
     const v = parseFloat(document.getElementById('field-hours').value)||0;
-    document.getElementById('field-hours').style.setProperty('--val', (v/16*100)+'%');
+    const pct = (v/16)*100;
+    document.getElementById('field-hours').style.setProperty('--val', pct+'%');
     document.getElementById('hours-display').textContent = v;
-    document.querySelectorAll('.tick-row button[data-target="field-hours"]').forEach(b=>{
-      b.classList.toggle('is-on', parseFloat(b.dataset.v)===v);
+    document.getElementById('hours-mood').textContent = hoursMood(v);
+    document.querySelectorAll('.range-ticks .tick[data-target="field-hours"]').forEach(t=>{
+      t.classList.toggle('is-active', parseFloat(t.dataset.v)===v);
     });
+    updateBrainPreview();
+    updateMissing();
+  }
+  function updateFulUI(){
+    const v = parseInt(document.getElementById('field-fulfillment').value)||0;
+    document.querySelectorAll('.state-btn').forEach(b=>{
+      b.classList.toggle('is-on', parseInt(b.dataset.v)===v);
+    });
+    if(v > 0){
+      const onBtn = document.querySelector('.state-btn.is-on');
+      if(onBtn) document.getElementById('ful-emoji').textContent = onBtn.textContent;
+    }
+    updateBrainPreview();
   }
 
+  let _live = liveDefault;
   function toggleLive(val){
     _live = val;
-    document.getElementById('btn-live-yes').classList.toggle('is-on', val);
-    document.getElementById('btn-live-no').classList.toggle('is-on', !val);
-    if(navigator.vibrate) navigator.vibrate(6);
+    document.getElementById('btn-live-yes').className = val ? 'is-on' : '';
+    document.getElementById('btn-live-no').className = val ? '' : 'is-on';
+    if(navigator.vibrate) navigator.vibrate(8);
+    updateBrainPreview();
   }
 
   function logout(){
@@ -374,45 +1485,53 @@ body{
     window.location.href = 'index.html';
   }
 
-  // Points (kept for recap only, backend compat)
-  function calcPoints(data){
-    const calls = data.calls||0;
-    const hrs = parseFloat(data.hours_worked||0);
-    const ful = parseInt(data.fulfillment||0);
-    return Math.round(hrs*2 + ful*1 + calls*2);
-  }
-
-  // Lock state
+  // ── Apply save_count UI state ───────────────────────────
   function applyLockState(saveCount){
-    _saveCount = saveCount;
-    const notice = document.getElementById('state-notice');
+    const stateBadge = document.getElementById('state-badge');
+    const lockBadge = document.getElementById('lock-badge');
+    const warnArea = document.getElementById('lock-warn-area');
     const saveBtn = document.getElementById('btn-save');
 
-    notice.classList.remove('is-on');
-    notice.textContent = '';
-
     if(saveCount === 0){
-      saveBtn.textContent = 'Enregistrer';
+      // Empty fiche
+      stateBadge.textContent = 'à remplir';
+      lockBadge.innerHTML = '';
+      warnArea.innerHTML = '';
+      saveBtn.textContent = 'Enregistrer ma fiche';
       saveBtn.disabled = false;
+      saveBtn.classList.remove('is-locked');
     } else if(saveCount === 1){
-      notice.textContent = 'Enregistrée, modifiable encore 1 fois';
-      notice.classList.add('is-on');
-      saveBtn.textContent = 'Mettre à jour';
+      // First save done, 1 modif remaining
+      stateBadge.textContent = 'enregistrée';
+      stateBadge.style.background = 'rgba(29,138,111,.15)';
+      stateBadge.style.color = 'var(--jade)';
+      lockBadge.innerHTML = '<span class="lock-badge lock-badge--mod">⚡ 1 modif restante</span>';
+      warnArea.innerHTML = '<div class="lock-warn">Tu as déjà enregistré ta fiche aujourd\'hui. Tu peux la modifier <strong>une seule fois</strong> — après ça elle est verrouillée pour la journée.</div>';
+      saveBtn.textContent = 'Modifier (dernière chance)';
       saveBtn.disabled = false;
+      saveBtn.classList.remove('is-locked');
     } else {
-      notice.textContent = 'Fiche du jour terminée, à demain';
-      notice.classList.add('is-on');
-      saveBtn.textContent = 'Terminé';
+      // Locked (saveCount >= 2)
+      stateBadge.textContent = 'verrouillée';
+      stateBadge.style.background = 'rgba(26,22,20,.85)';
+      stateBadge.style.color = 'var(--paper)';
+      lockBadge.innerHTML = '<span class="lock-badge lock-badge--locked">🔒 Verrouillée</span>';
+      warnArea.innerHTML = '<div class="lock-warn" style="background:rgba(26,22,20,.06);border-left-color:var(--ink)">Cette fiche est <strong>verrouillée</strong> pour aujourd\'hui (modifiée 2× max). Reviens demain pour une nouvelle fiche.</div>';
+      saveBtn.textContent = '🔒 Fiche verrouillée';
       saveBtn.disabled = true;
-      document.querySelectorAll('.card input, .card textarea, .card button, #btn-live-yes, #btn-live-no, .emoji-btn, .tick-row button, .details-toggle').forEach(el=>{
+      saveBtn.classList.add('is-locked');
+      // Disable all inputs visually
+      document.querySelectorAll('#field-hours, #field-fulfillment, #field-calls, #field-ca, #field-problem, #field-videos-cold, #field-videos-closing, #qualif-weekly-calls, #qualif-weekly-ca, #qualif-milestone, #rev-acknowledge, .wb-btn, .state-btn, .tick, .input-suggest button, #btn-live-yes, #btn-live-no').forEach(el => {
         el.disabled = true;
         el.style.pointerEvents = 'none';
-        el.style.opacity = '0.6';
+        el.style.opacity = '0.55';
       });
+      const probLocked = document.getElementById('field-problem');
+      if(probLocked) probLocked.readOnly = true;
     }
   }
 
-  // Load today
+  // ── Load today ──────────────────────────────────────────
   async function loadToday(){
     const data = await api('GET', '/me/today');
     if(!data) return;
@@ -421,118 +1540,273 @@ body{
     document.getElementById('field-hours').value = data.hours_worked || 0;
     document.getElementById('field-fulfillment').value = data.fulfillment || 0;
 
-    // Parse marker V5/V7
-    let note = data.free_note || '';
-    let videosCold = 0, videosClosing = 0;
-    const markerIdx = note.indexOf('__V5__');
+    // V5 — parse free_note JSON (marker peut être en fin de note)
+    let v5 = null;
+    const raw = data.free_note || '';
+    const markerIdx = raw.indexOf('__V5__');
     if(markerIdx >= 0){
-      try {
-        const v5 = JSON.parse(note.slice(markerIdx + 6));
-        note = (v5.problem || '').trim();
-        videosCold = v5.videos_cold || 0;
-        videosClosing = v5.videos_closing || 0;
-      } catch(_){
-        note = note.slice(0, markerIdx).trim();
+      try { v5 = JSON.parse(raw.slice(markerIdx + 6)); } catch(_){}
+    }
+    if(v5){
+      const probEl = document.getElementById('field-problem');
+      if(probEl) probEl.value = v5.problem || '';
+      const vc = document.getElementById('field-videos-cold');     if(vc) vc.value = v5.videos_cold || 0;
+      const vcl = document.getElementById('field-videos-closing'); if(vcl) vcl.value = v5.videos_closing || 0;
+      if(v5.qualif){
+        const qc = document.getElementById('qualif-weekly-calls'); if(qc) qc.value = v5.qualif.weekly_calls || 0;
+        const qa = document.getElementById('qualif-weekly-ca');    if(qa) qa.value = v5.qualif.weekly_ca || 0;
+        const qm = document.getElementById('qualif-milestone');    if(qm) qm.value = v5.qualif.milestone || '';
+      }
+      if(v5.revelation && v5.revelation.acknowledged){
+        const ck = document.getElementById('rev-acknowledge');
+        if(ck){ ck.checked = true; ck.parentElement.classList.add('is-on'); }
       }
     }
-    document.getElementById('field-note').value = note;
-    document.getElementById('field-videos-cold').value = videosCold;
-    document.getElementById('field-videos-closing').value = videosClosing;
-
-    // Auto-open details if filled
-    if(videosCold > 0 || videosClosing > 0 || data.live){
-      document.getElementById('details-card').classList.add('is-open');
+    const probEl2 = document.getElementById('field-problem');
+    if(probEl2){
+      const l = (probEl2.value||'').length;
+      const pc = document.getElementById('problem-count');
+      if(pc) pc.textContent = l < 30 ? `${l}/400 · min 30 caractères` : `${l}/400 ✓`;
     }
 
-    // Emoji state
-    const ful = parseInt(data.fulfillment||0);
-    if(ful > 0){
-      document.querySelectorAll('.emoji-btn').forEach(b=>{
-        b.classList.toggle('is-on', parseInt(b.dataset.v)===ful);
-      });
+    _wb = (data.wellbeing_answers && typeof data.wellbeing_answers==='object') ? data.wellbeing_answers : {};
+    applyLockState(data.save_count || 0);
+    // Baseline shine: si l'élève a déjà une fiche, on baseline à ces valeurs sauvegardées.
+    // Sinon (fiche vide), baseline = 0 → tout brille dès le 1er input.
+    if ((data.save_count || 0) > 0) {
+      savePlateCounts(computePlateCounts(data));
+    } else {
+      savePlateCounts({salads:0, grains:0, tomatoes:0, herbs:0, meat:0});
     }
-
+    // Apply stored wb to buttons
+    Object.keys(_wb).forEach(slug=>{
+      const v = _wb[slug];
+      const btn = document.querySelector(`.wb-btn[data-q="${slug}"][data-v="${v}"]`);
+      if(btn){
+        document.querySelectorAll(`.wb-btn[data-q="${slug}"]`).forEach(b=>b.classList.remove('is-on','positive','negative'));
+        btn.classList.add('is-on', btn.dataset.positive);
+      }
+    });
     toggleLive(data.live || false);
     updateHoursUI();
-    applyLockState(data.save_count || 0);
-    if((data.save_count || 0) > 0) updateRecap(data);
+    updateFulUI();
+    // Trigger suggest active
+    document.querySelectorAll('.input-suggest').forEach(g=>{
+      const target = document.getElementById(g.dataset.target);
+      updateSuggestActive(g, target.value);
+    });
+    updateRecap(data);
+    loadHistory();
+    // V6 : loadHistory cache plate moyenne 7j (history-table absent du DOM, refresh silencieux)
+    loadHistory();
+    // Q&A init — V6 : seul renderQaActive utilisé (inline dans block-problem)
+    initStickyPlate();
+    // Restaurer question active du jour si elle existe (cherche dans /qa/mine)
+    try {
+      const mine = await qaCall('GET', '/qa/mine');
+      const active = (mine?.questions || []).find(q => ['deepening','qualified','awaiting_djibril','matched','answered'].includes(q.status));
+      if(active){
+        // Pré-remplir field-problem avec la question initiale et lock
+        const fEl = document.getElementById('field-problem');
+        if(fEl && active.initial_question){ fEl.value = active.initial_question; fEl.readOnly = true; }
+        const bEl = document.getElementById('btn-deepen');
+        if(bEl) bEl.classList.add('hidden');
+        // Si répondue → afficher dans le bloc dj-answer
+        if(active.status === 'answered' || active.status === 'matched'){
+          const full = await qaCall('GET', '/qa/get/'+active.id);
+          _activeQuestion = {...full.question, matched_kb: full.kb};
+        } else {
+          _activeQuestion = active;
+        }
+        renderQaActive();
+      } else {
+        renderQaActive();
+      }
+    } catch(e){ console.warn('init qa-mine failed', e); renderQaActive(); }
   }
 
-  // Save
+  // ── Save entry ──────────────────────────────────────────
   async function saveEntry(){
     const btn = document.getElementById('btn-save');
     btn.disabled = true;
     btn.textContent = 'Enregistrement...';
-
     const calls = parseInt(document.getElementById('field-calls').value)||0;
     const ca = parseFloat(document.getElementById('field-ca').value)||0;
     const hours_worked = parseFloat(document.getElementById('field-hours').value)||0;
     const fulfillment = parseInt(document.getElementById('field-fulfillment').value)||0;
-    const note = (document.getElementById('field-note').value||'').slice(0,800).trim();
-    const videos_cold = parseInt(document.getElementById('field-videos-cold').value)||0;
-    const videos_closing = parseInt(document.getElementById('field-videos-closing').value)||0;
-
-    // Marker V5 conservé pour compat backend / outils coach
+    // V5 structured payload — stocké dans free_note pour rester backward-compat
     const v5Data = {
-      problem: note,
-      videos_cold,
-      videos_closing,
-      qualif: { weekly_calls:0, weekly_ca:0, milestone:'' },
-      revelation: { title:'', acknowledged:false }
+      problem: (document.getElementById('field-problem')||{}).value?.slice(0,400)?.trim() || '',
+      videos_cold: parseInt((document.getElementById('field-videos-cold')||{}).value)||0,
+      videos_closing: parseInt((document.getElementById('field-videos-closing')||{}).value)||0,
+      qualif: {
+        weekly_calls: parseInt((document.getElementById('qualif-weekly-calls')||{}).value)||0,
+        weekly_ca:    parseFloat((document.getElementById('qualif-weekly-ca')||{}).value)||0,
+        milestone:    ((document.getElementById('qualif-milestone')||{}).value||'').slice(0,120).trim()
+      },
+      revelation: {
+        title: _dailyRev?.title || '',
+        acknowledged: !!(document.getElementById('rev-acknowledge')||{}).checked
+      }
     };
-    const free_note = note + '\n\n__V5__' + JSON.stringify(v5Data);
+    // Texte problème en clair (pour emails) + marker + JSON V5
+    const probText = v5Data.problem || '';
+    const free_note = probText + '\n\n__V5__' + JSON.stringify(v5Data);
 
     const payload = {
       calls, ca_eur: ca, live:_live,
       hours_worked, fulfillment,
-      wellbeing_answers: {},
+      wellbeing_answers: _wb,
       free_note
     };
-
+    // Cache local pour debug Djibril (récup historique V5)
+    try {
+      const ls = JSON.parse(localStorage.getItem('dj_v5_log')||'[]');
+      ls.push({date: getTodayStr(), ...v5Data});
+      localStorage.setItem('dj_v5_log', JSON.stringify(ls.slice(-30)));
+    } catch(e){}
     const data = await api('PUT', '/me/entries/'+getTodayStr(), payload);
     btn.disabled = false;
     if(data && !data.error){
       const sc = data.save_count || 0;
-      if(sc === 1) showMsg('ok','Enregistré, modifiable encore 1 fois');
-      else if(sc === 2) showMsg('ok','Mise à jour enregistrée, fiche du jour terminée');
-      else showMsg('ok','Enregistré');
-      applyLockState(sc);
+      if(sc === 1){
+        showMsg('ok','Fiche enregistrée ✦ — tu peux encore la modifier 1 fois');
+      } else if(sc === 2){
+        showMsg('ok','Modification enregistrée ✦ — fiche maintenant verrouillée pour aujourd\'hui');
+      } else {
+        showMsg('ok','Fiche enregistrée ✦');
+      }
+      // Reset shine baseline → ce qui vient d'être sauvé devient le nouveau "déjà acquis"
+      savePlateCounts(computePlateCounts(payload));
       updateRecap(data);
-      if(navigator.vibrate) navigator.vibrate([15,30,15]);
+      applyLockState(sc);
+      const orb = document.getElementById('brain-orb');
+      orb.classList.add('strong');
+      setTimeout(()=>orb.classList.remove('strong'),1200);
+      if(navigator.vibrate) navigator.vibrate([20,40,20]);
     } else {
-      btn.textContent = 'Enregistrer';
+      btn.textContent = 'Enregistrer ma fiche';
       const errMsg = (data&&data.error) || 'Erreur réseau';
-      if(data && data.locked){ showMsg('err', errMsg); applyLockState(2); }
-      else showMsg('err', errMsg);
+      if(data && data.locked){
+        showMsg('err','🔒 ' + errMsg);
+        applyLockState(2);
+      } else {
+        showMsg('err', errMsg);
+      }
     }
   }
 
-  function updateRecap(data){
-    const recapArea = document.getElementById('recap-area');
-    const rowsEl = document.getElementById('recap-rows');
+  // ── Points + recap ──────────────────────────────────────
+  // Note 2026-05-13 : live n'octroie plus de points pour l'instant (à réactiver quand
+  // les créneaux live sont fixés par Djibril). live conservé pour data mais poids = 0.
+  function calcPoints(data){
+    const calls = data.calls||0;
     const hrs = parseFloat(data.hours_worked||0);
     const ful = parseInt(data.fulfillment||0);
+    const wb = (data.wellbeing_answers && typeof data.wellbeing_answers==='object') ? data.wellbeing_answers : {};
+    let wbPositive = 0;
+    Object.keys(wb).forEach(slug=>{
+      const def = WB_POOL.find(q=>q.slug===slug);
+      if(def && wb[slug] === def.positive) wbPositive++;
+    });
+    return Math.round(hrs*2 + ful*1 + calls*2 + wbPositive*1); // + (live?0:0) — désactivé
+  }
+  function previewData(){
+    return {
+      calls: parseInt(document.getElementById('field-calls').value)||0,
+      live: _live,
+      hours_worked: parseFloat(document.getElementById('field-hours').value)||0,
+      fulfillment: parseInt(document.getElementById('field-fulfillment').value)||0,
+      wellbeing_answers: _wb
+    };
+  }
+  function updateBrainPreview(){
+    const pts = calcPoints(previewData());
+    updateBrainOrb(pts);
+    renderPlate();
+  }
+  function updateRecap(data){
+    const calls=data.calls||0;
+    const live=data.live||false;
+    const ca=data.ca_eur||0;
+    const hrs=parseFloat(data.hours_worked||0);
+    const ful=parseInt(data.fulfillment||0);
+    const wb=(data.wellbeing_answers && typeof data.wellbeing_answers==='object') ? data.wellbeing_answers : {};
+    const wbCount = Object.keys(wb).length;
+    let wbPositive = 0;
+    Object.keys(wb).forEach(slug=>{
+      const def = WB_POOL.find(q=>q.slug===slug);
+      if(def && wb[slug] === def.positive) wbPositive++;
+    });
     const pts = calcPoints(data);
-    rowsEl.innerHTML = `
+    document.getElementById('recap-area').innerHTML = `
+      <h3>Récap du jour</h3>
       <div class="recap-row"><span class="recap-label">Heures</span><span class="recap-value">${hrs}h</span></div>
-      <div class="recap-row"><span class="recap-label">Calls</span><span class="recap-value">${data.calls||0}</span></div>
-      <div class="recap-row"><span class="recap-label">CA</span><span class="recap-value">${(data.ca_eur||0).toFixed(0)} €</span></div>
-      <div class="recap-row"><span class="recap-label">État</span><span class="recap-value">${fulEmoji(ful)} ${ful}/10</span></div>
-      ${data.live ? '<div class="recap-row"><span class="recap-label">Live</span><span class="recap-value">Oui</span></div>' : ''}
-      <div class="recap-row"><span class="recap-label">Points</span><span class="recap-value">${pts}</span></div>
+      <div class="recap-row"><span class="recap-label">Épanouissement</span><span class="recap-value">${fulfillmentEmoji(ful)} ${ful}/10</span></div>
+      <div class="recap-row"><span class="recap-label">Bien-être positif</span><span class="recap-value">${wbPositive}/${wbCount||5}</span></div>
+      <div class="recap-row"><span class="recap-label">Calls</span><span class="recap-value">${calls}</span></div>
+      <div class="recap-row"><span class="recap-label">Live</span><span class="recap-value">${live?'Oui':'—'}</span></div>
+      <div class="recap-row"><span class="recap-label">CA</span><span class="recap-value">${ca.toFixed(2)}€</span></div>
+      <div class="recap-points">${pts} pts</div>
     `;
-    recapArea.style.display = '';
+    updateBrainOrb(pts);
   }
 
+  function updateBrainOrb(points){
+    const orb = document.getElementById('brain-orb');
+    const pts = document.getElementById('brain-pts');
+    if(!orb||!pts)return;
+    orb.className = points>=30?'brain-orb strong':'brain-orb';
+    pts.textContent = points;
+  }
+
+  // ── History ─────────────────────────────────────────────
+  async function loadHistory(){
+    const history = await api('GET','/me/history');
+    if(!history || !history.length){
+      _history7Cache = [];
+      renderPlate();
+      return;
+    }
+    // Cache: 7 dernières entrées HORS aujourd'hui (pour comparer aujourd'hui à la moyenne récente)
+    const today = getTodayStr();
+    _history7Cache = history.filter(e => e.entry_date !== today).slice(0, 7);
+    renderPlate();
+
+    let rows = '';
+    history.slice(0,14).forEach(e=>{
+      const pts = calcPoints(e);
+      const hrs = parseFloat(e.hours_worked||0);
+      const ful = parseInt(e.fulfillment||0);
+      rows += `<tr>
+        <td>${e.entry_date}</td>
+        <td>${hrs}h</td>
+        <td>${ful}/10</td>
+        <td>${e.calls||0}</td>
+        <td>${(e.ca_eur||0).toFixed(0)}€</td>
+        <td>${e.live?'Oui':'—'}</td>
+        <td>${pts}</td>
+      </tr>`;
+    });
+    // V6 : history-table supprimé — cache uniquement pour renderPlate
+    const histEl = document.getElementById('history-table');
+    if(histEl){
+      histEl.innerHTML = `<table class="history-table">
+        <thead><tr><th>Date</th><th>Heures</th><th>Épan.</th><th>Calls</th><th>CA</th><th>Live</th><th>Pts</th></tr></thead>
+        <tbody>${rows}</tbody></table>`;
+    }
+  }
+
+  // ── Messages ────────────────────────────────────────────
   function showMsg(type,text){
     const area = document.getElementById('msg-area');
     area.innerHTML = `<div class="msg msg--${type}">${text}</div>`;
-    setTimeout(()=>{area.innerHTML='';}, 4000);
+    setTimeout(()=>{area.innerHTML='';},3500);
   }
 
-  // ASR micro sur la note
+  // ── ASR universel : bouton micro sur chaque champ texte (Djibril Chinois) ──
   const ASR_API = 'https://nbnbsljqtolzzuqnkyae.supabase.co/functions/v1/asr-transcribe';
-  let _micActive = null;
+  let _micActive = null;  // {wrap, btn, hint, mr, stream, target, mode}
 
   function _setMicHint(hint, txt, cls){
     if(!hint) return;
@@ -542,10 +1816,11 @@ body{
 
   async function _micStart(rec){
     if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
-      _setMicHint(rec.hint, 'Micro non supporté', 'err'); return;
+      _setMicHint(rec.hint, 'Micro non supporté par ce navigateur', 'err'); return;
     }
     try {
       const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+      // Choix codec: webm/opus prioritaire, fallback mp4
       let mime = 'audio/webm;codecs=opus';
       if(!MediaRecorder.isTypeSupported(mime)) mime = 'audio/webm';
       if(!MediaRecorder.isTypeSupported(mime)) mime = 'audio/mp4';
@@ -558,14 +1833,16 @@ body{
         const blob = new Blob(chunks, { type: mime || 'audio/webm' });
         const recordedMs = Date.now() - (rec.startedAt || Date.now());
         if(blob.size < 4000 || recordedMs < 600){
+          // Trop court — évite hallucination Whisper sur silence/vide
           _setMicHint(rec.hint, 'Parle plus longtemps (1s min)', 'err');
           _micActive = null; return;
         }
         rec.btn.classList.add('is-busy');
-        _setMicHint(rec.hint, 'Transcription...', 'busy');
+        _setMicHint(rec.hint, 'Transcription en cours…', 'busy');
         const reader = new FileReader();
         reader.onload = async () => {
-          const b64 = (reader.result+'').split(',')[1];
+          const dataUrl = reader.result+'';
+          const b64 = dataUrl.split(',')[1];
           try {
             const r = await fetch(ASR_API + '/asr', {
               method: 'POST',
@@ -576,16 +1853,18 @@ body{
             rec.btn.classList.remove('is-busy');
             if(data.error){ _setMicHint(rec.hint, 'Erreur : '+data.error, 'err'); _micActive = null; return; }
             const txt = (data.text || '').trim();
-            if(!txt){ _setMicHint(rec.hint, 'Rien entendu', 'err'); _micActive = null; return; }
+            if(!txt){ _setMicHint(rec.hint, 'Rien entendu — réessaye', 'err'); _micActive = null; return; }
+            // Insère/append le texte dans la cible
             if(rec.target){
               const existing = rec.target.value || '';
               const sep = existing && !existing.endsWith(' ') && !existing.endsWith('\n') ? ' ' : '';
               rec.target.value = existing + sep + txt;
+              // Trigger input event pour update char counters etc.
               rec.target.dispatchEvent(new Event('input', {bubbles:true}));
               rec.target.focus();
             }
-            _setMicHint(rec.hint, 'Transcrit ✓', 'ok');
-            setTimeout(()=>_setMicHint(rec.hint, ''), 2200);
+            _setMicHint(rec.hint, '✦ Transcrit', 'ok');
+            setTimeout(()=>_setMicHint(rec.hint, ''), 2500);
             _micActive = null;
           } catch(e){
             rec.btn.classList.remove('is-busy');
@@ -596,43 +1875,57 @@ body{
         reader.readAsDataURL(blob);
       };
       rec.mr = mr;
+      rec.stream = stream;
       rec.startedAt = Date.now();
       mr.start();
       rec.btn.classList.add('is-recording');
-      _setMicHint(rec.hint, 'J\'écoute, relâche pour valider', 'ok');
+      _setMicHint(rec.hint, '🎙 J\'écoute… relâche pour valider', 'ok');
       _micActive = rec;
     } catch(e){
-      _setMicHint(rec.hint, 'Micro refusé', 'err');
+      _setMicHint(rec.hint, 'Micro refusé : '+(e.message||e), 'err');
     }
   }
 
   function _micStop(rec){
-    if(rec && rec.mr && rec.mr.state === 'recording') rec.mr.stop();
+    if(rec && rec.mr && rec.mr.state === 'recording'){
+      rec.mr.stop();
+    }
   }
 
-  function attachMic(elementId){
+  // Attache un bouton micro à un input/textarea
+  // opts.label : optionnel label/placeholder pour le hint
+  function attachMicTo(elementId, opts){
+    opts = opts || {};
     const el = document.getElementById(elementId);
-    if(!el || el.dataset.micAttached === '1') return;
+    if(!el) return false;
+    if(el.dataset.micAttached === '1') return true;
+    // Wrap parent si pas déjà
     let wrap = el.parentElement;
     if(!wrap.classList.contains('mic-wrap')){
+      // Crée un wrap autour de l'élément
       wrap = document.createElement('div');
       wrap.className = 'mic-wrap';
       el.parentNode.insertBefore(wrap, el);
       wrap.appendChild(el);
+    } else {
+      wrap.classList.add('mic-wrap');
     }
+    // Bouton
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'mic-btn';
-    btn.title = 'Dicter à la voix';
+    btn.title = 'Parle au lieu d\'écrire — maintiens enfoncé';
+    btn.setAttribute('aria-label', 'Dicter à la voix');
     btn.innerHTML = '🎤';
     wrap.appendChild(btn);
+    // Hint sous l'élément
     let hint = wrap.nextElementSibling;
-    if(!hint || !hint.classList.contains('mic-hint')){
+    if(!hint || !hint.classList || !hint.classList.contains('mic-hint')){
       hint = document.createElement('div');
       hint.className = 'mic-hint';
       wrap.parentNode.insertBefore(hint, wrap.nextSibling);
     }
-    const rec = { btn, hint, target: el };
+    const rec = { wrap, btn, hint, target: el, mr: null, stream: null };
     const start = (e)=>{ e.preventDefault(); if(_micActive) _micStop(_micActive); _micStart(rec); };
     const stop  = (e)=>{ e.preventDefault(); if(_micActive === rec) _micStop(rec); };
     btn.addEventListener('mousedown', start);
@@ -642,11 +1935,29 @@ body{
     btn.addEventListener('touchend', stop, {passive:false});
     btn.addEventListener('touchcancel', stop, {passive:false});
     el.dataset.micAttached = '1';
+    return true;
   }
 
-  // Start
-  render();
-  setTimeout(()=>attachMic('field-note'), 200);
+  // Attache aux champs texte connus au render initial
+  function attachMicsAll(){
+    [
+      'field-problem','qualif-milestone',
+      'qa-initial','qa-answer-input',
+      'qa-reformulation-text','qa-reformulation-need',
+      'qa-reformulation-blocage','qa-reformulation-action',
+    ].forEach(id => attachMicTo(id));
+  }
+
+  // Observer : ré-attache quand le DOM Q&A se rerender
+  const _micObserver = new MutationObserver(()=>{ attachMicsAll(); });
+  setTimeout(()=>{
+    const qaArea = document.getElementById('qa-active-area');
+    if(qaArea) _micObserver.observe(qaArea, { childList: true, subtree: true });
+    attachMicsAll();
+  }, 300);
+
+  // ── Start ───────────────────────────────────────────────
+  render().then(()=>{ attachMicsAll(); });
 })();
 </script>
 
