@@ -407,6 +407,8 @@ body{
   .cosmos__cap,.cosmos__stars,.brain-orb__halo,.brain-orb__wires{animation:none!important}
 }
 </style>
+<!-- Chart.js pour graphique évolutif 7j (Phase 2 refonte 2026-05-21) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
@@ -1055,10 +1057,13 @@ body{
     // V6 : lit field-problem (bloc problématique) au lieu de qa-initial
     const fEl = document.getElementById('field-problem');
     const bEl = document.getElementById('btn-deepen');
+    const cEl = document.getElementById('field-live-category');
     const txt = (fEl?.value || '').trim();
+    const cat = (cEl?.value || '').trim();
     if(txt.length < 30){ showMsg('err', 'Décris ta problématique en au moins 30 caractères concrets'); return; }
+    if(!cat){ showMsg('err', 'Choisis la catégorie de live pour cette problématique'); return; }
     if(bEl){ bEl.disabled = true; bEl.textContent = '🧠 LIA réfléchit…'; }
-    const r = await qaCall('POST', '/qa/submit', {initial_question: txt});
+    const r = await qaCall('POST', '/qa/submit', {initial_question: txt, live_category: cat});
     if(r.error){
       showMsg('err', 'Erreur LIA : ' + r.error);
       if(bEl){ bEl.disabled = false; bEl.textContent = '🧠 Creuser avec LIA'; }
@@ -1246,12 +1251,7 @@ body{
           <input type="hidden" id="field-fulfillment" value="0">
         </div>
 
-        <!-- PULSE — 1 seule question (rotation 4 essentielles) -->
-        <div class="wellbeing">
-          <h3>Pulse</h3>
-          <p class="sub">1 question. Réponds franc.</p>
-          ${wbQuestionsHTML}
-        </div>
+        <!-- Pulse retiré (Phase 2 refonte 2026-05-21 — focus champs essentiels) -->
 
         <!-- COMPACT: Calls + CA -->
         <div class="field-row">
@@ -1302,7 +1302,16 @@ body{
         <!-- PROBLÉMATIQUE DU JOUR — CREUSAGE INLINE OBLIGATOIRE -->
         <div class="block-mandatory" id="block-problem">
           <h3>Ta problématique du jour <span class="req">obligatoire</span></h3>
-          <p class="sub">1 vraie difficulté concrète. LIA te pose 1-2 questions pour creuser, puis Djibril te répond.</p>
+          <p class="sub">1 vraie difficulté concrète. Choisis sa catégorie (jour de live). LIA creuse, puis ta question part vers le bon intervenant.</p>
+
+          <!-- Catégorie de live (lié au routage admin collaborateur) -->
+          <div class="field" style="margin-bottom:14px">
+            <label for="field-live-category">Catégorie du live</label>
+            <select id="field-live-category" style="width:100%;padding:11px 12px;border:1.5px solid rgba(26,22,20,.22);background:rgba(255,252,245,.95);color:var(--ink);font-family:var(--mono);font-size:13px;letter-spacing:.05em;border-radius:4px;cursor:pointer">
+              <option value="">— Choisis une catégorie —</option>
+            </select>
+            <div id="live-category-hint" style="margin-top:6px;font-family:var(--mono);font-size:10px;color:var(--ink-mute);letter-spacing:.06em"></div>
+          </div>
 
           <!-- Étape 1 — saisie initiale problème -->
           <div id="prob-step-write">
@@ -1315,24 +1324,19 @@ body{
           <div id="qa-active-area" class="dig-flow"></div>
         </div>
 
-        <!-- QUALIFICATION SITUATION (forcée) -->
-        <div class="block-mandatory" id="block-qualif">
-          <h3>Ta situation cette semaine <span class="req">obligatoire</span></h3>
-          <p class="sub">3 chiffres précis. Si tu sais pas exact → estime, mais réponds.</p>
-          <div class="qualif-grid">
-            <div class="field">
-              <label>Appels cumulés cette semaine</label>
-              <input type="number" id="qualif-weekly-calls" min="0" value="0" inputmode="numeric">
-            </div>
-            <div class="field">
-              <label>CA encaissé cette semaine (€)</label>
-              <input type="number" id="qualif-weekly-ca" min="0" step="0.01" value="0" inputmode="decimal">
-            </div>
-            <div class="field qualif-milestone">
-              <label>Prochain milestone précis + date</label>
-              <input type="text" id="qualif-milestone" maxlength="120" placeholder="Ex : « 5 RDV pris d'ici vendredi 22 mai »">
-            </div>
-          </div>
+        <!-- GRAPHIQUE ÉVOLUTIF 7 JOURS (lundi → lundi heure FR) -->
+        <div class="block-mandatory" id="block-evolution" style="background:rgba(232,168,149,.06);border-color:rgba(232,168,149,.35)">
+          <h3>Ton évolution 7 jours</h3>
+          <p class="sub">Lundi → dimanche · calls passés + CA encaissé</p>
+          <canvas id="chart-evolution" height="160" style="width:100%;max-width:100%;display:block;margin-top:10px"></canvas>
+          <div id="chart-summary" style="margin-top:14px;display:flex;gap:18px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--ink-soft)"></div>
+        </div>
+
+        <!-- Qualif weekly + milestone retirés (Phase 2 refonte 2026-05-21) -->
+        <div id="block-qualif" style="display:none">
+          <input type="number" id="qualif-weekly-calls" value="0" style="display:none">
+          <input type="number" id="qualif-weekly-ca" value="0" style="display:none">
+          <input type="text" id="qualif-milestone" value="ignored" style="display:none">
         </div>
 
         <!-- RÉVÉLATION DU JOUR retirée (Phase 1 refonte 2026-05-21) -->
@@ -1373,7 +1377,97 @@ body{
 
     bindEvents();
     await loadToday();
+    // Phase 2 — charge catégories de live + dessine graphique 7j
+    loadLiveCategories().catch(e => console.warn('live-categories load failed', e));
+    loadEvolutionChart().catch(e => console.warn('evolution chart load failed', e));
     updateMissing();
+  }
+
+  // ── Phase 2 — Catégories de live (dropdown) ────────────
+  let _liveCategoryRequired = true;
+  async function loadLiveCategories(){
+    const sel = document.getElementById('field-live-category');
+    const hint = document.getElementById('live-category-hint');
+    if(!sel) return;
+    try {
+      const r = await fetch('https://nbnbsljqtolzzuqnkyae.supabase.co/rest/v1/live_categories?is_visible=eq.true&select=id,label,intervenant_first_name,day_of_week,start_hour&order=day_of_week.asc', {
+        headers: {
+          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ibmJzbGpxdG9senp1cW5reWFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgzODk2MDYsImV4cCI6MjA4Mzk2NTYwNn0.0Io_TLbntyxYeUUcv_krbcl4txHp6wSwdMy_BzORmV4',
+        }
+      });
+      if(!r.ok) throw new Error('HTTP ' + r.status);
+      const cats = await r.json();
+      const dayNames = ['','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
+      sel.innerHTML = '<option value="">— Choisis une catégorie —</option>' +
+        cats.map(c => `<option value="${c.id}">${c.label} · ${dayNames[c.day_of_week]} ${String(c.start_hour).padStart(2,'0')}h · ${c.intervenant_first_name}</option>`).join('');
+      sel.addEventListener('change', () => {
+        const c = cats.find(x => x.id === sel.value);
+        if(hint && c) hint.textContent = `→ ta question ira directement à ${c.intervenant_first_name} pour le live ${dayNames[c.day_of_week]} ${String(c.start_hour).padStart(2,'0')}h.`;
+        else if(hint) hint.textContent = '';
+        updateMissing();
+      });
+    } catch(e){
+      if(hint) hint.textContent = 'Catégories indisponibles (connexion). Réessaye dans 1 min.';
+    }
+  }
+
+  // ── Phase 2 — Graphique évolutif 7j ─────────────────────
+  async function loadEvolutionChart(){
+    const cv = document.getElementById('chart-evolution');
+    if(!cv || typeof Chart === 'undefined') return;
+    // Calcule date lundi cette semaine (heure FR)
+    const now = new Date();
+    const dow = now.getDay(); // 0=dim, 1=lun…
+    const offsetToMon = dow === 0 ? -6 : (1 - dow);
+    const mon = new Date(now); mon.setDate(now.getDate() + offsetToMon); mon.setHours(0,0,0,0);
+    const labels = [];
+    const dates = [];
+    const dayLabels = ['L','M','M','J','V','S','D'];
+    for(let i = 0; i < 7; i++){
+      const d = new Date(mon); d.setDate(mon.getDate() + i);
+      dates.push(d.toISOString().slice(0,10));
+      labels.push(dayLabels[i]);
+    }
+    // Récupère les entries de la semaine
+    let entries = [];
+    try {
+      const r = await api('GET', '/me/history');
+      entries = Array.isArray(r) ? r : [];
+    } catch(e){ console.warn('history fetch failed', e); }
+    const byDate = {};
+    entries.forEach(e => { byDate[e.entry_date] = e; });
+    const callsArr = dates.map(d => (byDate[d]?.calls) || 0);
+    const caArr    = dates.map(d => (byDate[d]?.ca_eur) || 0);
+    const totalCalls = callsArr.reduce((s,v)=>s+v,0);
+    const totalCA    = caArr.reduce((s,v)=>s+v,0);
+    // Summary
+    const summary = document.getElementById('chart-summary');
+    if(summary){
+      summary.innerHTML = `<span>Calls 7j : <b style="color:var(--ember-deep)">${totalCalls}</b></span><span>CA 7j : <b style="color:var(--ember-deep)">${Math.round(totalCA)}€</b></span>`;
+    }
+    new Chart(cv, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [
+          { label: 'Calls', data: callsArr, backgroundColor: 'rgba(232,168,149,0.65)', borderColor: '#e8a895', borderWidth: 1.5, borderRadius: 4, yAxisID: 'yCalls' },
+          { label: 'CA (€)', data: caArr, type: 'line', borderColor: '#1a1614', backgroundColor: 'rgba(26,22,20,0.08)', borderWidth: 2, tension: 0.3, pointRadius: 4, pointBackgroundColor: '#1a1614', yAxisID: 'yCA', fill: false },
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: true, labels: { font: { family: 'ui-monospace,monospace', size: 10 }, boxWidth: 12 } },
+          tooltip: { backgroundColor: '#1a1614', titleFont: { family: 'ui-monospace,monospace' }, bodyFont: { family: 'Georgia,serif' } }
+        },
+        scales: {
+          x: { grid: { display: false }, ticks: { font: { family: 'ui-monospace,monospace', size: 11 } } },
+          yCalls: { position: 'left', beginAtZero: true, grid: { color: 'rgba(26,22,20,0.06)' }, ticks: { font: { family: 'ui-monospace,monospace', size: 10 } } },
+          yCA: { position: 'right', beginAtZero: true, grid: { display: false }, ticks: { font: { family: 'ui-monospace,monospace', size: 10 }, callback: v => v + '€' } }
+        }
+      }
+    });
   }
 
   // ── State for wellbeing answers ─────────────────────────
@@ -1491,14 +1585,16 @@ body{
     const qStatus = _activeQuestion?.status;
 
     const missing = [];
+    // Phase 2 refonte 2026-05-21 — checks chirurgicaux (virés : milestone, revelation)
+    const catEl = document.getElementById('field-live-category');
+    const catVal = (catEl?.value || '').trim();
     if(hours <= 0 && calls <= 0) missing.push('Au moins 1 chiffre d\'activité (heures ou calls)');
     if(ful <= 0) missing.push('État du jour (1 emoji)');
+    if(!catVal) missing.push('Choisir la catégorie du live concerné');
     if(probLen < 30) missing.push(`Problématique du jour (encore ${Math.max(0, 30-probLen)} caractères)`);
     else if(!_activeQuestion) missing.push('Cliquer « Creuser avec LIA » sur ta problématique');
     else if(qStatus === 'deepening') missing.push('Répondre à la question de LIA pour terminer le creusage');
     else if(qStatus === 'qualified') missing.push('Cliquer « Envoyer à Djibril » pour finaliser la question');
-    if(milestone && !milestone.value.trim()) missing.push('Prochain milestone précis + date');
-    if(revCk && !revCk.checked) missing.push('Cocher « j\'ai pigé » sur la révélation');
 
     if(missing.length && missEl){
       missEl.innerHTML = `<div class="missing-list">Avant d'enregistrer, il manque :<ul>${missing.map(m=>`<li>· ${m}</li>`).join('')}</ul></div>`;
