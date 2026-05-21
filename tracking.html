@@ -1201,11 +1201,10 @@ body{
         <div class="brain-orb__pts" aria-hidden="true"><span id="brain-pts" style="display:none">0</span></div>
       </div></div>
 
-      <div class="plate-stage" id="plate-stage" aria-label="Ton assiette du jour">
-        <div class="plate-stage__caption">✦ Ton assiette du jour</div>
-      </div>
-      <div class="plate-stage-sentinel" id="plate-sentinel"></div>
-      <div class="plate-placeholder" id="plate-placeholder"></div>
+      <!-- Plate-stage retiré (2026-05-21 — user request) -->
+      <div id="plate-stage" style="display:none"></div>
+      <div id="plate-sentinel" style="display:none"></div>
+      <div id="plate-placeholder" style="display:none"></div>
 
       <div id="msg-area"></div>
 
@@ -1326,12 +1325,10 @@ body{
           <div id="qa-active-area" class="dig-flow"></div>
         </div>
 
-        <!-- GRAPHIQUE ÉVOLUTIF 7 JOURS (lundi → lundi heure FR) -->
-        <div class="block-mandatory" id="block-evolution" style="background:rgba(232,168,149,.06);border-color:rgba(232,168,149,.35)">
-          <h3>Ton évolution 7 jours</h3>
-          <p class="sub">Lundi → dimanche · calls passés + CA encaissé</p>
-          <canvas id="chart-evolution" height="160" style="width:100%;max-width:100%;display:block;margin-top:10px"></canvas>
-          <div id="chart-summary" style="margin-top:14px;display:flex;gap:18px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--ink-soft)"></div>
+        <!-- Évolution 7j retirée (2026-05-21 — user request) -->
+        <div id="block-evolution" style="display:none">
+          <canvas id="chart-evolution"></canvas>
+          <div id="chart-summary"></div>
         </div>
 
         <!-- Qualif weekly + milestone retirés (Phase 2 refonte 2026-05-21) -->
