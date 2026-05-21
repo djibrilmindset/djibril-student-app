@@ -197,6 +197,17 @@ body{
 
 /* STATE EMOJIS (V5 — remplace slider 0-10) */
 .state-emojis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:8px 0 4px}
+/* Buttons catégorie de live (Phase 2 refonte 2026-05-22) */
+.category-btn{padding:11px 12px;background:rgba(255,252,245,.85);border:1.5px solid rgba(26,22,20,.22);border-radius:6px;cursor:pointer;transition:all .15s;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--ink);text-align:left;display:flex;flex-direction:column;gap:3px;line-height:1.25;font-weight:600}
+.category-btn:hover{transform:translateY(-2px);border-color:var(--salmon,#e8a895);box-shadow:3px 3px 0 rgba(232,168,149,.3)}
+.category-btn.is-on{background:rgba(232,168,149,.22);border-color:var(--ember);box-shadow:3px 3px 0 var(--ember-deep);color:var(--ember-deep)}
+.category-btn.is-done{background:rgba(29,138,111,.12);border-color:rgba(29,138,111,.45);color:var(--jade);cursor:not-allowed;opacity:.7}
+.category-btn.is-done::after{content:" ✓";color:var(--jade);font-weight:700;margin-left:4px}
+.category-btn small{display:block;font-family:var(--serif);font-style:italic;font-size:10px;font-weight:400;color:var(--ink-mute);text-transform:none;letter-spacing:0;margin-top:1px}
+.prob-pill.is-on{background:var(--ember,#e85d2c)!important;border-color:var(--ember-deep,#c73e1a)!important;box-shadow:0 0 8px rgba(232,93,44,.5)}
+.prob-submitted-card{padding:12px 14px;margin-top:10px;background:rgba(29,138,111,.06);border-left:3px solid var(--jade);border-radius:4px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink-soft)}
+.prob-submitted-card b{color:var(--jade);font-weight:700;text-transform:uppercase;letter-spacing:.1em}
+
 .state-emojis .state-btn{font-size:1.8rem;padding:14px 0;background:rgba(255,252,245,.85);border:1.5px solid rgba(26,22,20,.22);border-radius:8px;cursor:pointer;transition:all .15s;line-height:1}
 .state-emojis .state-btn:hover{transform:translateY(-2px);border-color:var(--ember)}
 .state-emojis .state-btn.is-on{background:var(--ember-soft);border-color:var(--ember);box-shadow:3px 3px 0 var(--ember-deep)}
@@ -1112,6 +1123,12 @@ body{
       _activeQuestion = {...full.question, matched_kb: full.kb};
       renderQaActive();
     }
+    // Phase 2.5 — Refresh compteur 2 problématiques/jour
+    await loadSubmittedToday();
+    // Si <2 envoyées, auto-reset le bloc pour saisir la 2ème
+    if(_submittedToday.length < 2){
+      setTimeout(() => { resetQa(); updateMissing(); }, 1500);
+    }
   }
 
   async function matchResponse(accept){
@@ -1300,18 +1317,26 @@ body{
           <button id="btn-live-yes" aria-label="J'ai fait une live diffusion aujourd'hui">Oui</button>
         </div>
 
-        <!-- PROBLÉMATIQUE DU JOUR — CREUSAGE INLINE OBLIGATOIRE -->
+        <!-- PROBLÉMATIQUES DU JOUR — 2 OBLIGATOIRES + creusage LIA + catégorie bouton -->
         <div class="block-mandatory" id="block-problem">
-          <h3>Ta problématique du jour <span class="req">obligatoire</span></h3>
-          <p class="sub">1 vraie difficulté concrète. Choisis sa catégorie (jour de live). LIA creuse, puis ta question part vers le bon intervenant.</p>
+          <h3>Tes problématiques du jour <span class="req">2 obligatoires</span></h3>
+          <p class="sub">2 vraies difficultés concrètes sur 2 catégories différentes. LIA creuse chaque problématique, puis elles partent au bon intervenant.</p>
 
-          <!-- Catégorie de live (lié au routage admin collaborateur) -->
+          <!-- Compteur visuel -->
+          <div id="prob-counter" style="display:flex;align-items:center;gap:10px;margin:14px 0 18px;padding:10px 14px;background:rgba(255,252,245,.85);border:1.5px solid var(--line);border-radius:6px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)">
+            <span><b id="prob-done-count" style="color:var(--ember-deep);font-family:var(--display);font-size:1.4rem">0</b> / 2 envoyées</span>
+            <div id="prob-pills" style="display:flex;gap:6px;margin-left:auto">
+              <span class="prob-pill" data-slot="1" style="width:14px;height:14px;border-radius:50%;background:rgba(26,22,20,.15);border:1.5px solid var(--ink-soft)"></span>
+              <span class="prob-pill" data-slot="2" style="width:14px;height:14px;border-radius:50%;background:rgba(26,22,20,.15);border:1.5px solid var(--ink-soft)"></span>
+            </div>
+          </div>
+
+          <!-- Catégorie de live — boutons tactiles (au lieu de dropdown) -->
           <div class="field" style="margin-bottom:14px">
-            <label for="field-live-category">Catégorie du live</label>
-            <select id="field-live-category" style="width:100%;padding:11px 12px;border:1.5px solid rgba(26,22,20,.22);background:rgba(255,252,245,.95);color:var(--ink);font-family:var(--mono);font-size:13px;letter-spacing:.05em;border-radius:4px;cursor:pointer">
-              <option value="">— Choisis une catégorie —</option>
-            </select>
-            <div id="live-category-hint" style="margin-top:6px;font-family:var(--mono);font-size:10px;color:var(--ink-mute);letter-spacing:.06em"></div>
+            <label style="margin-bottom:8px;display:block">Catégorie du live <span id="cat-slot-label" style="font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--ember-deep);text-transform:uppercase;margin-left:6px">· Problématique 1</span></label>
+            <div id="category-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px"></div>
+            <input type="hidden" id="field-live-category" value="">
+            <div id="live-category-hint" style="margin-top:8px;font-family:var(--mono);font-size:10px;color:var(--ink-mute);letter-spacing:.06em"></div>
           </div>
 
           <!-- Étape 1 — saisie initiale problème -->
@@ -1323,6 +1348,9 @@ body{
 
           <!-- Étape 2 — creusage IA + réponse Djibril (réutilise qa-active-area existant) -->
           <div id="qa-active-area" class="dig-flow"></div>
+
+          <!-- Liste des problématiques déjà envoyées aujourd'hui -->
+          <div id="prob-submitted-list" style="margin-top:18px"></div>
         </div>
 
         <!-- Évolution 7j retirée (2026-05-21 — user request) -->
@@ -1382,32 +1410,94 @@ body{
     updateMissing();
   }
 
-  // ── Phase 2 — Catégories de live (dropdown) ────────────
+  // ── Phase 2 — Catégories de live (boutons grid + 2 problématiques/jour) ────
   let _liveCategoryRequired = true;
+  let _categoriesCache = [];
+  let _submittedToday = []; // [{id, live_category, label, ...}]
+
   async function loadLiveCategories(){
-    const sel = document.getElementById('field-live-category');
+    const grid = document.getElementById('category-grid');
+    const hidden = document.getElementById('field-live-category');
     const hint = document.getElementById('live-category-hint');
-    if(!sel) return;
+    if(!grid || !hidden) return;
     try {
       const r = await fetch('https://nbnbsljqtolzzuqnkyae.supabase.co/rest/v1/live_categories?is_visible=eq.true&select=id,label,intervenant_first_name,day_of_week,start_hour&order=day_of_week.asc', {
-        headers: {
-          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ibmJzbGpxdG9senp1cW5reWFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgzODk2MDYsImV4cCI6MjA4Mzk2NTYwNn0.0Io_TLbntyxYeUUcv_krbcl4txHp6wSwdMy_BzORmV4',
-        }
+        headers: { 'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ibmJzbGpxdG9senp1cW5reWFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgzODk2MDYsImV4cCI6MjA4Mzk2NTYwNn0.0Io_TLbntyxYeUUcv_krbcl4txHp6wSwdMy_BzORmV4' }
       });
       if(!r.ok) throw new Error('HTTP ' + r.status);
-      const cats = await r.json();
-      const dayNames = ['','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
-      sel.innerHTML = '<option value="">— Choisis une catégorie —</option>' +
-        cats.map(c => `<option value="${c.id}">${c.label} · ${dayNames[c.day_of_week]} ${String(c.start_hour).padStart(2,'0')}h · ${c.intervenant_first_name}</option>`).join('');
-      sel.addEventListener('change', () => {
-        const c = cats.find(x => x.id === sel.value);
-        if(hint && c) hint.textContent = `→ ta question ira directement à ${c.intervenant_first_name} pour le live ${dayNames[c.day_of_week]} ${String(c.start_hour).padStart(2,'0')}h.`;
-        else if(hint) hint.textContent = '';
-        updateMissing();
-      });
+      _categoriesCache = await r.json();
+      renderCategoryGrid();
+      // Pré-charge les problématiques déjà soumises aujourd'hui
+      await loadSubmittedToday();
     } catch(e){
       if(hint) hint.textContent = 'Catégories indisponibles (connexion). Réessaye dans 1 min.';
     }
+  }
+
+  function renderCategoryGrid(){
+    const grid = document.getElementById('category-grid');
+    const dayNames = ['','Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+    const doneCats = new Set(_submittedToday.map(s => s.live_category));
+    grid.innerHTML = _categoriesCache.map(c => {
+      const done = doneCats.has(c.id);
+      return `<button type="button" class="category-btn ${done ? 'is-done' : ''}" data-cat="${c.id}" ${done ? 'disabled aria-disabled="true"' : ''}>
+        ${c.label}
+        <small>${dayNames[c.day_of_week]} ${String(c.start_hour).padStart(2,'0')}h · ${c.intervenant_first_name}</small>
+      </button>`;
+    }).join('');
+    grid.querySelectorAll('.category-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if(btn.classList.contains('is-done')) return;
+        grid.querySelectorAll('.category-btn').forEach(b => b.classList.remove('is-on'));
+        btn.classList.add('is-on');
+        document.getElementById('field-live-category').value = btn.dataset.cat;
+        const c = _categoriesCache.find(x => x.id === btn.dataset.cat);
+        const hint = document.getElementById('live-category-hint');
+        if(hint && c) hint.textContent = `→ ta question ira à ${c.intervenant_first_name} pour le live ${dayNames[c.day_of_week]} ${String(c.start_hour).padStart(2,'0')}h.`;
+        updateMissing();
+      });
+    });
+  }
+
+  async function loadSubmittedToday(){
+    try {
+      const today = new Date().toISOString().slice(0,10);
+      // Récupère qa_questions du jour pour cet élève via le edge function get
+      const r = await qaCall('GET', '/qa/my-today', null);
+      _submittedToday = Array.isArray(r?.questions) ? r.questions : [];
+      updateProbCounter();
+      renderCategoryGrid();
+      renderSubmittedList();
+    } catch(e){
+      console.warn('loadSubmittedToday failed', e);
+    }
+  }
+
+  function updateProbCounter(){
+    const n = _submittedToday.length;
+    const cnt = document.getElementById('prob-done-count');
+    if(cnt) cnt.textContent = String(n);
+    document.querySelectorAll('.prob-pill').forEach((p, i) => {
+      p.classList.toggle('is-on', i < n);
+    });
+    const slotLabel = document.getElementById('cat-slot-label');
+    if(slotLabel){
+      if(n >= 2) slotLabel.textContent = '· ✓ 2/2 envoyées';
+      else slotLabel.textContent = `· Problématique ${n+1} sur 2`;
+    }
+  }
+
+  function renderSubmittedList(){
+    const el = document.getElementById('prob-submitted-list');
+    if(!el) return;
+    if(_submittedToday.length === 0){ el.innerHTML = ''; return; }
+    el.innerHTML = _submittedToday.map((q, i) => {
+      const cat = _categoriesCache.find(c => c.id === q.live_category);
+      const catLabel = cat ? `${cat.label} · ${cat.intervenant_first_name}` : (q.live_category || 'sans catégorie');
+      const txt = (q.qualified_question || q.initial_question || '').slice(0, 110);
+      return `<div class="prob-submitted-card"><b>#${i+1} · ${catLabel}</b><br/>${txt}${txt.length >= 110 ? '…' : ''}</div>`;
+    }).join('');
+  }
   }
 
   // ── Phase 2 — Graphique évolutif 7j ─────────────────────
@@ -1584,16 +1674,24 @@ body{
     const qStatus = _activeQuestion?.status;
 
     const missing = [];
-    // Phase 2 refonte 2026-05-21 — checks chirurgicaux (virés : milestone, revelation)
+    // Phase 2.5 (2026-05-22) — 2 problématiques/jour OBLIGATOIRES
     const catEl = document.getElementById('field-live-category');
     const catVal = (catEl?.value || '').trim();
+    const submittedCount = (typeof _submittedToday !== 'undefined' && Array.isArray(_submittedToday)) ? _submittedToday.length : 0;
+
     if(hours <= 0 && calls <= 0) missing.push('Au moins 1 chiffre d\'activité (heures ou calls)');
     if(ful <= 0) missing.push('État du jour (1 emoji)');
-    if(!catVal) missing.push('Choisir la catégorie du live concerné');
-    if(probLen < 30) missing.push(`Problématique du jour (encore ${Math.max(0, 30-probLen)} caractères)`);
-    else if(!_activeQuestion) missing.push('Cliquer « Creuser avec LIA » sur ta problématique');
-    else if(qStatus === 'deepening') missing.push('Répondre à la question de LIA pour terminer le creusage');
-    else if(qStatus === 'qualified') missing.push('Cliquer « Envoyer à Djibril » pour finaliser la question');
+
+    // Si déjà 2 envoyées → tout est bon côté problématiques
+    if(submittedCount < 2){
+      const remaining = 2 - submittedCount;
+      const label = submittedCount === 0 ? '2 problématiques' : `${remaining} problématique${remaining>1?'s':''} restante${remaining>1?'s':''}`;
+      if(!catVal) missing.push(`Choisir la catégorie du live (${label} à envoyer)`);
+      else if(probLen < 30) missing.push(`Écrire ta problématique (${Math.max(0, 30-probLen)} caractères restants · ${label})`);
+      else if(!_activeQuestion) missing.push(`Cliquer « Creuser avec LIA » sur ta problématique #${submittedCount+1}`);
+      else if(qStatus === 'deepening') missing.push(`Répondre à la question de LIA (problématique #${submittedCount+1})`);
+      else if(qStatus === 'qualified') missing.push(`Envoyer à Djibril ta problématique #${submittedCount+1}`);
+    }
 
     if(missing.length && missEl){
       missEl.innerHTML = `<div class="missing-list">Avant d'enregistrer, il manque :<ul>${missing.map(m=>`<li>· ${m}</li>`).join('')}</ul></div>`;
