@@ -422,6 +422,19 @@ body{
 </style>
 <!-- Chart.js pour graphique évolutif 7j (Phase 2 refonte 2026-05-21) -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
+<!-- Fix user 2026-05-22 : redirect immédiat si pas connecté, évite flash blank cosmos.
+     L'IIFE async tout en bas met du temps à démarrer (>200ms) avant de checker auth,
+     donc l'utilisateur voit la page vide avant le redirect. Ici on tranche tout de
+     suite, hors IIFE, sans attendre le bundle Chart.js. -->
+<script>
+  (function(){
+    try {
+      var t = sessionStorage.getItem('dj_token');
+      var u = sessionStorage.getItem('dj_user');
+      if (!t || !u) { window.location.replace('index.html'); }
+    } catch (e) { window.location.replace('index.html'); }
+  })();
+</script>
 </head>
 <body>
 
@@ -434,7 +447,14 @@ body{
   <div class="cosmos__noise"></div><div class="cosmos__veil"></div>
 </div>
 
-<div class="shell" id="shell"></div>
+<div class="shell" id="shell">
+  <noscript>
+    <div style="max-width:480px;margin:80px auto;padding:32px;text-align:center;font-family:'Instrument Serif',serif;color:#1a1614">
+      <p style="font-size:1.2rem;font-style:italic">JavaScript est désactivé.</p>
+      <p style="margin-top:12px"><a href="index.html" style="color:#e85d2c;font-weight:600;text-decoration:underline">→ Aller à la page de connexion</a></p>
+    </div>
+  </noscript>
+</div>
 
 <script>
 (async function(){
