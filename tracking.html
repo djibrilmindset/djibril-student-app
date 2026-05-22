@@ -2044,7 +2044,9 @@ body{
       if(t) autosaveDraft();
     });
   }
-  bindAutosaveListeners();
+  // Note: appel différé dans render().then() ci-dessous — au moment où
+  // bindAutosaveListeners() s'exécute ici les éléments du form n'existent pas
+  // encore (render() injecte le shell.innerHTML après).
 
   // ── Save entry ──────────────────────────────────────────
   async function saveEntry(){
@@ -2374,7 +2376,11 @@ body{
   }, 300);
 
   // ── Start ───────────────────────────────────────────────
-  render().then(()=>{ attachMicsAll(); });
+  render().then(()=>{
+    attachMicsAll();
+    // Bind autosave AFTER shell.innerHTML est injecté par render()
+    try { bindAutosaveListeners(); } catch(e){ console.warn('autosave bind failed', e); }
+  });
 })();
 </script>
 
