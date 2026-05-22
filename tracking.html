@@ -1393,6 +1393,10 @@ body{
 
         <div id="lock-warn-area"></div>
         <div id="missing-area" aria-live="polite"></div>
+        <!-- Autosave 2026-05-22 (recommandation A audit) — chip silencieux
+             rassure l'élève que ses inputs sont gardés en local même s'il
+             ferme l'onglet avant d'avoir cliqué Enregistrer (save_count 0.1 → bug abandon) -->
+        <div id="autosave-chip" aria-live="polite" style="text-align:center;font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--ink-mute);margin:6px 0 10px;min-height:14px"></div>
         <button class="btn btn--full btn--ember" id="btn-save" aria-label="Enregistrer ma fiche du jour">Enregistrer ma fiche</button>
       </div>
 
@@ -1871,6 +1875,8 @@ body{
 
     _wb = (data.wellbeing_answers && typeof data.wellbeing_answers==='object') ? data.wellbeing_answers : {};
     applyLockState(data.save_count || 0);
+    // Autosave restore : si pas de save serveur encore, on récupère le draft local
+    try { restoreDraftIfFresh(data.save_count || 0); } catch(e){ /* fail-soft */ }
     // Baseline shine: si l'élève a déjà une fiche, on baseline à ces valeurs sauvegardées.
     // Sinon (fiche vide), baseline = 0 → tout brille dès le 1er input.
     if ((data.save_count || 0) > 0) {
@@ -1925,6 +1931,121 @@ body{
     } catch(e){ console.warn('init qa-mine failed', e); renderQaActive(); }
   }
 
+  // ── AUTOSAVE LOCAL (recommandation A, 2026-05-22) ──────────
+  // Constat data réelle prod : save_count moyen 0.1 sur 16 entries → les
+  // élèves ouvrent la fiche, la remplissent, mais oublient de cliquer
+  // ENREGISTRER MA FICHE. Au prochain refresh ils repartent à zéro → abandon.
+  //
+  // Solution : copie locale silencieuse de la fiche en cours dans
+  // localStorage à chaque input (debounce 1.2s), restaurée au prochain
+  // chargement si aucune save serveur n'existe encore. ZÉRO appel API,
+  // ZÉRO consommation du quota save_count serveur (reste à 2 saves max
+  // serveur). La sauvegarde serveur reste un acte volontaire via le bouton.
+  let _autosaveTimer = null;
+  const AUTOSAVE_KEY = 'dj_draft_' + getTodayStr() + '_' + (user.id || user.email || 'anon');
+
+  function collectDraftSnapshot(){
+    const safe = id => document.getElementById(id);
+    return {
+      v: 1,
+      date: getTodayStr(),
+      ts: Date.now(),
+      calls: parseInt(safe('field-calls')?.value)||0,
+      ca:    parseFloat(safe('field-ca')?.value)||0,
+      hours: parseFloat(safe('field-hours')?.value)||0,
+      ful:   parseInt(safe('field-fulfillment')?.value)||0,
+      live:  !!_live,
+      wb:    JSON.parse(JSON.stringify(_wb||{})),
+      problem:        safe('field-problem')?.value || '',
+      videos_cold:    parseInt(safe('field-videos-cold')?.value)||0,
+      videos_closing: parseInt(safe('field-videos-closing')?.value)||0,
+      live_category:  safe('field-live-category')?.value || '',
+      qualif: {
+        weekly_calls: parseInt(safe('qualif-weekly-calls')?.value)||0,
+        weekly_ca:    parseFloat(safe('qualif-weekly-ca')?.value)||0,
+        milestone:    safe('qualif-milestone')?.value || ''
+      },
+      rev_ack: !!safe('rev-acknowledge')?.checked
+    };
+  }
+
+  function autosaveChipMsg(ts){
+    const el = document.getElementById('autosave-chip');
+    if(!el) return;
+    if(!ts){ el.textContent = ''; return; }
+    const sec = Math.max(1, Math.round((Date.now() - ts)/1000));
+    el.textContent = '✓ sauvé localement · il y a ' + (sec < 60 ? sec + 's' : Math.round(sec/60) + ' min');
+  }
+
+  function autosaveDraft(){
+    clearTimeout(_autosaveTimer);
+    _autosaveTimer = setTimeout(() => {
+      try {
+        const snap = collectDraftSnapshot();
+        localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(snap));
+        autosaveChipMsg(snap.ts);
+      } catch(e) { /* localStorage plein/safari private → silencieux */ }
+    }, 1200);
+  }
+  // Refresh affichage temps écoulé toutes les 30s
+  setInterval(() => {
+    try {
+      const raw = localStorage.getItem(AUTOSAVE_KEY);
+      if(raw){ const d = JSON.parse(raw); autosaveChipMsg(d.ts); }
+    } catch(e){}
+  }, 30000);
+
+  function restoreDraftIfFresh(serverSaveCount){
+    // On ne restaure QUE si :
+    //   - une copie locale existe pour aujourd'hui
+    //   - le serveur n'a aucune save (save_count = 0) — sinon la version
+    //     serveur est plus à jour et fait foi.
+    if(serverSaveCount > 0) { try{ localStorage.removeItem(AUTOSAVE_KEY); }catch(e){} return; }
+    let snap = null;
+    try { snap = JSON.parse(localStorage.getItem(AUTOSAVE_KEY) || 'null'); } catch(e){}
+    if(!snap || snap.date !== getTodayStr()) return;
+    try {
+      const setIf = (id,v) => { const el=document.getElementById(id); if(el && (el.value===''||el.value==='0')) el.value = v; };
+      setIf('field-calls',  snap.calls);
+      setIf('field-ca',     snap.ca);
+      setIf('field-hours',  snap.hours);
+      setIf('field-fulfillment', snap.ful);
+      setIf('field-problem', snap.problem);
+      setIf('field-videos-cold', snap.videos_cold);
+      setIf('field-videos-closing', snap.videos_closing);
+      setIf('field-live-category', snap.live_category);
+      setIf('qualif-weekly-calls', snap.qualif?.weekly_calls);
+      setIf('qualif-weekly-ca',    snap.qualif?.weekly_ca);
+      setIf('qualif-milestone',    snap.qualif?.milestone);
+      if(snap.wb && Object.keys(snap.wb).length) _wb = snap.wb;
+      if(typeof toggleLive === 'function') toggleLive(!!snap.live);
+      if(typeof updateHoursUI === 'function') updateHoursUI();
+      if(typeof updateFulUI === 'function') updateFulUI();
+      autosaveChipMsg(snap.ts);
+    } catch(e) { console.warn('[autosave] restore failed', e); }
+  }
+
+  // Branche tous les inputs/changes à autosaveDraft (debounce interne 1.2s)
+  function bindAutosaveListeners(){
+    const ids = ['field-calls','field-ca','field-hours','field-fulfillment',
+      'field-problem','field-videos-cold','field-videos-closing','field-live-category',
+      'qualif-weekly-calls','qualif-weekly-ca','qualif-milestone'];
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if(!el) return;
+      el.addEventListener('input', autosaveDraft);
+      el.addEventListener('change', autosaveDraft);
+    });
+    // wb buttons + live toggle + fulfillment emojis ne déclenchent pas input,
+    // on hook les click génériques pour autosave aussi
+    document.addEventListener('click', e => {
+      if(!e.target) return;
+      const t = e.target.closest('.wb-btn, .ful-emoji, .tick, #btn-live-yes, #btn-live-no, .category-btn');
+      if(t) autosaveDraft();
+    });
+  }
+  bindAutosaveListeners();
+
   // ── Save entry ──────────────────────────────────────────
   async function saveEntry(){
     const btn = document.getElementById('btn-save');
@@ -1969,6 +2090,8 @@ body{
     btn.disabled = false;
     if(data && !data.error){
       const sc = data.save_count || 0;
+      // Save serveur OK → purge la copie locale (la version serveur fait foi)
+      try { localStorage.removeItem(AUTOSAVE_KEY); document.getElementById('autosave-chip').textContent=''; } catch(e){}
       if(sc === 1){
         showMsg('ok','Fiche enregistrée ✦ — tu peux encore la modifier 1 fois');
       } else if(sc === 2){
