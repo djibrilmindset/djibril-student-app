@@ -1474,6 +1474,9 @@ body{
         const c = _categoriesCache.find(x => x.id === btn.dataset.cat);
         const hint = document.getElementById('live-category-hint');
         if(hint && c) hint.textContent = `→ ta question ira à ${c.intervenant_first_name} pour le live ${dayNames[c.day_of_week]} ${String(c.start_hour).padStart(2,'0')}h.`;
+        // Fix 2026-05-22 : recalcule l'état du bouton « Creuser avec LIA »
+        // dès qu'une catégorie est choisie (gate cat + 30 chars + pas de Q active)
+        if(typeof window.refreshDeepenBtn === 'function') window.refreshDeepenBtn();
         updateMissing();
       });
     });
@@ -1650,13 +1653,30 @@ body{
     const probEl = document.getElementById('field-problem');
     const probCount = document.getElementById('problem-count');
     const deepenBtn = document.getElementById('btn-deepen');
+
+    // Fix user 2026-05-22 : catégorie OBLIGATOIRE pour soumettre une question
+    // (helper appelé depuis l'input texte + le click catégorie).
+    function refreshDeepenBtn(){
+      if(!deepenBtn) return;
+      const len = probEl ? probEl.value.trim().length : 0;
+      const short = len < 30;
+      const catVal = (document.getElementById('field-live-category')?.value || '').trim();
+      deepenBtn.disabled = short || !!_activeQuestion || !catVal;
+      // hint visuel : raison du blocage
+      if(!catVal) deepenBtn.title = "Choisis d'abord la catégorie du live ci-dessus";
+      else if(short) deepenBtn.title = `Encore ${30 - len} caractères minimum`;
+      else if(_activeQuestion) deepenBtn.title = "Une problématique est déjà en cours";
+      else deepenBtn.title = "Lancer LIA sur ta problématique";
+    }
+    window.refreshDeepenBtn = refreshDeepenBtn;  // exposé pour le click catégorie
+
     if(probEl && probCount){
       probEl.addEventListener('input',()=>{
         const len = probEl.value.trim().length;
         const short = len < 30;
         probCount.textContent = short ? `${len}/400 · min 30 caractères` : `${len}/400 ✓ prêt à creuser`;
         probCount.className = 'note-count' + (short?' is-short':'') + (len>380?' is-near':'') + (len>=400?' is-full':'');
-        if(deepenBtn) deepenBtn.disabled = short || !!_activeQuestion;
+        refreshDeepenBtn();
         updateMissing();
       });
     }
