@@ -1522,8 +1522,42 @@ body{
       const cat = _categoriesCache.find(c => c.id === q.live_category);
       const catLabel = cat ? `${cat.label} · ${cat.intervenant_first_name}` : (q.live_category || 'sans catégorie');
       const txt = (q.qualified_question || q.initial_question || '').slice(0, 110);
-      return `<div class="prob-submitted-card"><b>#${i+1} · ${catLabel}</b><br/>${txt}${txt.length >= 110 ? '…' : ''}</div>`;
+
+      // Si réponse publique disponible → afficher le thread complet
+      if(q.status === 'answered' && q.kb_public && q.kb_answer){
+        const thread = q.thread || [];
+        const threadPreview = thread
+          .filter((m: any) => m.role !== 'student') // only IA messages
+          .map((m: any) => `<div style="font-family:var(--serif);font-style:italic;font-size:.88rem;color:var(--indigo);padding:4px 0;border-bottom:1px dotted rgba(26,22,20,.08)"><span style="font-family:var(--mono);font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--indigo);font-weight:600">LIA</span> ${m.text.slice(0,100)}${m.text.length>100?'…':''}</div>`)
+          .join('');
+
+        return `<div class="prob-submitted-card" style="border-left-color:var(--jade);cursor:pointer" onclick="toggleKbThread('${q.id}')">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px">
+            <b>#${i+1} · ${catLabel}</b>
+            <span style="display:inline-block;padding:2px 8px;border-radius:999px;background:rgba(29,138,111,.15);color:var(--jade);font-family:var(--mono);font-size:8px;letter-spacing:.06em;font-weight:600;text-transform:uppercase">${q.kb_pertinence || 0}/100</span>
+          </div>
+          <div style="margin-top:6px;font-size:.93rem;line-height:1.4">${txt}${txt.length >= 110 ? '…' : ''}</div>
+          <div id="kb-thread-${q.id}" style="display:none;margin-top:12px;padding-top:12px;border-top:1px dotted rgba(26,22,20,.15)">
+            ${threadPreview ? `<div style="margin-bottom:10px;padding:10px 12px;background:rgba(74,60,140,.06);border-left:3px solid var(--indigo);border-radius:4px">${threadPreview}</div>` : ''}
+            <div style="padding:12px 14px;background:rgba(29,138,111,.07);border:1.5px solid var(--jade);border-radius:6px">
+              <div style="font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--jade);font-weight:700;margin-bottom:6px">✧ Réponse de Djibril</div>
+              <div style="font-family:var(--serif);font-size:.95rem;line-height:1.5;white-space:pre-wrap">${q.kb_answer.slice(0,300)}${q.kb_answer.length>300?'…':''}</div>
+            </div>
+            <div style="margin-top:8px;text-align:right"><span style="font-family:var(--mono);font-size:9px;letter-spacing:.06em;color:var(--ink-mute);cursor:pointer">▲ Réduire</span></div>
+          </div>
+        </div>`;
+      }
+
+      // Default: simple card (awaiting or answered private)
+      const statusLabel = q.status === 'answered' ? '<span style="font-family:var(--mono);font-size:8px;letter-spacing:.08em;color:var(--jade);font-weight:600;text-transform:uppercase">✓ Répondu</span>' :
+                          q.status === 'awaiting_djibril' ? '<span style="font-family:var(--mono);font-size:8px;letter-spacing:.08em;color:var(--plum);font-weight:600;text-transform:uppercase">⏳ En attente</span>' : '';
+      return `<div class="prob-submitted-card"><b>#${i+1} · ${catLabel}</b> ${statusLabel}<br/>${txt}${txt.length >= 110 ? '…' : ''}</div>`;
     }).join('');
+  }
+  // Toggle KB thread visibility (global function for onclick)
+  function toggleKbThread(qId: string){
+    const el = document.getElementById('kb-thread-' + qId);
+    if(el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
   }
 
   // ── Phase 2 — Graphique évolutif 7j ─────────────────────
