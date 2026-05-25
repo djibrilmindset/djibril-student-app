@@ -1527,8 +1527,8 @@ body{
       if(q.status === 'answered' && q.kb_public && q.kb_answer){
         const thread = q.thread || [];
         const threadPreview = thread
-          .filter((m: any) => m.role !== 'student') // only IA messages
-          .map((m: any) => `<div style="font-family:var(--serif);font-style:italic;font-size:.88rem;color:var(--indigo);padding:4px 0;border-bottom:1px dotted rgba(26,22,20,.08)"><span style="font-family:var(--mono);font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--indigo);font-weight:600">LIA</span> ${m.text.slice(0,100)}${m.text.length>100?'…':''}</div>`)
+          .filter((m) => m.role !== 'student') // only IA messages
+          .map((m) => `<div style="font-family:var(--serif);font-style:italic;font-size:.88rem;color:var(--indigo);padding:4px 0;border-bottom:1px dotted rgba(26,22,20,.08)"><span style="font-family:var(--mono);font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--indigo);font-weight:600">LIA</span> ${m.text.slice(0,100)}${m.text.length>100?'…':''}</div>`)
           .join('');
 
         return `<div class="prob-submitted-card" style="border-left-color:var(--jade);cursor:pointer" onclick="toggleKbThread('${q.id}')">
@@ -1555,7 +1555,7 @@ body{
     }).join('');
   }
   // Toggle KB thread visibility (global function for onclick)
-  function toggleKbThread(qId: string){
+  function toggleKbThread(qId){
     const el = document.getElementById('kb-thread-' + qId);
     if(el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
   }
