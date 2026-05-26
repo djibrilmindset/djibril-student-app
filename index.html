@@ -234,13 +234,10 @@ input::placeholder{color:rgba(58,50,44,.4);font-style:italic}
 
   // ── API calls ────────────────────────────────────────────
   async function apiAuth(email, firstName, lastName){
-    const isLogin = !firstName && !lastName;
-    const path = isLogin ? '/auth/login' : '/auth';
-    const body = isLogin ? {email} : {email, firstName, lastName};
-    const res = await fetch(API + path, {
+    const res = await fetch(API + '/auth', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(body)
+      body: JSON.stringify({email, firstName, lastName})
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Erreur serveur');
@@ -263,8 +260,8 @@ input::placeholder{color:rgba(58,50,44,.4);font-style:italic}
       submitBtn.dataset.ribbon = '—  inscription  —';
       footStatus.textContent = 'Déjà un compte ? Bascule sur Connexion.';
     } else {
-      fieldNom.classList.add('hidden');
-      fieldPrenom.classList.add('hidden');
+      fieldNom.classList.remove('hidden');
+      fieldPrenom.classList.remove('hidden');
       submitBtn.textContent = 'accéder';
       submitBtn.dataset.ribbon = '—  connexion  —';
       footStatus.textContent = 'Pas de compte ? Bascule sur Inscription.';
@@ -299,7 +296,16 @@ input::placeholder{color:rgba(58,50,44,.4);font-style:italic}
 
     try {
       if(mode === 'login'){
-        const data = await apiAuth(m, '', '');
+        const u = findUser(m);
+        let n, p;
+        if(u){
+          n = u.nom; p = u.prenom;
+        } else {
+          n = nom.value.trim();
+          p = prenom.value.trim();
+          if(!n || !p){ err.textContent = 'Nom et prénom requis pour la connexion.'; submitBtn.disabled = false; loading.classList.remove('is-on'); return; }
+        }
+        const data = await apiAuth(m, p, n);
         // Store locally + redirect
         sessionStorage.setItem(TOKEN_KEY, data.token);
         sessionStorage.setItem(USER_KEY, JSON.stringify(data.student));
