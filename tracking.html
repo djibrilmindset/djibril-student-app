@@ -974,6 +974,7 @@ body{
       const turn = (q.thread||[]).filter(m=>m.role==='student').length + 1;
       const totalTurns = q.target_turns || 3;
       const conscience = q.consciousness_level || 1;
+      const canSkip = turn >= 3; // pas de skip avant le 3ème creusage
       inputHTML = `
         <div style="margin-top:10px;padding:10px 14px;background:rgba(74,60,140,.08);border:1px solid rgba(74,60,140,.25);border-radius:4px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--indigo);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
           <span>✦ Tour ${turn}/${totalTurns}</span>
@@ -984,7 +985,7 @@ body{
           <textarea class="qa-textarea" id="qa-answer-input" placeholder="Sois précis. Plus tu creuses, plus la réponse sera utile."></textarea>
           <div class="qa-actions">
             <button class="btn btn--ember" id="qa-answer-btn">Continuer le creusage</button>
-            <button class="btn btn--sm" id="qa-force-btn" title="J'ai compris, envoie tel quel à Djibril">J’ai mon vrai problème ✦ synthétiser</button>
+            ${canSkip ? `<button class="btn btn--sm" id="qa-force-btn" title="J'ai compris, envoie tel quel à Djibril">J’ai mon vrai problème ✦ synthétiser</button>` : ''}
           </div>
         </div>
       `;
