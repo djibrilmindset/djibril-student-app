@@ -5,5 +5,10 @@
     { "source": "/(.*)", "headers": [
       { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains" }
     ]}
+  ],
+  "rewrites": [
+    { "source": "/student/tracking", "destination": "/tracking.html" },
+    { "source": "/etudiant/suivi", "destination": "/tracking.html" },
+    { "source": "/student", "destination": "/" }
   ]
 }
